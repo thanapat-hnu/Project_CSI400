@@ -1,0 +1,8 @@
+node_modules/
+
+.env
+.env.*
+
+mysql_data/
+
+docker-compose.yaml
