@@ -13,6 +13,7 @@ router.use('/public', Public)
 router.use('/protected', Protected)
 
 // // 🧱 Private routes (เช่น internal/admin เท่านั้น)
-router.use('/private', Private)
+router.use('/private/auth', Private)
+
 
 export default router
