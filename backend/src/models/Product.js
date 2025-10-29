@@ -7,10 +7,13 @@ const Product = sequelize.define('Product', {
   description: { type: DataTypes.TEXT },
   price: { type: DataTypes.DECIMAL(12, 2), allowNull: false },
   stock: { type: DataTypes.INTEGER, defaultValue: 0 },
-  status: { 
-    type: DataTypes.ENUM('draft', 'active'), 
-    defaultValue: 'active' 
+  status: {
+    type: DataTypes.ENUM('draft', 'active'),
+    defaultValue: 'active'
   }
-}, { tableName: 'products', timestamps: false });
+}, {
+  tableName: 'products',
+  timestamps: false
+});
 
 export default Product;
