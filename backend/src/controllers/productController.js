@@ -1,17 +1,16 @@
-import Product from '../models/Product.js';
-import ProductVariant from '../models/ProductVariant.js';
-import ProductImage from '../models/ProductImage.js';
+import { Product, Category, ProductVariant, ProductImage } from '../models/index.js';
 
-/* ──────────────── GET ──────────────── */
-// ดึงสินค้าทั้งหมด (รวม variants และ images)
-export const getAllProducts = async (req, res) => {
+
+/* ───────── GET ───────── */
+export const getAllProducts = async (_req, res) => {
   try {
     const products = await Product.findAll({
       include: [
+        { model: Category, as: 'category', attributes: ['id','name'] },   // ✅ ใส่หมวดหมู่
         { model: ProductVariant, as: 'variants' },
         { model: ProductImage, as: 'images' }
       ],
-      order: [['id', 'ASC']]
+      order: [['id','ASC']]
     });
     res.json(products);
   } catch (err) {
@@ -20,12 +19,12 @@ export const getAllProducts = async (req, res) => {
   }
 };
 
-// ดึงสินค้าเดียว
 export const getProductById = async (req, res) => {
   try {
     const { id } = req.params;
     const product = await Product.findByPk(id, {
       include: [
+        { model: Category, as: 'category', attributes: ['id','name'] },   // ✅ ใส่หมวดหมู่
         { model: ProductVariant, as: 'variants' },
         { model: ProductImage, as: 'images' }
       ]
@@ -38,39 +37,53 @@ export const getProductById = async (req, res) => {
   }
 };
 
-/* ──────────────── CREATE ──────────────── */
-// เพิ่มสินค้าใหม่
+/* ───────── CREATE ───────── */
 export const createProduct = async (req, res) => {
   try {
-    const { name, description, price, stock = 0, status = 'active' } = req.body;
-    if (!name || !price) {
-      return res.status(400).json({ message: 'Name and price are required.' });
+    const { name, description, price, stock = 0, status = 'active', category_id = null } = req.body;
+    if (!name || price == null) return res.status(400).json({ message: 'Name and price are required.' });
+
+    // (ทางเลือก) ตรวจว่า category มีจริงก่อน
+    if (category_id) {
+      const exists = await Category.findByPk(category_id);
+      if (!exists) return res.status(400).json({ message: 'Invalid category_id' });
     }
 
-    const product = await Product.create({ name, description, price, stock, status });
-    res.status(201).json(product);
+    const product = await Product.create({ name, description, price, stock, status, category_id });
+    // ดึงพร้อม category กลับไปเลย
+    const withCat = await Product.findByPk(product.id, {
+      include: [{ model: Category, as: 'category', attributes: ['id','name'] }]
+    });
+    res.status(201).json(withCat);
   } catch (err) {
     console.error('Error creating product:', err);
     res.status(400).json({ message: 'Failed to create product.' });
   }
 };
 
-/* ──────────────── UPDATE ──────────────── */
-// แก้ไขสินค้า
+/* ───────── UPDATE ───────── */
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
+    const { category_id } = req.body;
+
+    if (category_id) {
+      const exists = await Category.findByPk(category_id);
+      if (!exists) return res.status(400).json({ message: 'Invalid category_id' });
+    }
+
     const [updated] = await Product.update(req.body, { where: { id } });
     if (!updated) return res.status(404).json({ message: 'Product not found' });
 
-    const updatedProduct = await Product.findByPk(id);
+    const updatedProduct = await Product.findByPk(id, {
+      include: [{ model: Category, as: 'category', attributes: ['id','name'] }]
+    });
     res.json(updatedProduct);
   } catch (err) {
     console.error('Error updating product:', err);
     res.status(500).json({ message: 'Failed to update product.' });
   }
 };
-
 /* ──────────────── DELETE ──────────────── */
 // ลบสินค้า
 export const deleteProduct = async (req, res) => {
