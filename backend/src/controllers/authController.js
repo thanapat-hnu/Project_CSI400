@@ -1,6 +1,9 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { pool } from '../config/dbpool.js'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 export const registerUser = async (req, res) => {
 
@@ -53,3 +56,65 @@ export const registerUser = async (req, res) => {
     }
 }
 
+export const loginUser = async (req, res) => {
+    if (!req.body || Object.keys(req.body).length === 0) {
+        return res.status(400).json({ message: "ไม่พบข้อมูลที่ส่งมา" })
+    }
+
+    const { email, password } = req.body
+
+    if (!email || !password) {
+        return res.status(400).json({ message: "กรุณากรอกข้อมูลให้ครบ" })
+    }
+
+    try {
+        const [rows] = await pool.query(
+            `SELECT *
+            FROM users
+            WHERE email = ?`, [email]
+        )
+
+        if (rows.length === 0) {
+            return res.status(401).json({ message: "ไม่พบผู้ใช้นี้ในระบบ" })
+        }
+
+        const user = rows[0]
+
+        const isMatch = await bcrypt.compare(password, user.password_hash)
+        if (!isMatch) {
+            return res.status(401).json({ message: "รหัสผ่านไม่ถูกต้อง" })
+        }
+
+        const [roles] = await pool.query(
+            `SELECT r.name
+            FROM roles r
+            JOIN user_roles ur ON ur.role_id = r.id
+            WHERE ur.user_id = ?`, [user.id]
+        )
+
+        const roleNames = roles.map(r => r.name);
+
+        const token = jwt.sign(
+            {
+                user_id: user.id,
+                email: user.email,
+                roles: roleNames
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: '30m' }
+        )
+
+        res.status(200).json({
+            message: "เข้าสู่ระบบสำเร็จ",
+            token
+        })
+
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ message: "เกิดข้อผิดพลาดในระบบ" });
+    }
+
+    if (!email && !password) {
+        return res.status(400).json({ message: "กรุณากรอกข้อมูลให้ครบ" })
+    }
+}
