@@ -7,10 +7,15 @@ import {
   updateProductVariant,
   deleteProductVariant,
   addProductImage,
-  deleteProductImage
+  deleteProductImage,
+  searchProducts
 } from '../../controllers/product.Controller.js';
 
 const router = express.Router();
+
+/* ──────────────── Search ──────────────── */
+router.get("/search", searchProducts);
+
 
 /* ──────────────── Product ──────────────── */
 router.post('/', createProduct);
@@ -25,5 +30,7 @@ router.delete('/variants/:variantId', deleteProductVariant);
 /* ──────────────── Image ──────────────── */
 router.post('/:id/images', addProductImage);
 router.delete('/images/:imageId', deleteProductImage);
+
+
 
 export default router;

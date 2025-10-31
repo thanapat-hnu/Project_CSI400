@@ -1,13 +1,12 @@
-import Category from '../models/Category.js';
+
 import Product from '../models/Product.js';
+import { Category } from '../models/index.js';
 
 // ดึงหมวดหมู่ทั้งหมด (รวมหมวดย่อย)
 export const getAllCategories = async (req, res) => {
   try {
     const categories = await Category.findAll({
-      include: [
-        { model: Category, as: 'subcategories' }
-      ],
+      attributes: ['id', 'name', 'parent_id'],
       order: [['id', 'ASC']]
     });
     res.json(categories);
