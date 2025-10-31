@@ -6,7 +6,11 @@ dotenv.config()
 const authJWT = (req, res, next) => {
     const authHeader = req.headers['authorization']
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (!authHeader) {
+        return res.status(401).json({ message: 'ไม่พบ Authorization header' });
+    }
+
+    if (!authHeader.startsWith('Bearer ')) {
         return res.status(401).json({ message: 'รูปแบบ Authorization header ไม่ถูกต้อง' })
     }
 
@@ -32,7 +36,7 @@ const authRole = (role) => {
             return res.status(403).json({ message: 'ไม่พบสิทธิ์ของผู้ใช้' });
         }
 
-        if(req.user.roles === role){
+        if (req.user.roles === role) {
             return next()
         }
 
