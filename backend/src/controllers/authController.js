@@ -92,7 +92,7 @@ export const loginUser = async (req, res) => {
             WHERE ur.user_id = ?`, [user.id]
         )
 
-        const roleNames = roles.map(r => r.name);
+        const roleNames = roles[0].name;
 
         const token = jwt.sign(
             {
@@ -114,7 +114,4 @@ export const loginUser = async (req, res) => {
         res.status(500).json({ message: "เกิดข้อผิดพลาดในระบบ" });
     }
 
-    if (!email && !password) {
-        return res.status(400).json({ message: "กรุณากรอกข้อมูลให้ครบ" })
-    }
 }
