@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const authJWT = (req, res, next) => {
-    const authHeader = req.headers['authorization'] 
+    const authHeader = req.headers['authorization']
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return res.status(401).json({ message: 'รูปแบบ Authorization header ไม่ถูกต้อง' })
@@ -26,8 +26,18 @@ const authJWT = (req, res, next) => {
     }
 }
 
-const authRole = () => {
+const authRole = (role) => {
+    return (req, res, next) => {
+        if (!req.user || !req.user.roles) {
+            return res.status(403).json({ message: 'ไม่พบสิทธิ์ของผู้ใช้' });
+        }
 
+        if(req.user.roles === role){
+            return next()
+        }
+
+        return res.status(403).json({ message: 'ผู้ใช้ไม่มีสิทธิ์เข้าถึงหน้าที่ต้องการ' });
+    }
 }
 
-export default authJWT
+export { authJWT, authRole }
