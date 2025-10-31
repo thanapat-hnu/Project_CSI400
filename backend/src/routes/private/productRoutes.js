@@ -1,7 +1,5 @@
 import express from 'express';
 import {
-  getAllProducts,
-  getProductById,
   createProduct,
   updateProduct,
   deleteProduct,
@@ -10,13 +8,11 @@ import {
   deleteProductVariant,
   addProductImage,
   deleteProductImage
-} from '../controllers/productController.js';
+} from '../../controllers/product.Controller.js';
 
 const router = express.Router();
 
 /* ──────────────── Product ──────────────── */
-router.get('/', getAllProducts);
-router.get('/:id', getProductById);
 router.post('/', createProduct);
 router.put('/:id', updateProduct);
 router.delete('/:id', deleteProduct);
