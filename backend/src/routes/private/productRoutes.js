@@ -7,15 +7,10 @@ import {
   updateProductVariant,
   deleteProductVariant,
   addProductImage,
-  deleteProductImage,
-  searchProducts
+  deleteProductImage
 } from '../../controllers/product.Controller.js';
 
 const router = express.Router();
-
-/* ──────────────── Search ──────────────── */
-router.get("/search", searchProducts);
-
 
 /* ──────────────── Product ──────────────── */
 router.post('/', createProduct);
