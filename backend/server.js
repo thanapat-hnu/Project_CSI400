@@ -22,6 +22,9 @@ const port = process.env.PORT;
 app.use('/api/public', publicApi);
 app.use('/api/protech', protechApi);
 app.use('/api/private', privateApi);
+app.use('/uploads', express.static('uploads'));
+
+
 
 
 (async () => {
