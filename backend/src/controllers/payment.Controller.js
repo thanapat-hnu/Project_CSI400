@@ -45,26 +45,53 @@ export const getPaymentById = async (req, res) => {
 
 /* ──────────────── POST: Create Payment ──────────────── */
 export const createPayment = async (req, res) => {
+  const t = await Payment.sequelize.transaction();
   try {
     const { order_id, amount, status = "pending" } = req.body;
 
-    // ตรวจสอบ order_id ว่ามีอยู่จริงไหม
-    const order = await Order.findByPk(order_id);
+    // ✅ ตรวจสอบว่ามี order จริงไหม
+    const order = await Order.findByPk(order_id, { transaction: t });
     if (!order)
       return res.status(400).json({ message: "Invalid order_id: not found" });
 
-    const newPayment = await Payment.create({
-      order_id,
-      amount,
-      status,
-      paid_at: status === "success" ? new Date() : null,
-    });
+    // ✅ ป้องกันการจ่ายซ้ำ (เช่นมีการชำระสำเร็จไปแล้ว)
+    if (order.status === "paid" || order.status === "completed") {
+      return res.status(400).json({
+        message: "This order has already been paid or completed.",
+      });
+    }
+
+    // ✅ ตรวจสอบยอดเงิน (optional)
+    if (Number(amount) < Number(order.total_amount)) {
+      return res.status(400).json({
+        message: "Payment amount is less than order total amount.",
+      });
+    }
+
+    // ✅ สร้าง payment record
+    const newPayment = await Payment.create(
+      {
+        order_id,
+        amount,
+        status,
+        paid_at: status === "success" ? new Date() : null,
+      },
+      { transaction: t }
+    );
+
+    // ✅ ถ้าชำระสำเร็จ → อัปเดตสถานะ Order เป็น "paid"
+    if (status === "success") {
+      await order.update({ status: "paid" }, { transaction: t });
+    }
+
+    await t.commit();
 
     res.status(201).json({
       message: "Payment created successfully",
       payment: newPayment,
     });
   } catch (err) {
+    await t.rollback();
     console.error("Error creating payment:", err);
     res.status(500).json({ message: "Failed to create payment" });
   }
@@ -72,23 +99,37 @@ export const createPayment = async (req, res) => {
 
 /* ──────────────── PUT: Update Payment ──────────────── */
 export const updatePayment = async (req, res) => {
+  const t = await Payment.sequelize.transaction();
   try {
     const { id } = req.params;
     const { status, amount } = req.body;
 
-    const payment = await Payment.findByPk(id);
+    const payment = await Payment.findByPk(id, { transaction: t });
     if (!payment)
       return res.status(404).json({ message: "Payment not found" });
 
-    // อัปเดตค่า
+    // ✅ ดึง order ที่เกี่ยวข้อง
+    const order = await Order.findByPk(payment.order_id, { transaction: t });
+
+    // ✅ อัปเดตข้อมูลการชำระเงิน
     payment.status = status || payment.status;
     payment.amount = amount || payment.amount;
     if (status === "success") payment.paid_at = new Date();
+    await payment.save({ transaction: t });
 
-    await payment.save();
+    // ✅ ถ้าชำระสำเร็จ → อัปเดต order เป็น "paid"
+    if (status === "success" && order) {
+      await order.update({ status: "paid" }, { transaction: t });
+    }
 
-    res.json({ message: "Payment updated successfully", payment });
+    await t.commit();
+
+    res.json({
+      message: "Payment updated successfully",
+      payment,
+    });
   } catch (err) {
+    await t.rollback();
     console.error("Error updating payment:", err);
     res.status(500).json({ message: "Failed to update payment" });
   }

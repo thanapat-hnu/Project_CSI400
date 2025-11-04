@@ -11,6 +11,8 @@ import wishlistRoutes from './wishlistRoutes.js'
 import addressRouter from './address.Router.js'
 import userRouter from './user.Router.js'
 import cart from './cart.Router.js'
+import orderRoutes from './orderRoutes.js'
+
 const router = express.Router()
 router.use(authJWT)
 
@@ -24,4 +26,6 @@ router.use('/wishlist', wishlistRoutes)
 router.use('/address', addressRouter)
 router.use('/user', userRouter)
 router.use('/cart', cart)
+router.use('/order', orderRoutes)
+
 export default router
