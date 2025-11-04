@@ -1,14 +1,22 @@
 import express from "express";
 import {
   getNotificationsByUser,
-  getNotificationById,
   markAsRead,
+  markAllAsRead,
 } from "../../controllers/notification.Controller.js";
+import { authJWT } from "../../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
-router.get("/user/:user_id", getNotificationsByUser);
-router.get("/:id", getNotificationById);
-router.put("/:id/read", markAsRead);
+/* ──────────────── USER ──────────────── */
+
+// ✅ ดึงแจ้งเตือนของ user
+router.get("/user/:user_id", authJWT, getNotificationsByUser);
+
+// ✅ อัปเดตสถานะ “อ่านแล้ว” รายตัว
+router.put("/:id/read", authJWT, markAsRead);
+
+// ✅ อัปเดตสถานะ “อ่านแล้ว” ทั้งหมดของ user
+router.put("/user/:user_id/read-all", authJWT, markAllAsRead);
 
 export default router;

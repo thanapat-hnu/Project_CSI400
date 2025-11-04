@@ -7,6 +7,7 @@ import notificationRoutes from './notificationRoutes.js'
 import promotionRoutes from './promotionRoutes.js'
 import reviewRoutes from './reviewRoutes.js'
 import wishlistRoutes from './wishlistRoutes.js'
+import orderRoutes from './orderRoutes.js'
 
 const router = express.Router()
 router.use(authJWT)
@@ -18,4 +19,6 @@ router.use('/notification', notificationRoutes)
 router.use('/promotion', promotionRoutes)
 router.use('/reviews', reviewRoutes)
 router.use('/wishlist', wishlistRoutes)
+router.use('/order', orderRoutes)
+
 export default router

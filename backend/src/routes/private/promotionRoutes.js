@@ -4,17 +4,27 @@ import {
   getCouponById,
   createCoupon,
   updateCouponStatus,
-  deleteCoupon,
-  applyCoupon
+  deleteCoupon
 } from "../../controllers/promotion.Controller.js";
+import { authJWT, authRole } from "../../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
-router.get("/", getAllCoupons);
-router.get("/:id", getCouponById);
-router.post("/", createCoupon);
-router.put("/:id/status", updateCouponStatus);
-router.delete("/:id", deleteCoupon);
+/* ──────────────── ADMIN ──────────────── */
 
+// ✅ ดึงคูปองทั้งหมด
+router.get("/", authJWT, authRole("admin"), getAllCoupons);
+
+// ✅ ดึงคูปองรายตัว
+router.get("/:id", authJWT, authRole("admin"), getCouponById);
+
+// ✅ สร้างคูปองใหม่
+router.post("/", authJWT, authRole("admin"), createCoupon);
+
+// ✅ อัปเดตสถานะคูปอง (เปิด/ปิดการใช้งาน)
+router.put("/:id/status", authJWT, authRole("admin"), updateCouponStatus);
+
+// ✅ ลบคูปอง
+router.delete("/:id", authJWT, authRole("admin"), deleteCoupon);
 
 export default router;

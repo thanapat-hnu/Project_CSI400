@@ -1,5 +1,6 @@
 import Coupon from "../models/Coupon.js";
 import CouponRedemption from "../models/CouponRedemption.js";
+import { sendAutoNotification } from "./notification.Controller.js"; // ✅ เพิ่มสำหรับแจ้งเตือนผู้ใช้
 import { Op } from "sequelize";
 
 /* ──────────────── GET ──────────────── */
@@ -28,7 +29,7 @@ export const getCouponById = async (req, res) => {
 };
 
 /* ──────────────── CREATE ──────────────── */
-// สร้างคูปองใหม่
+// ✅ สร้างคูปองใหม่
 export const createCoupon = async (req, res) => {
   try {
     const { code, type, value } = req.body;
@@ -57,7 +58,7 @@ export const createCoupon = async (req, res) => {
 };
 
 /* ──────────────── UPDATE ──────────────── */
-// ปรับสถานะคูปอง
+// ✅ ปรับสถานะคูปอง
 export const updateCouponStatus = async (req, res) => {
   try {
     const { id } = req.params;
@@ -75,6 +76,7 @@ export const updateCouponStatus = async (req, res) => {
 };
 
 /* ──────────────── DELETE ──────────────── */
+// ✅ ลบคูปอง
 export const deleteCoupon = async (req, res) => {
   try {
     const { id } = req.params;
@@ -88,7 +90,7 @@ export const deleteCoupon = async (req, res) => {
 };
 
 /* ──────────────── APPLY ──────────────── */
-// ตรวจสอบและใช้งานคูปอง
+// ✅ ตรวจสอบและใช้งานคูปอง (เชื่อม Notification)
 export const applyCoupon = async (req, res) => {
   try {
     const { code, user_id, order_id, total_amount } = req.body;
@@ -98,13 +100,15 @@ export const applyCoupon = async (req, res) => {
       return res.status(404).json({ message: "ไม่พบคูปองหรือคูปองถูกปิดใช้งาน" });
     }
 
-    // ตรวจสอบว่าผู้ใช้นี้เคยใช้คูปองนี้ไปแล้วหรือยัง
-    const used = await CouponRedemption.findOne({ where: { user_id, coupon_id: coupon.id } });
+    // ✅ ตรวจสอบว่าผู้ใช้นี้เคยใช้คูปองนี้หรือยัง
+    const used = await CouponRedemption.findOne({
+      where: { user_id, coupon_id: coupon.id },
+    });
     if (used) {
       return res.status(400).json({ message: "คุณได้ใช้คูปองนี้ไปแล้ว" });
     }
 
-    // คำนวณส่วนลด
+    // ✅ คำนวณส่วนลด
     let discountAmount = 0;
     if (coupon.type === "percent") {
       discountAmount = (Number(total_amount) * Number(coupon.value)) / 100;
@@ -114,18 +118,27 @@ export const applyCoupon = async (req, res) => {
 
     const finalAmount = Math.max(total_amount - discountAmount, 0);
 
-    // บันทึกการใช้คูปอง
-    await CouponRedemption.create({
+    // ✅ บันทึกการใช้คูปอง
+    const redemption = await CouponRedemption.create({
       user_id,
       coupon_id: coupon.id,
       order_id,
     });
+
+    // ✅ แจ้งเตือนผู้ใช้ว่าใช้คูปองสำเร็จ
+    await sendAutoNotification(
+      user_id,
+      "coupon",
+      coupon.id,
+      `คุณใช้คูปอง "${coupon.code}" ได้รับส่วนลด ${discountAmount.toFixed(2)} บาท`
+    );
 
     res.json({
       message: "ใช้คูปองสำเร็จ",
       original_total: total_amount,
       discount_amount: discountAmount,
       final_total: finalAmount,
+      redemption,
     });
   } catch (err) {
     console.error("Error applying coupon:", err);

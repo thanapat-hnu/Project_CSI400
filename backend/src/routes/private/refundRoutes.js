@@ -5,12 +5,22 @@ import {
   updateRefundStatus,
   deleteRefund,
 } from "../../controllers/refund.Controller.js";
+import { authJWT, authRole } from "../../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
-router.get("/", getAllRefunds);
-router.get("/:id", getRefundById);
-router.put("/:id", updateRefundStatus);
-router.delete("/:id", deleteRefund);
+/* ──────────────── ADMIN ──────────────── */
+
+// ✅ ดึงรายการคืนเงินทั้งหมด
+router.get("/", authJWT, authRole("admin"), getAllRefunds);
+
+// ✅ ดึงคืนเงินรายตัว
+router.get("/:id", authJWT, authRole("admin"), getRefundById);
+
+// ✅ อัปเดตสถานะการคืนเงิน (อนุมัติ / ไม่อนุมัติ / คืนสำเร็จ)
+router.put("/:id", authJWT, authRole("admin"), updateRefundStatus);
+
+// ✅ ลบข้อมูลการคืนเงิน
+router.delete("/:id", authJWT, authRole("admin"), deleteRefund);
 
 export default router;
