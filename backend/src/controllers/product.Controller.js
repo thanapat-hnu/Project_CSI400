@@ -41,24 +41,39 @@ export const getProductById = async (req, res) => {
 /* ───────── CREATE ───────── */
 export const createProduct = async (req, res) => {
   try {
-    const { name, description, price, stock = 0, status = 'active', category_id = null } = req.body;
-    if (!name || price == null) return res.status(400).json({ message: 'Name and price are required.' });
+    console.log("📦 Incoming body:", req.body);
+    console.log("🖼️ Incoming file:", req.file);
 
-    // (ทางเลือก) ตรวจว่า category มีจริงก่อน
-    if (category_id) {
-      const exists = await Category.findByPk(category_id);
-      if (!exists) return res.status(400).json({ message: 'Invalid category_id' });
+    const { name, description, price, stock = 0, category_id } = req.body;
+
+    if (!name || !price || !category_id) {
+      return res.status(400).json({ message: "ข้อมูลไม่ครบ" });
     }
 
-    const product = await Product.create({ name, description, price, stock, status, category_id });
-    // ดึงพร้อม category กลับไปเลย
-    const withCat = await Product.findByPk(product.id, {
-      include: [{ model: Category, as: 'category', attributes: ['id','name'] }]
+    const product = await Product.create({
+      name,
+      description,
+      price,
+      stock,
+      category_id,
     });
-    res.status(201).json(withCat);
+
+    // ถ้ามีรูปแนบมา
+    if (req.file) {
+      const imageUrl = `/uploads/products/${req.file.filename}`;
+      await ProductImage.create({
+        product_id: product.id,
+        url: imageUrl,
+      });
+    }
+
+    res.status(201).json({
+      message: "เพิ่มสินค้าสำเร็จ",
+      product,
+    });
   } catch (err) {
-    console.error('Error creating product:', err);
-    res.status(400).json({ message: 'Failed to create product.' });
+    console.error("Error creating product:", err);
+    res.status(500).json({ message: "เพิ่มสินค้าไม่สำเร็จ" });
   }
 };
 
@@ -153,18 +168,34 @@ export const deleteProductVariant = async (req, res) => {
 export const addProductImage = async (req, res) => {
   try {
     const { id } = req.params;
-    const { url } = req.body;
 
-    if (!url) return res.status(400).json({ message: 'Image URL is required.' });
-
+    // ตรวจสอบว่าสินค้ามีอยู่ไหม
     const product = await Product.findByPk(id);
-    if (!product) return res.status(404).json({ message: 'Product not found.' });
+    if (!product) {
+      return res.status(404).json({ message: "ไม่พบสินค้า" });
+    }
 
-    const image = await ProductImage.create({ product_id: id, url });
-    res.status(201).json(image);
+    // ตรวจสอบว่ามีการอัปโหลดไฟล์มาหรือไม่
+    if (!req.file) {
+      return res.status(400).json({ message: "กรุณาอัปโหลดรูปภาพ" });
+    }
+
+    // สร้าง path รูปภาพ
+    const imageUrl = `/uploads/products/${req.file.filename}`;
+
+    // บันทึกลงตาราง ProductImage
+    const image = await ProductImage.create({
+      product_id: id,
+      url: imageUrl,
+    });
+
+    res.status(201).json({
+      message: "เพิ่มรูปภาพสำเร็จ",
+      image,
+    });
   } catch (err) {
-    console.error('Error adding image:', err);
-    res.status(400).json({ message: 'Failed to add image.' });
+    console.error("Error adding image:", err);
+    res.status(500).json({ message: "Failed to add image." });
   }
 };
 

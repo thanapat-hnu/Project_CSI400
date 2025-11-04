@@ -1,0 +1,69 @@
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f9fafb;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Sidebar */
+.admin-sidebar {
+  width: 230px;
+  background-color: #1f2937;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.admin-logo {
+  font-size: 1.2rem;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.admin-sidebar ul {
+  list-style: none;
+  padding: 0;
+  flex-grow: 1;
+}
+
+.admin-sidebar li {
+  margin-bottom: 15px;
+}
+
+.admin-sidebar a {
+  color: #d1d5db;
+  text-decoration: none;
+  display: block;
+  padding: 8px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.admin-sidebar a:hover {
+  background-color: #374151;
+  color: #fff;
+}
+
+/* Logout button */
+.logout-btn {
+  background-color: #dc2626;
+  border: none;
+  border-radius: 6px;
+  padding: 8px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.logout-btn:hover {
+  background-color: #b91c1c;
+}
+
+/* Content */
+.admin-content {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+}
