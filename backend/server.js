@@ -4,7 +4,7 @@ import cors from 'cors';
 
 import sequelize from './src/config/db.js';
 import publicApi from './src/routes/public/public.Router.js'
-import protechApi from './src/routes/protected/protected.Router.js.js'
+import protechApi from './src/routes/protected/protected.Router.js'
 import privateApi from './src/routes/private/private.Router.js'
 import { logger } from './src/middlewares/logger.middleware.js'
 
