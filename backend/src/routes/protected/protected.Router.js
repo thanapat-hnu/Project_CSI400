@@ -10,7 +10,7 @@ import reviewRoutes from './reviewRoutes.js'
 import wishlistRoutes from './wishlistRoutes.js'
 import addressRouter from './address.Router.js'
 import userRouter from './user.Router.js'
-
+import cart from './cart.Router.js'
 const router = express.Router()
 router.use(authJWT)
 
@@ -23,4 +23,5 @@ router.use('/reviews', reviewRoutes)
 router.use('/wishlist', wishlistRoutes)
 router.use('/address', addressRouter)
 router.use('/user', userRouter)
+router.use('/cart', cart)
 export default router
