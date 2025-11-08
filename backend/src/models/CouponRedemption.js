@@ -1,18 +1,26 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
 import Coupon from "./Coupon.js";
-import User from "./User.js";     
-import Order from "./Order.js";   
+import User from "./User.js";
+import Order from "./Order.js";
 
-const CouponRedemption = sequelize.define("CouponRedemption", {
-  id: { type: DataTypes.BIGINT, autoIncrement: true, primaryKey: true },
-  coupon_id: { type: DataTypes.BIGINT, allowNull: false },
-  user_id: { type: DataTypes.BIGINT, allowNull: true },
-  order_id: { type: DataTypes.BIGINT, allowNull: true },
-}, {
-  tableName: "coupon_redemptions",
-  timestamps: false,
-});
+const CouponRedemption = sequelize.define(
+  "CouponRedemption",
+  {
+    id: { type: DataTypes.BIGINT, autoIncrement: true, primaryKey: true },
+    coupon_id: { type: DataTypes.BIGINT, allowNull: false },
+    user_id: { type: DataTypes.BIGINT, allowNull: true },
+    order_id: { type: DataTypes.BIGINT, allowNull: true },
+
+    is_saved: { type: DataTypes.BOOLEAN, defaultValue: false }, // true = เก็บไว้, false = ใช้แล้ว
+    saved_at: { type: DataTypes.DATE, allowNull: true },
+    redeemed_at: { type: DataTypes.DATE, allowNull: true },
+  },
+  {
+    tableName: "coupon_redemptions",
+    timestamps: false,
+  }
+);
 
 // ─────────────── Associations ───────────────
 

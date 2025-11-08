@@ -8,6 +8,7 @@ import paymentRoutes from './paymentRoutes.js'
 import refundRoutes from './refundRoutes.js'
 import shippingRoutes from './shippingRoutes.js'
 import orderRoutes from './orderRoutes.js'
+import couponRoutes from './couponRoutes.js';
 
 const router = express.Router()
 
@@ -23,5 +24,6 @@ router.use('/payment', paymentRoutes)
 router.use('/refund', refundRoutes)
 router.use('/shipping', shippingRoutes)
 router.use('/order', orderRoutes)
+router.use('/coupon', couponRoutes)
 
 export default router

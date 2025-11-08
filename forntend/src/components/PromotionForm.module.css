@@ -1,0 +1,127 @@
+.form {
+  background-color: white;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* input / textarea */
+.form input[type="text"],
+.form textarea,
+.form input[type="date"] {
+  width: 95%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #111827;
+  transition: border-color 0.2s ease;
+}
+
+.form input:focus,
+.form textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+/* textarea */
+.form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* ช่องวันที่ */
+.dateFields {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.dateFields label {
+  flex: 1;
+  font-weight: 500;
+  color: #374151;
+}
+
+.dateFields input {
+  margin-top: 5px;
+}
+
+/* ปุ่มบันทึก */
+.submitButton {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background 0.2s ease;
+}
+
+.submitButton:hover {
+  background-color: #1d4ed8;
+}
+
+/* อัปโหลดรูป */
+.form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+}
+
+.form input[type="file"] {
+  margin-top: 6px;
+  padding: 6px;
+  background-color: #f9fafb;
+  border: 1px dashed #cbd5e1;
+  border-radius: 6px;
+  transition: border 0.2s ease;
+}
+
+.form input[type="file"]:hover {
+  border-color: #2563eb;
+}
+
+/* responsive */
+@media (max-width: 600px) {
+  .dateFields {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .submitButton {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.previewBox {
+  margin-top: 12px;
+  padding: 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background-color: #f9fafb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.previewImage {
+  max-width: 250px;
+  max-height: 200px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}

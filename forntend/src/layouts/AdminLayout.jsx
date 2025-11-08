@@ -22,6 +22,7 @@ const AdminLayout = () => {
             <li><Link to="/admin/orders">Orders</Link></li>
             <li><Link to="/admin/users">Users</Link></li>
             <li><Link to="/admin/reviews">Reviews</Link></li>
+            <li><Link to="/admin/promotions">Promotions</Link></li>
           </ul>
         </nav>
 
