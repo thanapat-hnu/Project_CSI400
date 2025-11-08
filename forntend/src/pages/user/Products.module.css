@@ -1,0 +1,125 @@
+.container {
+  padding: 40px 80px;
+  text-align: center;
+  background-color: #f9fafb;
+  min-height: 100vh;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 30px;
+}
+
+/* 🧩 Layout grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 🔥 fix 4 คอลัมน์แน่นอน */
+  gap: 25px;
+  justify-items: center;
+}
+
+/* 🛒 Card */
+.card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  max-width: 270px;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* 📸 รูปสินค้า */
+.imageWrapper {
+  width: 100%;
+  height: 200px;
+  background: #f3f4f6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* ✅ ป้องกันภาพล้นกรอบ */
+}
+
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* ✅ ทำให้รูปเต็มกล่องแบบพอดี */
+  transition: transform 0.3s ease;
+}
+
+
+.card:hover .image {
+  transform: scale(1.05); /* ✅ เพิ่ม effect ตอน hover */
+}
+/* 🧾 ข้อมูลสินค้า */
+.info {
+  padding: 12px 15px 20px;
+}
+
+.name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #111827;
+  min-height: 40px;
+  margin-bottom: 8px;
+}
+
+.price {
+  color: #1d4ed8;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+/* 🛍 ปุ่ม */
+.btn {
+  background-color: #2563eb;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  background-color: #1e40af;
+}
+/* 🧭 หมวดหมู่สินค้า */
+.categoryGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.categoryBtn {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.categoryBtn:hover {
+  background-color: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+.active {
+  background-color: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}

@@ -3,16 +3,24 @@ import { Op, fn, col, where } from "sequelize";
 
 
 /* ───────── GET ───────── */
-export const getAllProducts = async (_req, res) => {
+export const getAllProducts = async (req, res) => {
   try {
+    const { category_id } = req.query; // ดึงค่าหมวดหมู่จาก query params
+
+    // ถ้ามีการส่ง category_id เข้ามา → ใช้เป็นเงื่อนไข filter
+    const whereClause = {};
+    if (category_id) whereClause.category_id = category_id;
+
     const products = await Product.findAll({
+      where: whereClause,
       include: [
-        { model: Category, as: 'category', attributes: ['id','name'] },   // ✅ ใส่หมวดหมู่
+        { model: Category, as: 'category', attributes: ['id', 'name'] },
         { model: ProductVariant, as: 'variants' },
-        { model: ProductImage, as: 'images' }
+        { model: ProductImage, as: 'images' },
       ],
-      order: [['id','ASC']]
+      order: [['id', 'ASC']],
     });
+
     res.json(products);
   } catch (err) {
     console.error('Error fetching products:', err);

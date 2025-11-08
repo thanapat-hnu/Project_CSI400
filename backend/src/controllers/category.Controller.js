@@ -1,11 +1,14 @@
 
 import Product from '../models/Product.js';
 import { Category } from '../models/index.js';
+import { Op } from "sequelize";
+
 
 // ดึงหมวดหมู่ทั้งหมด (รวมหมวดย่อย)
 export const getAllCategories = async (req, res) => {
   try {
     const categories = await Category.findAll({
+      where: { parent_id: null },
       attributes: ['id', 'name', 'parent_id'],
       order: [['id', 'ASC']]
     });
@@ -66,5 +69,19 @@ export const deleteCategory = async (req, res) => {
     res.json({ message: 'Category deleted successfully' });
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+};
+
+export const getSubCategories = async (req, res) => {
+  try {
+    const categories = await Category.findAll({
+      where: { parent_id: { [Op.ne]: null } }, // parent_id != NULL
+      attributes: ['id', 'name', 'parent_id'],
+      order: [['id', 'ASC']],
+    });
+    res.json(categories);
+  } catch (err) {
+    console.error('Error fetching subcategories:', err);
+    res.status(500).json({ message: 'Failed to fetch subcategories.' });
   }
 };

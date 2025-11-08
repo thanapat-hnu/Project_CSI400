@@ -1,8 +1,18 @@
+/* รีเซ็ต margin/padding ของ body/html ทั้งหมดก่อน */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Layout หลัก */
 .admin-layout {
   display: flex;
-  min-height: 100vh;
+  height: 100vh; /* ✅ ให้สูงเต็มหน้าจอ */
+  width: 100%;
   background-color: #f9fafb;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
 }
 
 /* Sidebar */
@@ -12,18 +22,27 @@
   color: white;
   display: flex;
   flex-direction: column;
+  justify-content: space-between; /* ✅ ให้ปุ่ม logout อยู่ล่างสุด */
   padding: 20px;
+  position: fixed; /* ✅ ตรึง sidebar ด้านซ้ายตลอด */
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 10;
 }
 
+/* โลโก้ด้านบน */
 .admin-logo {
   font-size: 1.2rem;
   text-align: center;
   margin-bottom: 25px;
 }
 
+/* เมนู */
 .admin-sidebar ul {
   list-style: none;
   padding: 0;
+  margin: 0;
   flex-grow: 1;
 }
 
@@ -45,16 +64,17 @@
   color: #fff;
 }
 
-/* Logout button */
+/* ปุ่ม Logout */
 .logout-btn {
   background-color: #dc2626;
   border: none;
   border-radius: 6px;
-  padding: 8px;
+  padding: 10px;
   color: white;
   font-weight: 500;
   cursor: pointer;
   transition: 0.2s;
+  width: 100%;
 }
 
 .logout-btn:hover {
@@ -66,4 +86,8 @@
   flex: 1;
   padding: 30px;
   overflow-y: auto;
+  margin-left: 230px; /* ✅ เว้นพื้นที่เท่ากับ sidebar */
+  height: 100vh;
+  background-color: #f9fafb;
+  box-sizing: border-box;
 }
