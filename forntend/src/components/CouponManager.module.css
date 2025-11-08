@@ -1,0 +1,153 @@
+.container {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+  margin-top: 40px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ส่วนหัว */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+
+.title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.addButton {
+  background-color: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.addButton:hover {
+  background-color: #1d4ed8;
+}
+
+/* แบบฟอร์มสร้างคูปอง */
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.form input,
+.form select {
+  padding: 8px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  flex: 1;
+  min-width: 150px;
+}
+
+.createButton {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+.createButton:hover {
+  background-color: #059669;
+}
+
+/* ตาราง */
+.tableContainer {
+  overflow-x: auto;
+  margin-top: 15px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+  color: #374151;
+}
+
+.table th {
+  background-color: #f3f4f6;
+  font-weight: 600;
+}
+
+/* ปุ่มสถานะ */
+.activeButton,
+.inactiveButton {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.activeButton {
+  background-color: #10b981;
+}
+.activeButton:hover {
+  background-color: #059669;
+}
+
+.inactiveButton {
+  background-color: #9ca3af;
+}
+.inactiveButton:hover {
+  background-color: #6b7280;
+}
+
+/* ปุ่มลบ */
+.deleteButton {
+  background-color: #ef4444;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.deleteButton:hover {
+  background-color: #dc2626;
+}
+
+/* ไม่มีข้อมูล */
+.noData {
+  text-align: center;
+  color: #6b7280;
+  padding: 20px 0;
+  font-style: italic;
+}
+
+/* hover แถว */
+.table tr:hover {
+  background-color: #f9fafb;
+  transition: background 0.2s ease;
+}
+
+.table td:nth-child(4),
+.table th:nth-child(4) {
+  text-align: center;
+  white-space: nowrap;
+}

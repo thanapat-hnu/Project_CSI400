@@ -6,55 +6,6 @@
   background-color: #f5f6fa;
 }
 
-/* === Sidebar === */
-.admin-sidebar {
-  width: 240px;
-  background-color: #1f2937; /* เทาเข้ม */
-  color: #f9fafb;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 24px 16px;
-  box-sizing: border-box;
-  position: fixed; /* ✅ sidebar ค้างซ้าย */
-  top: 0;
-  left: 0;
-  bottom: 0;
-}
-
-/* โลโก้หัวบน */
-.admin-sidebar-logo {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-bottom: 32px;
-  text-align: center;
-}
-
-/* เมนูรายการ */
-.admin-sidebar nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.admin-sidebar nav li {
-  margin-bottom: 16px;
-}
-
-.admin-sidebar nav a {
-  color: #d1d5db;
-  text-decoration: none;
-  display: block;
-  padding: 10px 14px;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-}
-
-.admin-sidebar nav a:hover {
-  background-color: #374151;
-  color: #ffffff;
-}
-
 /* ปุ่ม logout ล่างสุด */
 .admin-logout-btn {
   background-color: #e11d48;

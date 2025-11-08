@@ -53,29 +53,7 @@ const Dashboard = () => {
 
   return (
     <div className="admin-dashboard">
-      {/* ==== Sidebar ==== */}
-      <aside className="admin-sidebar">
-        <h2 className="admin-sidebar-logo">🛠 SlideShop Admin</h2>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/admin/dashboard">Dashboard</Link>
-            </li>
-            <li>
-              <Link to="/admin/products">Products</Link>
-            </li>
-            <li>
-              <Link to="/admin/orders">Orders</Link>
-            </li>
-            <li>
-              <Link to="/admin/reviews">Reviews</Link>
-            </li>
-          </ul>
-        </nav>
-        <button className="admin-logout-btn" onClick={handleLogout}>
-          Logout
-        </button>
-      </aside>
+
 
       {/* ==== Main ==== */}
       <main className="admin-main">

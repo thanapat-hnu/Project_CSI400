@@ -1,30 +1,28 @@
 import express from "express";
+import multer from "multer";
 import {
-  getAllCoupons,
-  getCouponById,
-  createCoupon,
-  updateCouponStatus,
-  deleteCoupon
+  getAllPromotions,
+  createPromotion,
+  updatePromotionStatus,
+  deletePromotion,
 } from "../../controllers/promotion.Controller.js";
 import { authJWT, authRole } from "../../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
+// 📦 ตั้งค่า upload เก็บรูปโปรโมชั่น
+const storage = multer.diskStorage({
+  destination: "uploads/",
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+const upload = multer({ storage });
+
 /* ──────────────── ADMIN ──────────────── */
-
-// ✅ ดึงคูปองทั้งหมด
-router.get("/", authJWT, authRole("admin"), getAllCoupons);
-
-// ✅ ดึงคูปองรายตัว
-router.get("/:id", authJWT, authRole("admin"), getCouponById);
-
-// ✅ สร้างคูปองใหม่
-router.post("/", authJWT, authRole("admin"), createCoupon);
-
-// ✅ อัปเดตสถานะคูปอง (เปิด/ปิดการใช้งาน)
-router.put("/:id/status", authJWT, authRole("admin"), updateCouponStatus);
-
-// ✅ ลบคูปอง
-router.delete("/:id", authJWT, authRole("admin"), deleteCoupon);
+router.get("/", authJWT, authRole("admin"), getAllPromotions);
+router.post("/", authJWT, authRole("admin"), upload.single("image"), createPromotion);
+router.put("/:id", authJWT, authRole("admin"), updatePromotionStatus);
+router.delete("/:id", authJWT, authRole("admin"), deletePromotion);
 
 export default router;
