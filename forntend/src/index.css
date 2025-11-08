@@ -68,3 +68,25 @@ button:focus-visible {
 }
 
  */
+
+ @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --font-main: 'Kanit', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-main);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+p, span, button, a, li {
+  font-weight: 400;
+}
