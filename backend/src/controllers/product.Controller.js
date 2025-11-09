@@ -223,59 +223,25 @@ export const deleteProductImage = async (req, res) => {
 
 export const searchProducts = async (req, res) => {
   try {
-    const { keyword, category, minPrice, maxPrice, sortBy, order } = req.query;
-    const whereClause = {};
-
-    // ค้นหาชื่อหรือคำอธิบาย
-    if (keyword) {
-      const lowerKeyword = keyword.toLowerCase();
-      whereClause[Op.or] = [
-        where(fn("LOWER", col("Product.name")), { [Op.like]: `%${lowerKeyword}%` }),
-        where(fn("LOWER", col("Product.description")), { [Op.like]: `%${lowerKeyword}%` }),
-      ];
-    }
-
-    // กรองตามหมวดหมู่
-    if (category) {
-      whereClause.category_id = category;
-    }
-
-    // กรองตามช่วงราคา
-    if (minPrice && maxPrice) {
-      whereClause.price = { [Op.between]: [minPrice, maxPrice] };
-    } else if (minPrice) {
-      whereClause.price = { [Op.gte]: minPrice };
-    } else if (maxPrice) {
-      whereClause.price = { [Op.lte]: maxPrice };
-    }
-
-    // เรียงลำดับ (ถ้ามี)
-    const orderBy = [];
-    if (sortBy) {
-      orderBy.push([sortBy, order && order.toUpperCase() === "DESC" ? "DESC" : "ASC"]);
-    } else {
-      orderBy.push(["id", "ASC"]);
-    }
+    const q = (req.query.q || "").trim();
+    if (!q) return res.json([]);   // ไม่มีคำค้นไม่ต้องส่งทั้งหมด
 
     const products = await Product.findAll({
-      where: whereClause,
+      where: {
+        [Op.or]: [
+          { name: { [Op.like]: `%${q}%` } },
+          { description: { [Op.like]: `%${q}%` } },
+        ],
+      },
       include: [
-        {
-          model: Category,
-          as: "category",
-          attributes: ["id", "name"],
-        },
+        { model: ProductImage, as: "images" },
+        { model: Category, as: "category" },
       ],
-      order: orderBy,
+      limit: 10,
     });
-
-    if (!products.length) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-
     res.json(products);
   } catch (err) {
-    console.error("Error searching products:", err);
-    res.status(500).json({ message: "Failed to search products" });
+    console.error("❌ Error searching products:", err);
+    res.status(500).json({ message: "Search failed" });
   }
 };
