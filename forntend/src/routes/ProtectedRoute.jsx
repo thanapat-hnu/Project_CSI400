@@ -2,15 +2,16 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const ProtectedRoute = ({ children }) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
 
-  // ถ้ายังไม่ได้ login
+  if (loading) return <div>กำลังโหลด...</div>;
+  if (!user) return <Navigate to="/login" replace />;
+
   if (!user) {
     return <Navigate to="/login" replace />;
   }
 
-  
   return children;
 };
 
-export default ProtectedRoute; 
+export default ProtectedRoute;

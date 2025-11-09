@@ -101,7 +101,7 @@ export const loginUser = async (req, res) => {
                 roles: roleNames
             },
             process.env.JWT_SECRET,
-            { expiresIn: '30m' }
+            { expiresIn: '1d' }
         )
 
         res.status(200).json({

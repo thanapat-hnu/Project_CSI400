@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
 import ProtectedRoute from "./routes/ProtectedRoute"; // ✅ เพิ่มเพื่อใช้กับฝั่ง User
@@ -9,6 +10,11 @@ import UserLayout from "./layouts/UserLayout";
 import Home from "./pages/user/Home";
 import Products from "./pages/user/Products";
 import Login from "./pages/auth/Login";
+import { Register } from "./pages/auth/register";
+import { MyProfile } from "./pages/user/MyProfile";
+import { ProfileEdit } from "./pages/user/ProfileEdit";
+import { Address } from "./pages/user/Address";
+import { AddressCreate } from "./pages/user/AddressCreate";
 import Dashboard from "./pages/admin/Dashboard";
 import AdminProducts from "./pages/admin/Products";
 import ProductDetail from "./pages/user/ProductDetail";
@@ -20,7 +26,6 @@ import UserPromotions from "./pages/user/HomePromotions";
 function App() {
   return (
     <Routes>
-      {/* 🏠 ส่วนของผู้ใช้ (Public) */}
       <Route
         path="/"
         element={
@@ -29,15 +34,44 @@ function App() {
           </PublicRoute>
         }
       >
-        <Route index element={<Home />} /> {/* หน้าแรก */}
-        <Route path="products" element={<Products />} /> {/*หน้า "สินค้า" */}
+        {/* <Route index element={<Home />} /> */}
+        <Route path="products" element={<Products />} />
         <Route path="products/:id" element={<ProductDetail />} />
-        <Route index element={<Home />} />
-
         <Route path="promotions" element={<UserPromotions />} />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <MyProfile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile/edit"
+          element={
+            <ProtectedRoute>
+              <ProfileEdit />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile/address"
+          element={
+            <ProtectedRoute>
+              <Address />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile/address/create"
+          element={
+            <ProtectedRoute>
+              <AddressCreate />
+            </ProtectedRoute>
+          }
+        />
       </Route>
-
-      {/* 🔐 หน้า Login */}
+      
       <Route
         path="/login"
         element={
@@ -47,14 +81,13 @@ function App() {
         }
       />
       <Route
-        path="/admin/login"
+        path="/register"
         element={
           <PublicRoute>
-            <Login />
+            <Register />
           </PublicRoute>
         }
       />
-
       {/* 👑 ส่วน Admin */}
       <Route
         path="/admin"
