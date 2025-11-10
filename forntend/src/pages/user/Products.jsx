@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "../../apis/axios";
 import styles from "./Products.module.css";
 
@@ -6,8 +7,9 @@ const Products = () => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const navigate = useNavigate();
 
-  // 🧭 โหลดหมวดหมู่จาก DB
+  // 🧭 โหลดหมวดหมู่
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -20,7 +22,7 @@ const Products = () => {
     fetchCategories();
   }, []);
 
-  // 📦 โหลดสินค้า (ทั้งหมดหรือเฉพาะตามหมวด)
+  // 📦 โหลดสินค้า
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -40,12 +42,14 @@ const Products = () => {
     <div className={styles.container}>
       <h2 className={styles.title}>หมวดหมู่สินค้า</h2>
 
-      {/* 🧩 ปุ่มหมวดหมู่จาก DB */}
+      {/* 🔹 ปุ่มเลือกหมวดหมู่ */}
       <div className={styles.categoryGrid}>
         {categories.map((cat) => (
           <button
             key={cat.id}
-            onClick={() => setSelectedCategory(cat.id)}
+            onClick={() =>
+              setSelectedCategory(selectedCategory === cat.id ? null : cat.id)
+            }
             className={`${styles.categoryBtn} ${
               selectedCategory === cat.id ? styles.active : ""
             }`}
@@ -57,26 +61,48 @@ const Products = () => {
 
       <h2 className={styles.title}>สินค้าทั้งหมด</h2>
 
+      {/* 🔹 แสดงสินค้าทั้งหมด */}
       <div className={styles.grid}>
         {products.map((product) => (
           <div key={product.id} className={styles.card}>
-            <div className={styles.imageWrapper}>
+            <div
+              className={styles.imageWrapper}
+              onClick={() => navigate(`/products/${product.id}`)}
+              style={{ cursor: "pointer" }}
+            >
               <img
                 src={
                   product.images?.[0]?.url
-                    ? product.images[0].url.startsWith("http")
-                      ? product.images[0].url
-                      : `http://localhost:3000${product.images[0].url}`
+                    ? `http://localhost:3000${product.images[0].url}`
                     : "https://dummyimage.com/300x200/e5e7eb/9ca3af.png&text=No+Image"
                 }
                 alt={product.name}
                 className={styles.image}
               />
             </div>
-            <div className={styles.info}>
+
+            <div
+              className={styles.info}
+              onClick={() => navigate(`/products/${product.id}`)}
+              style={{ cursor: "pointer" }}
+            >
               <h3 className={styles.name}>{product.name}</h3>
-              <p className={styles.price}>฿{product.price}</p>
-              <button className={styles.btn}>หยิบใส่ตะกร้า</button>
+
+              {/* ✅ รายละเอียดสินค้า */}
+              <p className={styles.desc}>
+                {product.description
+                  ? product.description.length > 80
+                    ? product.description.slice(0, 80) + "..."
+                    : product.description
+                  : "ไม่มีรายละเอียดสินค้า"}
+              </p>
+
+              <p className={styles.price}>
+                ฿
+                {Number(product.price).toLocaleString("en-US", {
+                  minimumFractionDigits: 2,
+                })}
+              </p>
             </div>
           </div>
         ))}

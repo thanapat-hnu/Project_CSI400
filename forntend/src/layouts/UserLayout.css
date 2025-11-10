@@ -22,26 +22,88 @@
   text-decoration: none;
 }
 
+/* 🔍 Search */
 .search-bar {
-  display: flex;
-  align-items: center;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  padding: 0 0.5rem;
-  width: 16rem;
+  position: relative;
+  width: 500px; /* ✅ ขยายช่องค้นหาให้ใหญ่ขึ้นเล็กน้อย */
 }
 
 .search-bar input {
-  flex: 1;
-  border: none;
+  width: 100%;
+  padding: 8px 36px 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
   outline: none;
-  padding: 0.4rem 0.5rem;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+  font-size: 0.95rem;
 }
 
+.search-bar input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+/* ไอคอนค้นหา */
 .search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   color: #6b7280;
 }
 
+/* ✅ กล่องผลลัพธ์การค้นหา (เท่าช่อง input) */
+.search-results {
+  position: absolute;
+  top: 110%; /* อยู่ใต้ช่องค้นหาเล็กน้อย */
+  left: 0;
+  width: 100%; /* ✅ กว้างเท่าช่อง input */
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 200;
+}
+
+/* 🔥 ซ่อน scrollbar ของกล่องผลลัพธ์ */
+.search-results::-webkit-scrollbar {
+  width: 0px; /* ✅ ซ่อน scrollbar */
+  height: 0px;
+}
+
+.search-results {
+  scrollbar-width: none; /* ✅ สำหรับ Firefox */
+  -ms-overflow-style: none; /* ✅ สำหรับ IE/Edge เก่า */
+}
+
+
+
+/* ผลลัพธ์แต่ละแถว */
+.search-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.search-item:hover {
+  background: #f3f4f6;
+}
+
+/* ภาพขนาดย่อสินค้า */
+.search-thumb {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 6px;
+  background: #f9fafb;
+}
+
+/* เมนูขวา */
 .menu {
   display: flex;
   align-items: center;

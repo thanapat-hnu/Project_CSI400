@@ -1,30 +1,154 @@
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "../../apis/axios";
 import styles from "./ProductDetail.module.css";
 
 const ProductDetail = () => {
-  const { id } = useParams(); // ดึง id จาก URL เช่น /products/1
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [product, setProduct] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [quantity, setQuantity] = useState(1);
 
-  // ✅ mock ข้อมูลสินค้าตัวอย่าง (ทีหลังดึงจาก DB ได้)
-  const product = {
-    id,
-    name: "Intel Core i9-13900K",
-    price: 25900,
-    img: "https://placehold.co/400x300?text=Intel+Core+i9",
-    description:
-      "CPU รุ่นท็อปจาก Intel ที่มาพร้อมประสิทธิภาพสูงสุดสำหรับเกมเมอร์และนักสร้างคอนเทนต์",
-  };
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const res = await axios.get(`/public/product/${id}`);
+        setProduct(res.data);
+        setSelectedImage(
+          res.data.images?.[0]?.url
+            ? `http://localhost:3000${res.data.images[0].url}`
+            : "https://dummyimage.com/400x300/e5e7eb/9ca3af.png&text=No+Image"
+        );
+      } catch (err) {
+        console.error("❌ Error fetching product:", err);
+      }
+    };
+    fetchProduct();
+  }, [id]);
+
+  if (!product) return <div className={styles.loading}>กำลังโหลด...</div>;
+
+  // ✅ รวม description และ specs ไว้ใน object เดียว
+  let combinedData = {};
+  try {
+    const descData =
+      typeof product.description === "string"
+        ? JSON.parse(product.description)
+        : product.description;
+    if (descData && typeof descData === "object") {
+      combinedData = { ...combinedData, ...descData };
+    }
+  } catch (e) {
+    // ถ้า description เป็นข้อความธรรมดา
+    combinedData.descriptionText = product.description;
+  }
+
+  try {
+    const specsData =
+      typeof product.specs === "string"
+        ? JSON.parse(product.specs)
+        : product.specs;
+    if (specsData && typeof specsData === "object") {
+      combinedData = { ...combinedData, ...specsData };
+    }
+  } catch (e) {}
 
   return (
-    <div className={styles.detailContainer}>
-      <div className={styles.imageSection}>
-        <img src={product.img} alt={product.name} />
+    <div className={styles.container}>
+      <button className={styles.backBtn} onClick={() => navigate(-1)}>
+        ◀ กลับ
+      </button>
+
+      <div className={styles.detailBox}>
+        {/* 📸 รูปสินค้า */}
+        <div className={styles.imageSection}>
+          <img
+            src={selectedImage}
+            alt={product.name}
+            className={styles.mainImage}
+          />
+          <div className={styles.thumbnailRow}>
+            {product.images?.map((img, i) => (
+              <img
+                key={i}
+                src={`http://localhost:3000${img.url}`}
+                alt={`thumb-${i}`}
+                className={`${styles.thumbnail} ${
+                  selectedImage === `http://localhost:3000${img.url}`
+                    ? styles.activeThumb
+                    : ""
+                }`}
+                onClick={() =>
+                  setSelectedImage(`http://localhost:3000${img.url}`)
+                }
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* 💬 ข้อมูลสินค้า */}
+        <div className={styles.infoSection}>
+          <h2 className={styles.name}>{product.name}</h2>
+          <p className={styles.category}>
+            หมวดหมู่: {product.category?.name || "ไม่ระบุ"}
+          </p>
+          <p className={styles.price}>
+            ฿
+            {Number(product.price).toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+            })}
+          </p>
+          <div className={styles.quantityBox}>
+            <button
+              onClick={() => setQuantity(Math.max(1, quantity - 1))}
+              className={styles.qtyBtn}
+            >
+              -
+            </button>
+            <span className={styles.qtyNumber}>{quantity}</span>
+            <button
+              onClick={() => setQuantity(quantity + 1)}
+              className={styles.qtyBtn}
+            >
+              +
+            </button>
+          </div>
+
+          <div className={styles.buttonRow}>
+            <button
+              className={styles.addBtn}
+              onClick={() =>
+                alert(
+                  `เพิ่ม ${quantity} ชิ้นของ "${product.name}" ลงตะกร้าแล้ว!`
+                )
+              }
+            >
+              🛒 เพิ่มในตะกร้า
+            </button>
+            <button className={styles.buyBtn}>🛍️ ซื้อเลย</button>
+          </div>
+        </div>
       </div>
 
-      <div className={styles.infoSection}>
-        <h2>{product.name}</h2>
-        <p className={styles.price}>฿{product.price.toLocaleString()}</p>
-        <p className={styles.description}>{product.description}</p>
-        <button className={styles.addCartBtn}>หยิบใส่ตะกร้า</button>
+      {/* 📋 ตารางรวมรายละเอียด + สเปก */}
+      <div className={styles.specSection}>
+        <h3 className={styles.specTitle}>รายละเอียดสินค้า</h3>
+
+        {Object.keys(combinedData).length > 0 ? (
+          <table className={styles.specTable}>
+            <tbody>
+              {Object.entries(combinedData).map(([key, value]) => (
+                <tr key={key}>
+                  <td className={styles.specKey}>{key}</td>
+                  <td className={styles.specValue}>{String(value)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p className={styles.noSpec}>ไม่มีข้อมูลรายละเอียดสินค้า</p>
+        )}
       </div>
     </div>
   );

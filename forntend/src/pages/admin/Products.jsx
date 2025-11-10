@@ -8,7 +8,7 @@ const Products = () => {
   const { user } = useAuth();
 
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([]); // ✅ หมวดย่อยเท่านั้น
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState("create");
   const [editingId, setEditingId] = useState(null);
@@ -31,6 +31,7 @@ const Products = () => {
     fetchCategories();
   }, []);
 
+  // ✅ โหลดสินค้าทั้งหมด
   const fetchProducts = async () => {
     try {
       const res = await api.get("/public/product");
@@ -40,15 +41,17 @@ const Products = () => {
     }
   };
 
+  // ✅ โหลดเฉพาะหมวดย่อยจาก backend
   const fetchCategories = async () => {
     try {
-      const res = await api.get("/public/category");
+      const res = await api.get("/public/category/sub");
       setCategories(res.data);
     } catch (err) {
       console.error("fetchCategories error:", err);
     }
   };
 
+  // ✅ handle input เปลี่ยนค่า
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "image" && files && files[0]) {
@@ -58,13 +61,14 @@ const Products = () => {
       setImagePreview(previewURL);
       setTempPreview((prev) => ({
         ...prev,
-        [editingId || "new"]: previewURL, // ✅ แสดงพรีวิวในตาราง
+        [editingId || "new"]: previewURL,
       }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
 
+  // ✅ เปิด modal เพิ่มสินค้า
   const openCreateModal = () => {
     setModalMode("create");
     setEditingId(null);
@@ -73,6 +77,7 @@ const Products = () => {
     setShowModal(true);
   };
 
+  // ✅ เปิด modal แก้ไขสินค้า
   const openEditModal = (product) => {
     setModalMode("edit");
     setEditingId(product.id);
@@ -88,6 +93,7 @@ const Products = () => {
     setShowModal(true);
   };
 
+  // ✅ บันทึก (เพิ่ม / แก้ไข)
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -124,6 +130,7 @@ const Products = () => {
     }
   };
 
+  // ✅ ลบสินค้า
   const handleDelete = async (product) => {
     const result = await Swal.fire({
       title: "ยืนยันการลบ?",
@@ -157,7 +164,7 @@ const Products = () => {
         </button>
       </div>
 
-      {/* ตารางสินค้า */}
+      {/* ✅ ตารางสินค้า */}
       <table className="product-table">
         <thead>
           <tr>
@@ -222,13 +229,11 @@ const Products = () => {
         </tbody>
       </table>
 
-      {/* Modal */}
+      {/* ✅ Modal เพิ่ม / แก้ไขสินค้า */}
       {showModal && (
         <div className="modal-backdrop">
           <div className="modal-content">
-            <h3>
-              {modalMode === "create" ? "เพิ่มสินค้าใหม่" : "แก้ไขสินค้า"}
-            </h3>
+            <h3>{modalMode === "create" ? "เพิ่มสินค้าใหม่" : "แก้ไขสินค้า"}</h3>
 
             <form onSubmit={handleSubmit}>
               <input
@@ -240,7 +245,7 @@ const Products = () => {
               />
               <textarea
                 name="description"
-                placeholder="รายละเอียด"
+                placeholder="รายละเอียดสินค้า"
                 value={formData.description}
                 onChange={handleInputChange}
               />
@@ -260,13 +265,15 @@ const Products = () => {
                 onChange={handleInputChange}
                 required
               />
+
+              {/* ✅ ดึงหมวดย่อยจาก /public/category/sub */}
               <select
                 name="category_id"
                 value={formData.category_id}
                 onChange={handleInputChange}
                 required
               >
-                <option value="">เลือกหมวดหมู่</option>
+                <option value="">เลือกหมวดย่อย</option>
                 {categories.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.name}
@@ -274,7 +281,7 @@ const Products = () => {
                 ))}
               </select>
 
-              {/* พรีวิวรูปใน Modal */}
+              {/* ✅ พรีวิวรูป */}
               <input
                 type="file"
                 name="image"
