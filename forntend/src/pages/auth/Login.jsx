@@ -60,6 +60,9 @@ const Login = () => {
         >
           เข้าสู่ระบบ
         </button>
+        <button type="button" onClick={() => navigate("/register")}>
+          สมัครสมาชิก
+        </button>
       </form>
     </div>
   );

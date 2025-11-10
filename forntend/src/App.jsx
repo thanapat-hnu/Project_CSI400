@@ -15,6 +15,7 @@ import { MyProfile } from "./pages/user/MyProfile";
 import { ProfileEdit } from "./pages/user/ProfileEdit";
 import { Address } from "./pages/user/Address";
 import { AddressCreate } from "./pages/user/AddressCreate";
+import { EditAddress } from "./pages/user/EditAddress";
 import Dashboard from "./pages/admin/Dashboard";
 import AdminProducts from "./pages/admin/Products";
 import ProductDetail from "./pages/user/ProductDetail";
@@ -34,7 +35,7 @@ function App() {
           </PublicRoute>
         }
       >
-        {/* <Route index element={<Home />} /> */}
+        <Route index element={<Home />} />
         <Route path="products" element={<Products />} />
         <Route path="products/:id" element={<ProductDetail />} />
         <Route path="promotions" element={<UserPromotions />} />
@@ -70,8 +71,16 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/profile/address/edit/:id"
+          element={
+            <ProtectedRoute>
+              <EditAddress />
+            </ProtectedRoute>
+          }
+        />
       </Route>
-      
+
       <Route
         path="/login"
         element={

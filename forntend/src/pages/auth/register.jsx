@@ -148,6 +148,9 @@ export const Register = () => {
       </div>
 
       <button type="submit">สมัครสมาชิก</button>
+      <button type="button" onClick={() => navigate("/")}>
+        กลับไปหน้าหลัก
+      </button>
     </form>
   );
 };

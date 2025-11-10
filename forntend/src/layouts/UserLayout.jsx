@@ -2,12 +2,14 @@ import { Outlet, Link, useNavigate } from "react-router-dom";
 import { ShoppingCart, Search } from "lucide-react";
 import { useState } from "react";
 import axios from "../apis/axios";
+import { useAuth } from "../context/AuthContext";
 import "./UserLayout.css";
 
 const UserLayout = () => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const handleSearch = async (e) => {
     const value = e.target.value;
@@ -31,7 +33,9 @@ const UserLayout = () => {
       {/* 🧭 Navbar */}
       <nav className="navbar">
         <div className="navbar-container">
-          <Link to="/" className="logo">MossPC</Link>
+          <Link to="/" className="logo">
+            MossPC
+          </Link>
 
           {/* 🔍 Search bar */}
           <div className="search-bar">
@@ -81,6 +85,11 @@ const UserLayout = () => {
             <Link to="/cart" className="cart-link">
               <ShoppingCart className="mr-1" /> ตะกร้า
             </Link>
+            {user ? (
+              <Link to="/profile">โปรไฟล์</Link>
+            ) : (
+              <Link to="/login">เข้าสู่ระบบ</Link>
+            )}
           </div>
         </div>
       </nav>
