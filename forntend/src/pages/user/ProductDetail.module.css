@@ -82,11 +82,44 @@
   color: #6b7280;
   margin: 5px 0 10px;
 }
+
+/* 💰 แถวราคา + ปุ่มหัวใจ */
+.priceRow {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 10px 0 25px;
+}
 .price {
   font-size: 1.9rem;
   color: #dc2626;
   font-weight: 700;
-  margin: 10px 0 20px;
+}
+
+/* ❤️ ปุ่มหัวใจ */
+.heartBtn {
+  background: none;
+  border: none;
+  font-size: 1.9rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  color: #d1d5db; /* default เทาอ่อน */
+}
+.heartBtn:hover {
+  transform: scale(1.15);
+  filter: brightness(1.3);
+}
+.activeHeart {
+  color: #dc2626;
+  filter: drop-shadow(0 0 6px rgba(220, 38, 38, 0.4));
+  animation: pulse 0.4s ease;
+}
+
+/* 💓 animation เวลาเพิ่ม */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1); }
 }
 
 /* 🔢 จำนวนสินค้า */
@@ -138,7 +171,6 @@
   justify-content: center;
   gap: 6px;
 }
-
 .addBtn:hover {
   background: #b91c1c;
   color: #fff;
@@ -160,7 +192,6 @@
   justify-content: center;
   gap: 6px;
 }
-
 .buyBtn:hover {
   background: #991b1b;
   border-color: #991b1b;
@@ -234,5 +265,9 @@
 
   .specKey {
     width: 40%;
+  }
+
+  .priceRow {
+    justify-content: center;
   }
 }

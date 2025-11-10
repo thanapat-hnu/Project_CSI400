@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "../../apis/axios";
 import styles from "./ProductDetail.module.css";
+import { CartContext } from "../../context/CartContext"; // 🧩 เพิ่มสำหรับตะกร้า
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -9,7 +10,12 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [isWishlisted, setIsWishlisted] = useState(false); // ✅ สถานะหัวใจ
 
+  // 🧭 โหลดข้อมูลสินค้า + ตรวจสถานะหัวใจ
+  const { addToCart } = useContext(CartContext); // ✅ ดึงฟังก์ชันเพิ่มสินค้าในตะกร้า
+
+  // 🧭 โหลดข้อมูลสินค้า
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -20,6 +26,18 @@ const ProductDetail = () => {
             ? `http://localhost:3000${res.data.images[0].url}`
             : "https://dummyimage.com/400x300/e5e7eb/9ca3af.png&text=No+Image"
         );
+
+        // ✅ ตรวจว่าสินค้านี้อยู่ใน Wishlist แล้วหรือไม่
+        const token = localStorage.getItem("token");
+        if (token) {
+          const wishlistRes = await axios.get("/protech/wishlist", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const found = wishlistRes.data.some(
+            (item) => item.product_id === Number(id)
+          );
+          setIsWishlisted(found);
+        }
       } catch (err) {
         console.error("❌ Error fetching product:", err);
       }
@@ -27,9 +45,36 @@ const ProductDetail = () => {
     fetchProduct();
   }, [id]);
 
+  // ❤️ Toggle wishlist
+  const handleToggleWishlist = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("กรุณาเข้าสู่ระบบก่อนเพิ่มในรายการที่อยากได้ ❤️");
+        return;
+      }
+
+      if (isWishlisted) {
+        await axios.delete(`/protech/wishlist/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setIsWishlisted(false);
+      } else {
+        await axios.post(
+          "/protech/wishlist",
+          { product_id: id },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setIsWishlisted(true);
+      }
+    } catch (err) {
+      console.error("❌ wishlist error:", err);
+    }
+  };
+
   if (!product) return <div className={styles.loading}>กำลังโหลด...</div>;
 
-  // ✅ รวม description และ specs ไว้ใน object เดียว
+  // ✅ รวม description และ specs
   let combinedData = {};
   try {
     const descData =
@@ -40,7 +85,6 @@ const ProductDetail = () => {
       combinedData = { ...combinedData, ...descData };
     }
   } catch (e) {
-    // ถ้า description เป็นข้อความธรรมดา
     combinedData.descriptionText = product.description;
   }
 
@@ -53,6 +97,12 @@ const ProductDetail = () => {
       combinedData = { ...combinedData, ...specsData };
     }
   } catch (e) {}
+
+  // ✅ ฟังก์ชันเพิ่มสินค้าในตะกร้า
+  const handleAddToCart = () => {
+    addToCart(product, quantity);
+    alert(`เพิ่ม "${product.name}" จำนวน ${quantity} ชิ้นลงตะกร้าแล้ว!`);
+  };
 
   return (
     <div className={styles.container}>
@@ -93,12 +143,27 @@ const ProductDetail = () => {
           <p className={styles.category}>
             หมวดหมู่: {product.category?.name || "ไม่ระบุ"}
           </p>
-          <p className={styles.price}>
-            ฿
-            {Number(product.price).toLocaleString("en-US", {
-              minimumFractionDigits: 2,
-            })}
-          </p>
+
+          {/* ✅ ราคา + ปุ่มหัวใจ */}
+          <div className={styles.priceRow}>
+            <p className={styles.price}>
+              ฿
+              {Number(product.price).toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+              })}
+            </p>
+            <button
+              className={`${styles.heartBtn} ${
+                isWishlisted ? styles.activeHeart : ""
+              }`}
+              onClick={handleToggleWishlist}
+            >
+              {isWishlisted ? "❤️" : "🤍"}
+            </button>
+          </div>
+
+
+          {/* 🔢 จำนวนสินค้า */}
           <div className={styles.quantityBox}>
             <button
               onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -115,23 +180,22 @@ const ProductDetail = () => {
             </button>
           </div>
 
+          {/* 🛒 ปุ่มตะกร้า */}
           <div className={styles.buttonRow}>
-            <button
-              className={styles.addBtn}
-              onClick={() =>
-                alert(
-                  `เพิ่ม ${quantity} ชิ้นของ "${product.name}" ลงตะกร้าแล้ว!`
-                )
-              }
-            >
+            <button className={styles.addBtn} onClick={handleAddToCart}>
               🛒 เพิ่มในตะกร้า
             </button>
-            <button className={styles.buyBtn}>🛍️ ซื้อเลย</button>
+            <button
+              className={styles.buyBtn}
+              onClick={() => alert("🛍️ ระบบซื้อสินค้ากำลังพัฒนา")}
+            >
+              🛍️ ซื้อเลย
+            </button>
           </div>
         </div>
       </div>
 
-      {/* 📋 ตารางรวมรายละเอียด + สเปก */}
+      {/* 📋 รายละเอียดสินค้า */}
       <div className={styles.specSection}>
         <h3 className={styles.specTitle}>รายละเอียดสินค้า</h3>
 

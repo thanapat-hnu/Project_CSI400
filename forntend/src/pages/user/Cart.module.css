@@ -1,0 +1,265 @@
+/* 🧱 โครงหลัก */
+.cartWrapper {
+  background: #f5f6f8;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.cartContainer {
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* 🧭 Step Indicator */
+.stepIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.step {
+  background: #fbeff0;
+  color: #ef4444;
+  font-weight: 600;
+  padding: 0.6rem 1rem;
+  border-radius: 50px;
+  font-size: 0.95rem;
+}
+
+.active {
+  background: #ef4444;
+  color: #fff;
+}
+
+.stepLine {
+  width: 50px;
+  height: 3px;
+  background: #fca5a5;
+  margin: 0 10px;
+  border-radius: 3px;
+}
+
+/* 🛒 ส่วนหลักของตะกร้า */
+.cartMain {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+/* -------- LEFT -------- */
+.cartLeft {
+  flex: 2.5;
+  min-width: 0;
+}
+
+.cartItems {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.cartCard {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.cartInfo {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  align-items: center;
+}
+
+.cartImage {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #f3f4f6;
+}
+
+.cartDetails {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.cartHeader {
+  display: flex;
+  flex-direction: column; /* ✅ จัดแนวตั้งแทนแนวนอน */
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0.2rem;
+  margin-bottom: 0.4rem;
+}
+
+.cartName {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+  line-height: 1.4rem;
+  max-width: 500px;
+  text-wrap: wrap;
+}
+
+.cartPrice {
+  color: #dc2626;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-top: 0.1rem;
+}
+
+.cartControls {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.5rem 0;
+}
+
+.qtyBtn {
+  background: #e5e7eb;
+  border: none;
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.qtyBtn:hover {
+  background: #d1d5db;
+}
+
+.qtyInput {
+  width: 50px;
+  text-align: center;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  height: 28px;
+  font-size: 0.9rem;
+}
+
+.removeBtnInline {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  padding: 0.35rem 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+
+.removeBtnInline:hover {
+  background: #dc2626;
+}
+
+.cartTotal {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+/* -------- RIGHT -------- */
+/* ✅ กล่องสรุปยอดรวม */
+.cartSummaryBox {
+  width: 320px;                /* ✅ ความกว้างคงที่ */
+  flex-shrink: 0;              /* ✅ ป้องกันบีบตอน zoom */
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 1.5rem;
+  align-self: flex-start;
+}
+
+.cartSummaryBox h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.summaryLine {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.summaryTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-top: 0.75rem;
+}
+
+.vatNote {
+  font-size: 0.8rem;
+  color: #6b7280;
+  font-weight: normal;
+  margin-top: -0.25rem;
+}
+
+.summaryTotalPrice {
+  color: #ef4444;
+  font-size: 1.2rem;
+}
+
+.checkoutBtnFull {
+  width: 100%;
+  background: #dc2626;
+  color: #fff;
+  border: none;
+  padding: 0.9rem;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.checkoutBtnFull:hover {
+  background: #b91c1c;
+}
+
+/* 🔹 รายละเอียดเพิ่มเติมใต้กล่องยอดรวม */
+.extraInfo {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #374151;
+  line-height: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.extraInfo small {
+  color: #ef4444;
+  font-size: 0.75rem;
+}
+
+/* 📱 Responsive */
+@media (max-width: 900px) {
+  .cartMain {
+    flex-direction: column;
+  }
+
+  .cartSummaryBox {
+    width: 100%;
+    align-self: stretch;
+    position: static; /* ✅ ปิด sticky เมื่ออยู่บนมือถือ */
+  }
+}

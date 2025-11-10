@@ -1,0 +1,1178 @@
+/* 🧱 Layout หลัก */
+.container {
+  display: flex;
+  gap: 30px;
+  padding: 40px 60px;
+  background-color: #f6f8fb;
+  min-height: 100vh;
+}
+
+/* ===============================
+   🧭 Sidebar ด้านซ้าย (เหมือน iHAVECPU)
+================================*/
+.sidebar {
+  background: #fff;
+  border-radius: 12px;
+  width: 260px;
+  padding: 25px 20px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar h3 {
+  font-size: 0.95rem;
+  color: #6b7280;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 25px 0;
+}
+
+.sidebar li {
+  margin-bottom: 10px;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #374151;
+  font-size: 0.95rem;
+  padding: 10px 12px;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+}
+
+.sidebar a:hover {
+  background-color: #f3f4f6;
+  color: #ef4444;
+}
+
+/* หน้า active */
+.activeLink {
+  color: #ef4444;
+  background-color: #fef2f2;
+  border-left: 4px solid #ef4444;
+  font-weight: 600;
+}
+
+/* ===============================
+   📋 ส่วนเนื้อหาขวา
+================================*/
+.content {
+  flex: 1;
+  background: #fff;
+  border-radius: 12px;
+  padding: 35px 40px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.06);
+}
+
+/* ===============================
+   🧾 หัวข้อและชื่อส่วน
+================================*/
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #f3f4f6;
+  padding-bottom: 12px;
+  margin-bottom: 25px;
+}
+
+.header h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ปุ่มบนขวา */
+.header button {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 2px solid #fecaca;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.header button:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* ===============================
+   🧩 การ์ดสถานะ 4 ช่อง
+================================*/
+.statusGrid {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.statusCard {
+  flex: 1;
+  background: #fff;
+  border: 1px solid #f3f4f6;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.statusCard:hover {
+  transform: translateY(-2px);
+}
+
+.statusCard h2 {
+  font-size: 1.8rem;
+  color: #ef4444;
+  margin-bottom: 4px;
+}
+
+.statusCard p {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+/* ===============================
+   👤 ข้อมูลผู้ใช้
+================================*/
+.profileInfo {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 25px;
+}
+
+.profileInfo p {
+  font-size: 1rem;
+  line-height: 1.8;
+  margin: 6px 0;
+  color: #374151;
+}
+
+.profileInfo strong {
+  color: #111827;
+}
+
+/* ===============================
+   🔘 ปุ่มล่าง
+================================*/
+.btnGroup {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.editBtn {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 2px solid #fecaca;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.editBtn:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+.addressBtn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.addressBtn:hover {
+  background: #1d4ed8;
+}
+
+/* ===============================
+   📱 Responsive
+================================*/
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .sidebar {
+    width: 100%;
+  }
+
+  .content {
+    padding: 20px;
+  }
+
+  .statusGrid {
+    flex-direction: column;
+  }
+}
+/* ✅ Layout แนวนอนโปรไฟล์ + การ์ด */
+.profileRow {
+  display: flex;
+  align-items: stretch;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+/* กล่องโปรไฟล์ */
+.profileCard {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 20px;
+  flex: 0.8; /* กินพื้นที่ซ้าย */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #f3f4f6;
+  object-fit: cover;
+}
+
+.profileCard h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.profileCard p {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+/* การ์ดสถานะ (ขวา) */
+.statusRow {
+  display: flex;
+  flex: 2;
+  gap: 20px;
+}
+
+.statusCard {
+  flex: 1;
+  background: #fff;
+  border: 1px solid #f3f4f6;
+  border-radius: 10px;
+  text-align: center;
+  padding: 15px 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.statusCard:hover {
+  transform: translateY(-2px);
+}
+
+.statusCard h2 {
+  font-size: 1.6rem;
+  color: #ef4444;
+  margin-bottom: 4px;
+}
+
+.statusCard p {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+/* ตารางข้อมูล */
+.infoTable {
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  padding: 10px 20px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+}
+
+.infoTable table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.infoTable th,
+.infoTable td {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid #f3f4f6;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.infoTable th {
+  color: #6b7280;
+  font-weight: 600;
+}
+
+/* ปุ่มแดงบนขวา */
+.editProfileBtn {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 2px solid #fecaca;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.editProfileBtn:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .profileRow {
+    flex-direction: column;
+  }
+
+  .statusRow {
+    flex-direction: column;
+  }
+}
+
+
+/* ================================
+   📦 Address Section Style
+=================================== */
+
+.addressHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.addressHeader h1 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1f2937;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.addAddressBtn {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 2px solid #fecaca;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.addAddressBtn:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* 🧾 กล่องแสดงที่อยู่ */
+.addressList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.addressCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 15px 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: 0.2s ease;
+}
+
+.addressCard:hover {
+  border-color: #fca5a5;
+}
+
+/* 📍 ส่วนข้อมูลในกล่อง */
+.addressInfo {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.addrLabel {
+  background-color: #f3f4f6;
+  color: #374151;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 6px 12px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.addrDetails {
+  color: #374151;
+  font-size: 0.95rem;
+  flex: 1;
+}
+
+.addrPhone {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #111827;
+}
+
+/* 🎛 ปุ่มแก้ไข / ลบ */
+.addrActions {
+  display: flex;
+  gap: 10px;
+}
+
+.editBtn,
+.deleteBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background-color: #f3f4f6;
+  color: #374151;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.editBtn:hover {
+  background-color: #bfdbfe;
+  color: #1d4ed8;
+}
+
+.deleteBtn:hover {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.noAddress {
+  text-align: center;
+  color: #6b7280;
+  font-style: italic;
+  margin-top: 25px;
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .addressCard {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .addrActions {
+    align-self: flex-end;
+  }
+}
+
+
+/* ====================================
+   🧾 Profile Edit Page
+==================================== */
+.editHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon {
+  font-size: 1.4rem;
+  color: #b91c1c;
+}
+
+.editHeader h1 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+/* ปุ่มกลับ */
+.backBtn {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 2px solid #fecaca;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.backBtn:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* กล่องฟอร์ม */
+.editCard {
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px 40px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* ฟอร์ม */
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px 25px;
+}
+
+.formGroup label {
+  display: block;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: #111827;
+  transition: 0.2s;
+}
+
+.formGroup input:focus {
+  border-color: #ef4444;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+/* ปุ่มบันทึก */
+.saveProfileBtn {
+  background: #b91c1c;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  align-self: flex-start;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.saveProfileBtn:hover {
+  background: #991b1b;
+}
+
+/* Error message */
+.error {
+  color: #dc2626;
+  font-weight: 500;
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .backBtn {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+  }
+}
+
+
+/* =============================
+   📍 Address Create Form
+============================= */
+/* =============================
+   📍 Address Create Page
+============================= */
+
+.addressHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.addressHeader h1 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.icon {
+  font-size: 1.4rem;
+  color: #b91c1c;
+}
+
+/* ปุ่มกลับ */
+.backBtn {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 2px solid #fecaca;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.backBtn:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* กล่องฟอร์ม */
+.editCard {
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px 40px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px 25px;
+}
+
+.formGroup,
+.formGroupFull {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroupFull {
+  grid-column: span 2;
+}
+
+.formGroup label,
+.formGroupFull label {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.formGroup input,
+.formGroupFull input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: #111827;
+  transition: 0.2s;
+}
+
+.formGroup input:focus,
+.formGroupFull input:focus {
+  border-color: #ef4444;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+/* ปุ่ม */
+.btnGroup {
+  display: flex;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.saveProfileBtn {
+  background: #b91c1c;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.saveProfileBtn:hover {
+  background: #991b1b;
+}
+
+.cancelBtn {
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  color: #374151;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.cancelBtn:hover {
+  background: #e5e7eb;
+}
+
+/* Error */
+.error {
+  color: #dc2626;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* 📦 พื้นฐาน */
+.container {
+  display: flex;
+  gap: 30px;
+  background: #f9fafb;
+  min-height: 100vh;
+  padding: 30px 60px;
+  border-radius: 12px;
+}
+
+/* 🎨 เนื้อหาหลัก */
+.content {
+  flex: 1;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  padding: 35px 40px;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.headerRow h1 {
+  font-size: 1.4rem;
+  color: #111827;
+  font-weight: 700;
+}
+
+.cancelBtnTop {
+  background: #fee2e2;
+  border: none;
+  color: #b91c1c;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.cancelBtnTop:hover {
+  background: #fca5a5;
+}
+
+/* 🧾 ฟอร์ม */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.formGroup label {
+  font-weight: 600;
+  color: #374151;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease;
+}
+
+.formGroup input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+/* 🧿 ปุ่มด้านล่าง */
+.btnGroup {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.saveBtn {
+  background: #ff2903;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.saveBtn:hover {
+  background: #1d4ed8;
+}
+
+.cancelBtn {
+  background: #f3f4f6;
+  color: #374151;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.cancelBtn:hover {
+  background: #e5e7eb;
+}
+
+/* 🔄 Loading */
+.loadingText {
+  font-size: 1.1rem;
+  color: #6b7280;
+  text-align: center;
+  margin-top: 100px;
+}
+
+.error {
+  color: #dc2626;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+
+
+/* ===== จัดโปรไฟล์ให้อยู่กึ่งกลางแบบเรียบหรู ===== */
+.centerProfile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 40px 0;
+}
+
+.profileCardLarge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  width: 380px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.profileCardLarge:hover {
+  transform: translateY(-3px);
+}
+
+.avatarLarge {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+  border: 3px solid #f87171;
+}
+
+.profileInfo h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.profileInfo p {
+  color: #6b7280;
+  margin: 3px 0;
+}
+
+/* ตาราง */
+.infoTableSingle table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.infoTableSingle th,
+.infoTableSingle td {
+  padding: 14px 20px;
+  text-align: center;
+}
+
+.infoTableSingle th {
+  background: #f9fafb;
+  color: #374151;
+  font-weight: 600;
+}
+
+.infoTableSingle td {
+  color: #555;
+}
+
+
+/* ====== หน้าสินค้าที่ถูกใจ ====== */
+.iconHeart {
+  color: #e63946;
+  margin-right: 8px;
+}
+
+.favoriteGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.favoriteCard {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.favoriteCard:hover {
+  transform: translateY(-3px);
+}
+
+.favoriteImg {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.favoriteInfo {
+  padding: 15px;
+  text-align: center;
+}
+
+.favoriteInfo h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.favoriteInfo p {
+  color: #f87171;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.removeBtn {
+  background: #f87171;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.removeBtn:hover {
+  background: #dc2626;
+}
+
+.emptyBox {
+  text-align: center;
+  margin-top: 60px;
+  color: #777;
+}
+
+.emptyIcon {
+  font-size: 4rem;
+  color: #f87171;
+  margin-bottom: 10px;
+}
+
+/* 💖 Wishlist Layout */
+.favoriteGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* ให้การ์ดมีความสูงเท่ากัน */
+.favoriteCard {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 380px; /* ให้ความสูงการ์ดเท่ากันทั้งหมด */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.favoriteCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.favoriteImg {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  background: #f3f4f6;
+}
+
+.favoriteInfo {
+  padding: 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.favoriteInfo h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+  min-height: 48px; /* ความสูงคงที่ของชื่อสินค้า */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.price {
+  color: #ef4444;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: auto; /* ดันราคาให้อยู่ด้านล่างของชื่อสินค้า */
+  margin-bottom: 0.8rem;
+  min-height: 24px; /* ให้ทุกใบมีระยะเท่ากัน */
+}
+
+/* ปุ่มให้เรียงแนวเดียวกันทุกใบ */
+.buttonGroup {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.viewBtn,
+.removeBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.viewBtn {
+  background-color: #2563eb;
+  color: white;
+}
+
+.viewBtn:hover {
+  background-color: #1e40af;
+}
+
+.removeBtn {
+  background-color: #f87171;
+  color: white;
+}
+
+.removeBtn:hover {
+  background-color: #dc2626;
+}
+
+/* กล่องว่าง */
+.emptyBox {
+  text-align: center;
+  color: #9ca3af;
+  margin-top: 4rem;
+}
+
+.emptyIcon {
+  font-size: 3rem;
+  color: #f87171;
+  margin-bottom: 1rem;
+}
