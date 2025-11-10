@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../apis/axios";
+import UserSidebar from "./UserSidebar";
+import styles from "./UserPage.module.css";
 
 export const Address = () => {
   const navigate = useNavigate();
@@ -31,65 +33,69 @@ export const Address = () => {
   if (loading) return <p>กำลังโหลดข้อมูล...</p>;
 
   return (
-    <div>
-      <h1>ที่อยู่สำหรับจัดส่ง</h1>
-      {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
+    <div className={styles.container}>
+      <UserSidebar />
 
-      {addresses.length > 0 ? (
-        <ul>
-          {addresses.map((addr) => (
-            <li key={addr.id} style={{ marginBottom: "10px" }}>
-              <p>
-                <strong>ชื่อ-นามสกุล:</strong> {user?.first_name}{" "}
-                {user?.last_name}
-              </p>
-              <p>
-                <strong>ที่อยู่:</strong> {addr.address_line}
-              </p>
-              <p>
-                <strong>เมือง:</strong> {addr.city}
-              </p>
-              <p>
-                <strong>จังหวัด:</strong> {addr.province}
-              </p>
-              <p>
-                <strong>รหัสไปรษณีย์:</strong> {addr.postal_code}
-              </p>
-              <p>
-                <strong>เบอร์โทร:</strong> {addr.phone}
-              </p>
+      <div className={styles.content}>
+        {/* 🔹 หัวข้อ */}
+        <div className={styles.addressHeader}>
+          <h1>📍 ที่อยู่สำหรับจัดส่ง</h1>
+          <button
+            className={styles.addAddressBtn}
+            onClick={() => navigate("/profile/address/create")}
+          >
+            ➕ เพิ่มที่อยู่
+          </button>
+        </div>
 
-              <button
-                onClick={() => navigate(`/profile/address/edit/${addr.id}`)}
-              >
-                แก้ไข
-              </button>
+        {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
 
-              <button
-                onClick={async () => {
-                  if (!window.confirm("คุณต้องการลบที่อยู่นี้หรือไม่?")) return;
-                  try {
-                    await api.delete(`/protech/address/${addr.id}`);
-                    setAddresses(addresses.filter((a) => a.id !== addr.id));
-                  } catch (err) {
-                    console.error(err);
-                    alert("ลบที่อยู่ไม่สำเร็จ");
-                  }
-                }}
-              >
-                ลบ
-              </button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>คุณยังไม่มีที่อยู่ในระบบ</p>
-      )}
+        {/* 🔹 รายการที่อยู่ */}
+        {addresses.length > 0 ? (
+          <div className={styles.addressList}>
+            {addresses.map((addr) => (
+              <div key={addr.id} className={styles.addressCard}>
+                <div className={styles.addressInfo}>
+                  <div className={styles.addrLabel}>สำหรับจัดส่ง</div>
+                  <div className={styles.addrDetails}>
+                    {addr.address_line} {addr.city} {addr.province}{" "}
+                    {addr.postal_code}
+                  </div>
+                  <div className={styles.addrPhone}>{addr.phone}</div>
+                </div>
 
-      <button onClick={() => navigate("/profile/address/create")}>
-        เพิ่มที่อยู่
-      </button>
-      <button onClick={() => navigate("/profile")}>ข้อมูลส่วนตัว</button>
+                <div className={styles.addrActions}>
+                  <button
+                    className={styles.editBtn}
+                    onClick={() =>
+                      navigate(`/profile/address/edit/${addr.id}`)
+                    }
+                  >
+                    ✏️
+                  </button>
+                  <button
+                    className={styles.deleteBtn}
+                    onClick={async () => {
+                      if (!window.confirm("คุณต้องการลบที่อยู่นี้หรือไม่?")) return;
+                      try {
+                        await api.delete(`/protech/address/${addr.id}`);
+                        setAddresses(addresses.filter((a) => a.id !== addr.id));
+                      } catch (err) {
+                        console.error(err);
+                        alert("ลบที่อยู่ไม่สำเร็จ");
+                      }
+                    }}
+                  >
+                    🗑️
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className={styles.noAddress}>คุณยังไม่มีที่อยู่ในระบบ</p>
+        )}
+      </div>
     </div>
   );
 };

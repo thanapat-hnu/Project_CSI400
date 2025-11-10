@@ -9,7 +9,9 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [isWishlisted, setIsWishlisted] = useState(false); // ✅ สถานะหัวใจ
 
+  // 🧭 โหลดข้อมูลสินค้า + ตรวจสถานะหัวใจ
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -20,6 +22,18 @@ const ProductDetail = () => {
             ? `http://localhost:3000${res.data.images[0].url}`
             : "https://dummyimage.com/400x300/e5e7eb/9ca3af.png&text=No+Image"
         );
+
+        // ✅ ตรวจว่าสินค้านี้อยู่ใน Wishlist แล้วหรือไม่
+        const token = localStorage.getItem("token");
+        if (token) {
+          const wishlistRes = await axios.get("/protech/wishlist", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const found = wishlistRes.data.some(
+            (item) => item.product_id === Number(id)
+          );
+          setIsWishlisted(found);
+        }
       } catch (err) {
         console.error("❌ Error fetching product:", err);
       }
@@ -27,9 +41,36 @@ const ProductDetail = () => {
     fetchProduct();
   }, [id]);
 
+  // ❤️ Toggle wishlist
+  const handleToggleWishlist = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("กรุณาเข้าสู่ระบบก่อนเพิ่มในรายการที่อยากได้ ❤️");
+        return;
+      }
+
+      if (isWishlisted) {
+        await axios.delete(`/protech/wishlist/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setIsWishlisted(false);
+      } else {
+        await axios.post(
+          "/protech/wishlist",
+          { product_id: id },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setIsWishlisted(true);
+      }
+    } catch (err) {
+      console.error("❌ wishlist error:", err);
+    }
+  };
+
   if (!product) return <div className={styles.loading}>กำลังโหลด...</div>;
 
-  // ✅ รวม description และ specs ไว้ใน object เดียว
+  // 🔹 รวม description และ specs
   let combinedData = {};
   try {
     const descData =
@@ -40,7 +81,6 @@ const ProductDetail = () => {
       combinedData = { ...combinedData, ...descData };
     }
   } catch (e) {
-    // ถ้า description เป็นข้อความธรรมดา
     combinedData.descriptionText = product.description;
   }
 
@@ -93,12 +133,25 @@ const ProductDetail = () => {
           <p className={styles.category}>
             หมวดหมู่: {product.category?.name || "ไม่ระบุ"}
           </p>
-          <p className={styles.price}>
-            ฿
-            {Number(product.price).toLocaleString("en-US", {
-              minimumFractionDigits: 2,
-            })}
-          </p>
+
+          {/* ✅ ราคา + ปุ่มหัวใจ */}
+          <div className={styles.priceRow}>
+            <p className={styles.price}>
+              ฿
+              {Number(product.price).toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+              })}
+            </p>
+            <button
+              className={`${styles.heartBtn} ${
+                isWishlisted ? styles.activeHeart : ""
+              }`}
+              onClick={handleToggleWishlist}
+            >
+              {isWishlisted ? "❤️" : "🤍"}
+            </button>
+          </div>
+
           <div className={styles.quantityBox}>
             <button
               onClick={() => setQuantity(Math.max(1, quantity - 1))}

@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../apis/axios";
+import UserSidebar from "./UserSidebar";
+import styles from "./UserPage.module.css";
+import { FaUserEdit } from "react-icons/fa"; // ✅ ไอคอนหัวข้อ
 
 export const ProfileEdit = () => {
   const navigate = useNavigate();
@@ -10,9 +13,8 @@ export const ProfileEdit = () => {
     lastname: "",
     phone: "",
   });
-
   const [originalData, setOriginalData] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(""); // สำหรับข้อความแจ้งเตือน
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -28,7 +30,7 @@ export const ProfileEdit = () => {
         };
 
         setFormData(user);
-        setOriginalData(user); // เก็บข้อมูลเดิม
+        setOriginalData(user);
       } catch (err) {
         console.error("เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้:", err);
       }
@@ -38,13 +40,8 @@ export const ProfileEdit = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     if (name === "phone" && value.length > 10) return;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -67,80 +64,100 @@ export const ProfileEdit = () => {
       });
 
       if (res.data.message === "อัปเดตข้อมูลสำเร็จ") {
-        alert("อัปเดตข้อมูลสำเร็จ!");
+        alert("✅ อัปเดตข้อมูลสำเร็จ!");
         navigate("/profile");
       } else {
         setErrorMsg(res.data.message || "เกิดข้อผิดพลาดในการอัปเดตข้อมูล");
       }
     } catch (err) {
-      console.error(err);
       setErrorMsg("ไม่สามารถอัปเดตข้อมูลได้");
     }
   };
 
-  const handleCancel = () => {
-    navigate("/profile");
-  };
-
   return (
-    <div>
-      <h1>แก้ไขข้อมูลส่วนตัว</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>อีเมล:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            readOnly
-            style={{ backgroundColor: "#f2f2f2", cursor: "not-allowed" }}
-          />
+    <div className={styles.container}>
+      <UserSidebar />
+
+      <div className={styles.content}>
+        {/* 🔹 หัวข้อ */}
+        <div className={styles.editHeader}>
+          <div className={styles.headerLeft}>
+            <FaUserEdit className={styles.icon} />
+            <h1>แก้ไขข้อมูลส่วนตัว</h1>
+          </div>
+          <button
+            className={styles.backBtn}
+            onClick={() => navigate("/profile")}
+          >
+            กลับไปหน้าข้อมูลส่วนตัว
+          </button>
         </div>
 
-        <div>
-          <label>ชื่อ:</label>
-          <input
-            type="text"
-            name="firstname"
-            value={formData.firstname}
-            onChange={handleChange}
-          />
+        {/* 🔹 กล่องฟอร์ม */}
+        <div className={styles.editCard}>
+          <form onSubmit={handleSubmit} className={styles.editForm}>
+            <div className={styles.formGrid}>
+              <div className={styles.formGroup}>
+                <label>ชื่อ</label>
+                <input
+                  type="text"
+                  name="firstname"
+                  value={formData.firstname}
+                  onChange={handleChange}
+                  placeholder="กรอกชื่อจริง"
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>นามสกุล</label>
+                <input
+                  type="text"
+                  name="lastname"
+                  value={formData.lastname}
+                  onChange={handleChange}
+                  placeholder="กรอกนามสกุล"
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>อีเมล</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  readOnly
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>เบอร์โทรศัพท์</label>
+                <input
+                  type="text"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="กรอกเบอร์โทรศัพท์"
+                />
+              </div>
+            </div>
+
+            {errorMsg && <p className={styles.error}>{errorMsg}</p>}
+
+            <div className={styles.btnGroup}>
+              <button type="submit" className={styles.saveProfileBtn}>
+                💾 บันทึกการแก้ไข
+              </button>
+              <button
+                type="button"
+                className={styles.cancelBtn}
+                onClick={() => navigate("/profile")}
+              >
+                ยกเลิก
+              </button>
+            </div>
+          </form>
         </div>
-
-        <div>
-          <label>นามสกุล:</label>
-          <input
-            type="text"
-            name="lastname"
-            value={formData.lastname}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div>
-          <label>เบอร์โทร:</label>
-          <input
-            type="text"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-          />
-        </div>
-
-        {/* ✅ ข้อความแจ้งเตือน */}
-        {errorMsg && (
-          <p style={{ color: "red", marginTop: "10px" }}>{errorMsg}</p>
-        )}
-
-        <button type="submit">ยืนยันการแก้ไข</button>
-        <button
-          type="button"
-          onClick={handleCancel}
-          style={{ marginLeft: "10px" }}
-        >
-          กลับไปหน้า ข้อมูลส่วนตัว
-        </button>
-      </form>
+      </div>
     </div>
   );
 };

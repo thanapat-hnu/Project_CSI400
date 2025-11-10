@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../apis/axios";
+import UserSidebar from "./UserSidebar";
+import styles from "./UserPage.module.css";
+import { FaMapMarkerAlt } from "react-icons/fa";
 
 export const AddressCreate = () => {
   const navigate = useNavigate();
@@ -24,108 +27,111 @@ export const AddressCreate = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const requiredFields = [
-      "addressLine",
-      "city",
-      "province",
-      "postalCode",
-      "phone",
-    ];
-    for (let field of requiredFields) {
-      if (!formData[field] || formData[field].trim() === "") {
-        setErrorMsg("กรุณากรอกข้อมูลให้ครบทุกช่อง");
-        return;
-      }
-    }
-
     try {
-      const res = await api.post("/protech/address", formData);
-
-      if (res.data.message === "เพิ่มที่อยู่สำเร็จ") {
-        alert(res.data.message);
-        navigate("/profile/address");
-      } else {
-        setErrorMsg(res.data.message || "เกิดข้อผิดพลาดในการเพิ่มที่อยู่");
-      }
+      await api.post("/protech/address", formData);
+      alert("เพิ่มที่อยู่สำเร็จ");
+      navigate("/profile/address");
     } catch (err) {
       console.error(err);
-      setErrorMsg(
-        err.response?.data?.message || "เกิดข้อผิดพลาดในการเพิ่มที่อยู่"
-      );
+      setErrorMsg("เกิดข้อผิดพลาดในการเพิ่มที่อยู่");
     }
-  };
-
-  const handleCancel = () => {
-    navigate("/profile/address");
   };
 
   return (
-    <div>
-      <h1>เพิ่มที่อยู่สำหรับจัดส่ง</h1>
+    <div className={styles.container}>
+      <UserSidebar />
 
-      {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
-
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>ที่อยู่:</label>
-          <input
-            type="text"
-            name="addressLine"
-            value={formData.addressLine}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>เมือง:</label>
-          <input
-            type="text"
-            name="city"
-            value={formData.city}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>จังหวัด:</label>
-          <input
-            type="text"
-            name="province"
-            value={formData.province}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>รหัสไปรษณีย์:</label>
-          <input
-            type="text"
-            name="postalCode"
-            value={formData.postalCode}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>เบอร์โทร:</label>
-          <input
-            type="text"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            required
-          />
+      <div className={styles.content}>
+        {/* 🔹 Header */}
+        <div className={styles.addressHeader}>
+          <div className={styles.headerLeft}>
+            <FaMapMarkerAlt className={styles.icon} />
+            <h1>เพิ่มที่อยู่สำหรับจัดส่ง</h1>
+          </div>
+          <button
+            className={styles.backBtn}
+            onClick={() => navigate("/profile/address")}
+          >
+            กลับไปหน้า ที่อยู่
+          </button>
         </div>
 
-        <button type="submit">บันทึกที่อยู่</button>
-        <button
-          type="button"
-          onClick={handleCancel}
-          style={{ marginLeft: "10px" }}
-        >
-          ยกเลิก
-        </button>
-      </form>
+        {/* 🔹 Form Card */}
+        <div className={styles.editCard}>
+          {errorMsg && <p className={styles.error}>{errorMsg}</p>}
+          <form onSubmit={handleSubmit} className={styles.editForm}>
+            <div className={styles.formGrid}>
+              <div className={styles.formGroupFull}>
+                <label>ที่อยู่</label>
+                <input
+                  type="text"
+                  name="addressLine"
+                  value={formData.addressLine}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>เมือง</label>
+                <input
+                  type="text"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>จังหวัด</label>
+                <input
+                  type="text"
+                  name="province"
+                  value={formData.province}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>รหัสไปรษณีย์</label>
+                <input
+                  type="text"
+                  name="postalCode"
+                  value={formData.postalCode}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>เบอร์โทร</label>
+                <input
+                  type="text"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className={styles.btnGroup}>
+              <button type="submit" className={styles.saveProfileBtn}>
+                บันทึกที่อยู่
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate("/profile/address")}
+                className={styles.cancelBtn}
+              >
+                ยกเลิก
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };

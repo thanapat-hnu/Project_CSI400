@@ -19,6 +19,7 @@ import { EditAddress } from "./pages/user/EditAddress";
 import Dashboard from "./pages/admin/Dashboard";
 import AdminProducts from "./pages/admin/Products";
 import ProductDetail from "./pages/user/ProductDetail";
+import { Wishlist } from "./pages/user/Wishlist";
 
 // 🆕 เพิ่มหน้าโปรโมชั่น
 import AdminPromotions from "./pages/admin/Promotions";
@@ -79,8 +80,16 @@ function App() {
             </ProtectedRoute>
           }
         />
+         <Route
+          path="/profile/wishlist"
+          element={
+            <ProtectedRoute>
+              <Wishlist />
+            </ProtectedRoute>
+          }
+        />
       </Route>
-
+          
       <Route
         path="/login"
         element={
