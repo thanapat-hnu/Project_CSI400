@@ -1,8 +1,9 @@
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { ShoppingCart, Search } from "lucide-react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "../apis/axios";
 import { useAuth } from "../context/AuthContext";
+import { CartContext } from "../context/CartContext"; // ✅ เพิ่มสำหรับตะกร้า
 import "./UserLayout.css";
 
 const UserLayout = () => {
@@ -10,6 +11,7 @@ const UserLayout = () => {
   const [results, setResults] = useState([]);
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { cart } = useContext(CartContext); // ✅ ดึงตะกร้ามาจาก context
 
   const handleSearch = async (e) => {
     const value = e.target.value;
@@ -82,9 +84,17 @@ const UserLayout = () => {
             <Link to="/products">สินค้า</Link>
             <Link to="/promotions">โปรโมชั่น</Link>
             <Link to="/contact">ติดต่อเรา</Link>
+
+            {/* 🛒 ตะกร้า */}
             <Link to="/cart" className="cart-link">
-              <ShoppingCart className="mr-1" /> ตะกร้า
+              <ShoppingCart className="mr-1" />
+              ตะกร้า
+              {cart.length > 0 && (
+                <span className="cart-count">({cart.length})</span>
+              )}
             </Link>
+
+            {/* 👤 โปรไฟล์ / เข้าสู่ระบบ */}
             {user ? (
               <Link to="/profile">โปรไฟล์</Link>
             ) : (
@@ -94,6 +104,7 @@ const UserLayout = () => {
         </div>
       </nav>
 
+      {/* 📦 เนื้อหาหลัก */}
       <main className="main-content">
         <Outlet />
       </main>

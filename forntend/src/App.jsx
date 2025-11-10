@@ -19,6 +19,8 @@ import { EditAddress } from "./pages/user/EditAddress";
 import Dashboard from "./pages/admin/Dashboard";
 import AdminProducts from "./pages/admin/Products";
 import ProductDetail from "./pages/user/ProductDetail";
+import Cart from "./pages/user/Cart";
+import CheckoutDetail from "./pages/user/CheckoutDetail";
 
 // 🆕 เพิ่มหน้าโปรโมชั่น
 import AdminPromotions from "./pages/admin/Promotions";
@@ -39,6 +41,19 @@ function App() {
         <Route path="products" element={<Products />} />
         <Route path="products/:id" element={<ProductDetail />} />
         <Route path="promotions" element={<UserPromotions />} />
+
+        {/* 🛒 เพิ่มหน้า "ตะกร้าสินค้า" */}
+        <Route path="cart" element={<Cart />} />
+        <Route
+          path="/checkout/detail"
+          element={
+            <ProtectedRoute>
+              <CheckoutDetail />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* 🧍 ส่วนโปรไฟล์ผู้ใช้ */}
         <Route
           path="/profile"
           element={
@@ -81,6 +96,7 @@ function App() {
         />
       </Route>
 
+      {/* 🔐 Authentication */}
       <Route
         path="/login"
         element={
@@ -97,6 +113,7 @@ function App() {
           </PublicRoute>
         }
       />
+
       {/* 👑 ส่วน Admin */}
       <Route
         path="/admin"
@@ -108,9 +125,6 @@ function App() {
       >
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="products" element={<AdminProducts />} />
-        <Route path="products" element={<Products />} />
-
-        {/* 🆕 หน้าโปรโมชั่นสำหรับ Admin */}
         <Route path="promotions" element={<AdminPromotions />} />
       </Route>
     </Routes>

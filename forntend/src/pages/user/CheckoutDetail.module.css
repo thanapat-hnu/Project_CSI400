@@ -1,0 +1,351 @@
+/* 🌕 โครงหลัก */
+.checkoutWrapper {
+  background: #f5f6f8;
+  min-height: 100vh;
+  padding: 2rem 0; /* ✅ ลดขอบซ้ายขวาให้ออกกว้างแบบหน้าตะกร้า */
+}
+
+/* 🧭 Step Indicator */
+.stepIndicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.step {
+  background: #fbeff0;
+  color: #ef4444;
+  font-weight: 600;
+  padding: 0.6rem 1rem;
+  border-radius: 50px;
+  font-size: 0.95rem;
+}
+
+.active {
+  background: #ef4444;
+  color: #fff;
+}
+
+.stepLine {
+  width: 60px;
+  height: 3px;
+  background: #fca5a5;
+  margin: 0 10px;
+  border-radius: 3px;
+}
+
+/* 🧱 Layout */
+.checkoutContainer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  width: 98%;
+  max-width: 1500px; /* ✅ เพิ่มความกว้าง */
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* 🧩 LEFT SIDE */
+.checkoutLeft {
+  flex: 3.3; /* ✅ ขยายกล่องซ้ายให้กว้างขึ้น */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+/* กล่อง Section */
+.section {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.section h3 {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* การ์ดข้อมูลที่อยู่ */
+.card {
+  background: #f9fafb;
+  padding: 1rem;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ปุ่มเพิ่มที่อยู่ */
+.btnOutline {
+  background: white;
+  color: #2563eb;
+  border: 1px solid #2563eb;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btnOutline:hover {
+  background: #eff6ff;
+}
+
+/* Checkbox */
+.checkbox {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* 🚚 Shipping */
+.shipping {
+  display: flex;
+  gap: 1rem;
+}
+
+.shippingBtn {
+  flex: 1;
+  padding: 1rem;
+  background: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: 500;
+}
+
+.shippingBtn:hover {
+  background: #f3f4f6;
+}
+
+.activeShip {
+  border: 2px solid #2563eb;
+  background: #eff6ff;
+  color: #1e3a8a;
+}
+
+/* 💳 Payment */
+.paymentList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.paymentOption {
+  background: #f9fafb;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: 0.2s;
+}
+
+.paymentOption:hover {
+  border-color: #2563eb;
+  background: #f3f4f6;
+}
+
+/* 🔙 ปุ่มกลับไปแก้ไข */
+.backBtn {
+  margin-top: 1rem;
+  background: white;
+  color: #ef4444;
+  border: 1px solid #ef4444;
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.backBtn:hover {
+  background: #fef2f2;
+}
+
+/* 🧾 RIGHT SIDE */
+.checkoutRight {
+  flex: 1.2;
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  height: fit-content;
+  position: sticky;
+  top: 1.5rem;
+}
+
+/* ✅ รายการสินค้า */
+.orderItemCompact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.orderItemCompact img {
+  width: 55px;
+  height: 55px;
+  object-fit: contain;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.orderInfo {
+  flex: 1;
+  overflow: hidden;
+}
+
+.itemName {
+  font-size: 0.9rem;
+  color: #111827;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.itemQty {
+  color: #6b7280;
+  font-size: 0.8rem;
+}
+
+.priceGroup {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.itemPrice {
+  color: #ef4444;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.itemOldPrice {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  text-decoration: line-through;
+}
+
+/* 💰 สรุปยอดรวม */
+.summaryLine {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.summaryTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-top: 0.75rem;
+}
+
+.total {
+  color: #ef4444;
+  font-size: 1.1rem;
+}
+
+/* 🔹 กล่องโค้ดส่วนลด */
+.couponBox {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.couponBox input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+
+.couponBox button {
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.couponBox button:hover {
+  background: #1d4ed8;
+}
+
+/* 🔴 ปุ่มยืนยันคำสั่งซื้อ */
+.confirmBtn {
+  width: 100%;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: 1.25rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.confirmBtn:hover {
+  background: #dc2626;
+}
+
+/* 📋 ข้อมูลเพิ่มเติม */
+.infoList {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #374151;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* 🧮 หมายเหตุ VAT */
+.vatNote {
+  font-size: 0.8rem;
+  color: #6b7280;
+  font-weight: normal;
+  margin-top: 0.25rem;
+}
+
+.summaryTotalPrice {
+  color: #ef4444;
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+/* 📱 Responsive */
+@media (max-width: 900px) {
+  .checkoutContainer {
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+  }
+
+  .checkoutLeft,
+  .checkoutRight {
+    width: 100%;
+  }
+
+  .checkoutRight {
+    position: static;
+  }
+}
