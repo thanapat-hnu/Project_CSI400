@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import styles from "./UserSidebar.module.css";
 import {
   FaShoppingBag,
@@ -7,10 +7,17 @@ import {
   FaMapMarkerAlt,
   FaFileInvoice,
   FaCreditCard,
-  FaGift, // ✅ เพิ่มไอคอนสำหรับคูปอง
+  FaGift,
 } from "react-icons/fa";
 
 const UserSidebar = () => {
+  const location = useLocation(); // ดึง path ปัจจุบัน
+
+  // ฟังก์ชันช่วยตรวจสอบ active แบบกำหนดเอง
+  const isActivePath = (path) => {
+    return location.pathname === path || location.pathname.startsWith(path + "/");
+  };
+
   return (
     <aside className={styles.sidebar}>
       <h3 className={styles.menuTitle}>รายการ</h3>
@@ -18,9 +25,8 @@ const UserSidebar = () => {
         <li>
           <NavLink
             to="/user/orders"
-            className={({ isActive }) =>
-              `${styles.link} ${isActive ? styles.active : ""}`
-            }
+            className={`${styles.link} ${isActivePath("/user/orders") ? styles.active : ""
+              }`}
           >
             <FaShoppingBag className={styles.icon} />
             คำสั่งซื้อ
@@ -30,9 +36,8 @@ const UserSidebar = () => {
         <li>
           <NavLink
             to="/profile/wishlist"
-            className={({ isActive }) =>
-              `${styles.link} ${isActive ? styles.active : ""}`
-            }
+            className={`${styles.link} ${isActivePath("/profile/wishlist") ? styles.active : ""
+              }`}
           >
             <FaHeart className={styles.icon} />
             สินค้าที่ถูกใจ
@@ -45,22 +50,19 @@ const UserSidebar = () => {
         <li>
           <NavLink
             to="/profile"
-            className={({ isActive }) =>
-              `${styles.link} ${isActive ? styles.active : ""}`
-            }
+            end  // ✅ ทำให้ active เฉพาะ /profile เท่านั้น
+            className={({ isActive }) => `${styles.link} ${isActive ? styles.active : ""}`}
           >
             <FaUser className={styles.icon} />
             ข้อมูลส่วนตัว
           </NavLink>
         </li>
 
-        {/* ✅ เมนูใหม่ “คูปองของฉัน” */}
         <li>
           <NavLink
             to="/profile/mycoupons"
-            className={({ isActive }) =>
-              `${styles.link} ${isActive ? styles.active : ""}`
-            }
+            className={`${styles.link} ${isActivePath("/profile/mycoupons") ? styles.active : ""
+              }`}
           >
             <FaGift className={styles.icon} />
             คูปองของฉัน
@@ -70,9 +72,8 @@ const UserSidebar = () => {
         <li>
           <NavLink
             to="/profile/address"
-            className={({ isActive }) =>
-              `${styles.link} ${isActive ? styles.active : ""}`
-            }
+            className={`${styles.link} ${isActivePath("/profile/address") ? styles.active : ""
+              }`}
           >
             <FaMapMarkerAlt className={styles.icon} />
             ที่อยู่สำหรับจัดส่ง
@@ -82,9 +83,8 @@ const UserSidebar = () => {
         <li>
           <NavLink
             to="/user/invoice-address"
-            className={({ isActive }) =>
-              `${styles.link} ${isActive ? styles.active : ""}`
-            }
+            className={`${styles.link} ${isActivePath("/user/invoice-address") ? styles.active : ""
+              }`}
           >
             <FaFileInvoice className={styles.icon} />
             ที่อยู่สำหรับออกใบกำกับภาษี
@@ -94,9 +94,8 @@ const UserSidebar = () => {
         <li>
           <NavLink
             to="/user/payment"
-            className={({ isActive }) =>
-              `${styles.link} ${isActive ? styles.active : ""}`
-            }
+            className={`${styles.link} ${isActivePath("/user/payment") ? styles.active : ""
+              }`}
           >
             <FaCreditCard className={styles.icon} />
             ช่องทางชำระเงิน
