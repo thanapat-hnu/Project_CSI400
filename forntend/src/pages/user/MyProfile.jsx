@@ -34,24 +34,6 @@ export const MyProfile = () => {
     fetchUserData();
   }, []);
 
-  // ✅ โหลดคูปองที่เก็บไว้
-  useEffect(() => {
-    const fetchCoupons = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const res = await api.get("/private/coupon/saved", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setCoupons(res.data.coupons || []);
-      } catch (err) {
-        console.error("❌ โหลดคูปองล้มเหลว:", err);
-      } finally {
-        setLoadingCoupons(false);
-      }
-    };
-    fetchCoupons();
-  }, []);
-
   return (
     <div className={styles.container}>
       <UserSidebar />

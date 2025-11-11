@@ -2,6 +2,7 @@
 .checkoutWrapper {
   background: #f5f6f8;
   min-height: 100vh;
+  width: 1300px;
   padding: 2rem 0; /* ✅ ลดขอบซ้ายขวาให้ออกกว้างแบบหน้าตะกร้า */
 }
 
