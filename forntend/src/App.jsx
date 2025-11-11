@@ -22,6 +22,7 @@ import ProductDetail from "./pages/user/ProductDetail";
 import { Wishlist } from "./pages/user/Wishlist";
 import Cart from "./pages/user/Cart";
 import CheckoutDetail from "./pages/user/CheckoutDetail";
+import { ContactUs } from "./pages/user/ContectUs"
 
 // 🆕 เพิ่มหน้าโปรโมชั่น
 import AdminPromotions from "./pages/admin/Promotions";
@@ -138,6 +139,15 @@ function App() {
             </PublicRoute>
           }
         />
+        <Route
+          path="/contact"
+          element={
+            <PublicRoute>
+              <ContactUs />
+            </PublicRoute>
+          }
+        />
+
       </Route>
 
 
