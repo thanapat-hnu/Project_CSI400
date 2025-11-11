@@ -278,3 +278,43 @@
   border-radius: 8px;
   margin-bottom: 0.75rem;
 }
+.monitor-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.monitor-card:hover {
+  background: #eef2ff;
+  transform: translateY(-3px);
+}
+
+.monitor-card .product-img {
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+}
+/* ทำให้ keyboard / mouse ใช้ style เดียวกับ product-card มาตรฐาน */
+.keyboard-card,
+.mouse-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.keyboard-card:hover,
+.mouse-card:hover {
+  background: #f9fafb;
+  transform: translateY(-3px);
+}
+
+.keyboard-card .product-img,
+.mouse-card .product-img {
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+}

@@ -85,7 +85,7 @@ const ProductDetail = () => {
       combinedData = { ...combinedData, ...descData };
     }
   } catch (e) {
-    combinedData.descriptionText = product.description;
+    combinedData.รายละเอียดสินค้า = product.description;
   }
 
   try {

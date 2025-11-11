@@ -203,7 +203,7 @@ const Products = () => {
                     <span className="no-image">ไม่มีรูป</span>
                   )}
                 </td>
-                <td>
+                <td className="action-buttons">
                   <button
                     className="btn-edit"
                     onClick={() => openEditModal(p)}
