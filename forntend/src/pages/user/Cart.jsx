@@ -257,7 +257,11 @@ const Cart = () => {
                                                     {/* 🔼 เพิ่มจำนวน */}
                                                     <button
                                                         className={styles.qtyBtn}
-                                                        onClick={() => updateCartItem(item.product_id, item.quantity + 1)}
+                                                        onClick={() => {
+                                                            if (item.quantity < 5) {
+                                                                updateCartItem(item.product_id, item.quantity + 1);
+                                                            }
+                                                        }}
                                                     >
                                                         +
                                                     </button>
