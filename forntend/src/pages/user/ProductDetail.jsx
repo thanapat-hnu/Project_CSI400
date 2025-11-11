@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "../../apis/axios";
 import styles from "./ProductDetail.module.css";
 import { CartContext } from "../../context/CartContext"; // 🧩 เพิ่มสำหรับตะกร้า
+import { useAuth } from "../../context/AuthContext"; // สมมติว่ามี context
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -11,6 +12,8 @@ const ProductDetail = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false); // ✅ สถานะหัวใจ
+  const { user } = useAuth();
+
 
   // 🧭 โหลดข้อมูลสินค้า + ตรวจสถานะหัวใจ
   const { addToCart } = useContext(CartContext); // ✅ ดึงฟังก์ชันเพิ่มสินค้าในตะกร้า
@@ -96,10 +99,15 @@ const ProductDetail = () => {
     if (specsData && typeof specsData === "object") {
       combinedData = { ...combinedData, ...specsData };
     }
-  } catch (e) {}
+  } catch (e) { }
 
   // ✅ ฟังก์ชันเพิ่มสินค้าในตะกร้า
   const handleAddToCart = () => {
+
+    if (!user) {
+      return navigate("/login")
+    }
+
     addToCart(product, quantity);
     alert(`เพิ่ม "${product.name}" จำนวน ${quantity} ชิ้นลงตะกร้าแล้ว!`);
   };
@@ -124,11 +132,10 @@ const ProductDetail = () => {
                 key={i}
                 src={`http://localhost:3000${img.url}`}
                 alt={`thumb-${i}`}
-                className={`${styles.thumbnail} ${
-                  selectedImage === `http://localhost:3000${img.url}`
-                    ? styles.activeThumb
-                    : ""
-                }`}
+                className={`${styles.thumbnail} ${selectedImage === `http://localhost:3000${img.url}`
+                  ? styles.activeThumb
+                  : ""
+                  }`}
                 onClick={() =>
                   setSelectedImage(`http://localhost:3000${img.url}`)
                 }
@@ -153,9 +160,8 @@ const ProductDetail = () => {
               })}
             </p>
             <button
-              className={`${styles.heartBtn} ${
-                isWishlisted ? styles.activeHeart : ""
-              }`}
+              className={`${styles.heartBtn} ${isWishlisted ? styles.activeHeart : ""
+                }`}
               onClick={handleToggleWishlist}
             >
               {isWishlisted ? "❤️" : "🤍"}
