@@ -22,15 +22,14 @@ const CheckoutDetail = () => {
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 🆕 สำหรับคูปองของฉัน
   const [showMyCoupons, setShowMyCoupons] = useState(false);
   const [myCoupons, setMyCoupons] = useState([]);
   const [loadingCoupons, setLoadingCoupons] = useState(false);
 
-  /* ──────────────── โหลดคูปองของฉัน ──────────────── */
+  /* ──────────────── โหลดคูปอง ──────────────── */
   useEffect(() => {
     const fetchMyCoupons = async () => {
-      if (!showMyCoupons) return; // โหลดเฉพาะตอนเปิด modal
+      if (!showMyCoupons) return;
       setLoadingCoupons(true);
       try {
         const token = localStorage.getItem("token");
@@ -66,13 +65,17 @@ const CheckoutDetail = () => {
   }, []);
 
   /* ──────────────── คำนวณยอดรวม ──────────────── */
+  // ✅ คิด VAT 7% เพิ่มจากราคาสินค้า (ไม่รวมภาษี)
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const vat = subtotal * (7 / 107);
+  const beforeVat = subtotal - vat;
   const total = subtotal;
 
   useEffect(() => {
     setFinalTotal(total - discount);
   }, [total, discount]);
+
+
 
   /* ──────────────── ใช้คูปอง ──────────────── */
   const handleApplyCoupon = async () => {
@@ -103,7 +106,7 @@ const CheckoutDetail = () => {
     if (!paymentMethod) return alert("❗ กรุณาเลือกช่องทางชำระเงิน");
 
     try {
-      // 🟢 Step 1: สร้างคำสั่งซื้อจริง
+      // 🟢 Step 1: สร้างคำสั่งซื้อ
       const orderRes = await api.post(
         "/protech/order",
         {
@@ -120,7 +123,7 @@ const CheckoutDetail = () => {
       const order = orderRes.data.order;
       console.log("✅ สร้างคำสั่งซื้อ:", order);
 
-      // 🟢 Step 2: สร้างการชำระเงินจริง
+      // 🟢 Step 2: ชำระเงิน
       await createPayment({
         order_id: order.id,
         amount: order.total_amount,
@@ -133,7 +136,7 @@ const CheckoutDetail = () => {
         await redeemCoupon(localStorage.getItem("appliedCouponId"), order.id);
       }
 
-      // 🟢 Step 4: ล้างตะกร้าใน backend
+      // 🟢 Step 4: ล้างตะกร้า
       await api.delete("/protech/cart", {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -290,15 +293,18 @@ const CheckoutDetail = () => {
                 <div key={item.id} className={styles.orderItemCompact}>
                   <img
                     src={
-                      item.images?.[0]?.url
-                        ? `http://localhost:3000${item.images[0].url}`
+                      item.image_url
+                        ? `http://localhost:3000${item.image_url}`
                         : "https://dummyimage.com/100x100/e5e7eb/9ca3af.png&text=No+Image"
                     }
                     alt={item.name}
+                    className={styles.orderImage}
                   />
                   <div className={styles.orderInfo}>
                     <p className={styles.itemName}>
-                      {item.name.length > 25 ? item.name.slice(0, 25) + "..." : item.name}
+                      {item.name.length > 25
+                        ? item.name.slice(0, 25) + "..."
+                        : item.name}
                     </p>
                     <p className={styles.itemQty}>x{item.quantity}</p>
                   </div>
@@ -315,22 +321,56 @@ const CheckoutDetail = () => {
               <p className={styles.emptyCart}>ไม่มีสินค้าในตะกร้า</p>
             )}
 
+            {/* 🆕 เพิ่มส่วนก่อนยอดรวม */}
+            <div className={styles.summaryLine}>
+              <span>ค่าจัดส่ง:</span>
+              <span>฿0.00</span>
+            </div>
+            <div className={styles.summaryLine}>
+              <span>ส่วนลดทั้งหมด:</span>
+              <span>
+                ฿
+                {discount > 0
+                  ? discount.toLocaleString(undefined, { minimumFractionDigits: 2 })
+                  : "0.00"}
+              </span>
+            </div>
+            <div className={styles.summaryLine}>
+              <span>ส่วนลด:</span>
+              <span>฿0.00</span>
+            </div>
+
             <hr />
             <div className={styles.summaryLine}>
               <span>ราคาก่อนภาษี:</span>
               <span>
-                ฿{(subtotal - vat).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                ฿
+                {beforeVat.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
               </span>
             </div>
             <div className={styles.summaryLine}>
               <span>ภาษี VAT 7%:</span>
-              <span>฿{vat.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+              <span>
+                ฿
+                {vat.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </span>
             </div>
 
             {discount > 0 && (
               <div className={styles.summaryLine}>
                 <span>ส่วนลดจากคูปอง:</span>
-                <span>-฿{discount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                <span>
+                  -฿
+                  {discount.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                  })}
+                </span>
               </div>
             )}
 
@@ -341,7 +381,10 @@ const CheckoutDetail = () => {
                 <p className={styles.vatNote}>ยอดรวม (รวมภาษีมูลค่าเพิ่ม)</p>
               </div>
               <span className={styles.summaryTotalPrice}>
-                ฿{finalTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                ฿
+                {finalTotal.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                })}
               </span>
             </div>
 

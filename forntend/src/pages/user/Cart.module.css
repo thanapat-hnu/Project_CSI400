@@ -53,8 +53,12 @@
 
 /* -------- LEFT -------- */
 .cartLeft {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex: 2.5;
   min-width: 0;
+  text-align: center;
 }
 
 .cartItems {

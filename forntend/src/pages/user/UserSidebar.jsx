@@ -80,7 +80,7 @@ const UserSidebar = () => {
           </NavLink>
         </li>
 
-        <li>
+        {/* <li>
           <NavLink
             to="/user/invoice-address"
             className={`${styles.link} ${isActivePath("/user/invoice-address") ? styles.active : ""
@@ -89,7 +89,7 @@ const UserSidebar = () => {
             <FaFileInvoice className={styles.icon} />
             ที่อยู่สำหรับออกใบกำกับภาษี
           </NavLink>
-        </li>
+        </li> */}
 
         <li>
           <NavLink

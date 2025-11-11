@@ -4,6 +4,8 @@ import api from "../../apis/axios";
 import UserSidebar from "./UserSidebar";
 import styles from "./UserPage.module.css";
 
+// ... import เหมือนเดิม
+
 export const EditAddress = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -17,7 +19,6 @@ export const EditAddress = () => {
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // ✅ โหลดข้อมูลที่อยู่จาก backend
   useEffect(() => {
     const fetchAddress = async () => {
       try {
@@ -44,15 +45,39 @@ export const EditAddress = () => {
     fetchAddress();
   }, [id]);
 
-  // ✅ handle change
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // ✅ จำกัดความยาวและกรอกได้เฉพาะตัวเลข
+    if (name === "phone") {
+      if (/^\d*$/.test(value) && value.length <= 10) {
+        setFormData((prev) => ({ ...prev, phone: value }));
+      }
+      return;
+    }
+    if (name === "postalCode") {
+      if (/^\d*$/.test(value) && value.length <= 5) {
+        setFormData((prev) => ({ ...prev, postalCode: value }));
+      }
+      return;
+    }
+
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // ✅ handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // ✅ ตรวจสอบก่อน submit
+    if (formData.phone.length !== 10) {
+      setErrorMsg("กรุณากรอกเบอร์โทร 10 ตัวเลข");
+      return;
+    }
+    if (formData.postalCode.length !== 5) {
+      setErrorMsg("กรุณากรอกรหัสไปรษณีย์ 5 ตัวเลข");
+      return;
+    }
+
     try {
       const payload = {
         addressLine: formData.addressLine,
@@ -67,7 +92,7 @@ export const EditAddress = () => {
       navigate("/profile/address");
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.message || "❌ แก้ไขไม่สำเร็จ");
+      setErrorMsg(err.response?.data?.message || "❌ แก้ไขไม่สำเร็จ");
     }
   };
 
@@ -134,6 +159,7 @@ export const EditAddress = () => {
                 value={formData.postalCode}
                 onChange={handleChange}
                 required
+                maxLength={5}
               />
             </div>
 
@@ -145,6 +171,7 @@ export const EditAddress = () => {
                 value={formData.phone}
                 onChange={handleChange}
                 required
+                maxLength={10}
               />
             </div>
           </div>

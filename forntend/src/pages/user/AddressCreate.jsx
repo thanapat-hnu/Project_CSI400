@@ -18,6 +18,11 @@ export const AddressCreate = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // ✅ จำกัดความยาว input
+    if (name === "phone" && value.length > 10) return;
+    if (name === "postalCode" && value.length > 5) return;
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -26,6 +31,17 @@ export const AddressCreate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // ✅ ตรวจสอบความยาวก่อนส่ง
+    if (formData.phone.length !== 10) {
+      setErrorMsg("กรุณากรอกเบอร์โทร 10 ตัวเลข");
+      return;
+    }
+
+    if (formData.postalCode.length !== 5) {
+      setErrorMsg("กรุณากรอกรหัสไปรษณีย์ 5 ตัวเลข");
+      return;
+    }
 
     try {
       await api.post("/protech/address", formData);
@@ -42,7 +58,6 @@ export const AddressCreate = () => {
       <UserSidebar />
 
       <div className={styles.content}>
-        {/* 🔹 Header */}
         <div className={styles.addressHeader}>
           <div className={styles.headerLeft}>
             <FaMapMarkerAlt className={styles.icon} />
@@ -56,7 +71,6 @@ export const AddressCreate = () => {
           </button>
         </div>
 
-        {/* 🔹 Form Card */}
         <div className={styles.editCard}>
           {errorMsg && <p className={styles.error}>{errorMsg}</p>}
           <form onSubmit={handleSubmit} className={styles.editForm}>
@@ -102,6 +116,7 @@ export const AddressCreate = () => {
                   value={formData.postalCode}
                   onChange={handleChange}
                   required
+                  maxLength={5} // ✅ จำกัด 5 ตัว
                 />
               </div>
 
@@ -113,6 +128,7 @@ export const AddressCreate = () => {
                   value={formData.phone}
                   onChange={handleChange}
                   required
+                  maxLength={10} // ✅ จำกัด 10 ตัว
                 />
               </div>
             </div>

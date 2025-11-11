@@ -153,7 +153,7 @@
   background-color: #f9fafb;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
-  padding: 25px ;
+  padding: 25px;
   margin-bottom: 25px;
 }
 
@@ -1281,4 +1281,26 @@
 }
 .logoutBtn:hover {
   background-color: #b91c1c;
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: flex-end; /* ชิดขวา */
+  margin-top: 10px; /* เว้นห่างจากตาราง */
+}
+
+/* ปุ่มสีแดง สวย ๆ */
+.logoutBtn {
+  background-color: #b91c1c; /* สีแดงสด */
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.logoutBtn:hover {
+  background-color: #b91c1c; /* สีแดงเข้มเมื่อ hover */
 }
