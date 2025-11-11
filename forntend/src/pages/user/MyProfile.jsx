@@ -108,40 +108,7 @@ export const MyProfile = () => {
           </table>
         </div>
 
-        {/* 🎟️ ส่วนแสดงคูปอง */}
-        <div className={styles.couponSection}>
-          <h2>🎟️ คูปองที่คุณเก็บไว้</h2>
-
-          {loadingCoupons ? (
-            <p>กำลังโหลดคูปอง...</p>
-          ) : coupons.length === 0 ? (
-            <p>ยังไม่มีคูปองที่เก็บไว้</p>
-          ) : (
-            <div className={styles.couponGrid}>
-              {coupons.map((coupon) => (
-                <div key={coupon.id} className={styles.couponCard}>
-                  <h3>{coupon.code}</h3>
-                  <p>
-                    ประเภท: {coupon.type === "percent" ? "เปอร์เซ็นต์" : "คงที่"}
-                  </p>
-                  <p>
-                    ส่วนลด:{" "}
-                    {coupon.type === "percent"
-                      ? `${coupon.value}%`
-                      : `${coupon.value.toFixed(2)} บาท`}
-                  </p>
-                  <p>ขั้นต่ำ: {coupon.min_order_amount} บาท</p>
-                  <p>
-                    หมดอายุ:{" "}
-                    {coupon.expire_date
-                      ? new Date(coupon.expire_date).toLocaleDateString("th-TH")
-                      : "-"}
-                  </p>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        
       </div>
 
       <button
