@@ -12,8 +12,6 @@ export const MyProfile = () => {
     lastname: "",
     phone: "",
   });
-  const [coupons, setCoupons] = useState([]); // ✅ เพิ่ม state คูปอง
-  const [loadingCoupons, setLoadingCoupons] = useState(true);
 
   // ✅ โหลดข้อมูลผู้ใช้
   useEffect(() => {
@@ -88,16 +86,20 @@ export const MyProfile = () => {
               </tr>
             </tbody>
           </table>
-          <button
 
-            onClick={() => {
-              localStorage.removeItem("token");
-              alert("ออกจากระบบเรียบร้อย ✅");
-              navigate("/login");
-            }}
-          >
-            ออกจากระบบ
-          </button>
+          {/* ห่อปุ่มด้วย div เพื่อจัดชิดขวา */}
+          <div className={styles.buttonWrapper}>
+            <button
+              className={styles.logoutBtn}
+              onClick={() => {
+                localStorage.removeItem("token");
+                alert("ออกจากระบบเรียบร้อย ✅");
+                navigate("/login");
+              }}
+            >
+              ออกจากระบบ
+            </button>
+          </div>
         </div>
       </div>
     </div>
