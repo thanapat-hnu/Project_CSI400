@@ -106,21 +106,18 @@ export const MyProfile = () => {
               </tr>
             </tbody>
           </table>
+          <button
+
+            onClick={() => {
+              localStorage.removeItem("token");
+              alert("ออกจากระบบเรียบร้อย ✅");
+              navigate("/login");
+            }}
+          >
+            ออกจากระบบ
+          </button>
         </div>
-
-        
       </div>
-
-      <button
-        className={styles.logoutBtn}
-        onClick={() => {
-          localStorage.removeItem("token");
-          alert("ออกจากระบบเรียบร้อย ✅");
-          navigate("/login");
-        }}
-      >
-        ออกจากระบบ
-      </button>
     </div>
   );
 };

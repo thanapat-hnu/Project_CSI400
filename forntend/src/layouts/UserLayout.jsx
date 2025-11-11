@@ -105,7 +105,7 @@ const UserLayout = () => {
       </nav>
 
       {/* 📦 เนื้อหาหลัก */}
-      <main className="main-content">
+      <main className="main-content" style={{ padding: 0 }}>
         <Outlet />
       </main>
     </div>
