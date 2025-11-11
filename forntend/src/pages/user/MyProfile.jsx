@@ -12,7 +12,10 @@ export const MyProfile = () => {
     lastname: "",
     phone: "",
   });
+  const [coupons, setCoupons] = useState([]); // ✅ เพิ่ม state คูปอง
+  const [loadingCoupons, setLoadingCoupons] = useState(true);
 
+  // ✅ โหลดข้อมูลผู้ใช้
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -29,6 +32,24 @@ export const MyProfile = () => {
       }
     };
     fetchUserData();
+  }, []);
+
+  // ✅ โหลดคูปองที่เก็บไว้
+  useEffect(() => {
+    const fetchCoupons = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await api.get("/private/coupon/saved", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setCoupons(res.data.coupons || []);
+      } catch (err) {
+        console.error("❌ โหลดคูปองล้มเหลว:", err);
+      } finally {
+        setLoadingCoupons(false);
+      }
+    };
+    fetchCoupons();
   }, []);
 
   return (
@@ -86,7 +107,53 @@ export const MyProfile = () => {
             </tbody>
           </table>
         </div>
+
+        {/* 🎟️ ส่วนแสดงคูปอง */}
+        <div className={styles.couponSection}>
+          <h2>🎟️ คูปองที่คุณเก็บไว้</h2>
+
+          {loadingCoupons ? (
+            <p>กำลังโหลดคูปอง...</p>
+          ) : coupons.length === 0 ? (
+            <p>ยังไม่มีคูปองที่เก็บไว้</p>
+          ) : (
+            <div className={styles.couponGrid}>
+              {coupons.map((coupon) => (
+                <div key={coupon.id} className={styles.couponCard}>
+                  <h3>{coupon.code}</h3>
+                  <p>
+                    ประเภท: {coupon.type === "percent" ? "เปอร์เซ็นต์" : "คงที่"}
+                  </p>
+                  <p>
+                    ส่วนลด:{" "}
+                    {coupon.type === "percent"
+                      ? `${coupon.value}%`
+                      : `${coupon.value.toFixed(2)} บาท`}
+                  </p>
+                  <p>ขั้นต่ำ: {coupon.min_order_amount} บาท</p>
+                  <p>
+                    หมดอายุ:{" "}
+                    {coupon.expire_date
+                      ? new Date(coupon.expire_date).toLocaleDateString("th-TH")
+                      : "-"}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
+
+      <button
+        className={styles.logoutBtn}
+        onClick={() => {
+          localStorage.removeItem("token");
+          alert("ออกจากระบบเรียบร้อย ✅");
+          navigate("/login");
+        }}
+      >
+        ออกจากระบบ
+      </button>
     </div>
   );
 };

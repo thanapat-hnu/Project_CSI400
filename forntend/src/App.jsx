@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
-import ProtectedRoute from "./routes/ProtectedRoute"; // ✅ เพิ่มเพื่อใช้กับฝั่ง User
+import ProtectedRoute from "./routes/ProtectedRoute"; // ✅ ใช้สำหรับ User
 import AdminLayout from "./layouts/AdminLayout";
 import UserLayout from "./layouts/UserLayout";
 
@@ -27,9 +27,13 @@ import CheckoutDetail from "./pages/user/CheckoutDetail";
 import AdminPromotions from "./pages/admin/Promotions";
 import UserPromotions from "./pages/user/HomePromotions";
 
+// 🆕 ✅ เพิ่มหน้า “คูปองของฉัน”
+import MyCoupons from "./pages/user/MyCoupons";
+
 function App() {
   return (
     <Routes>
+      {/* 🌐 User Layout (Public + Protected) */}
       <Route
         path="/"
         element={
@@ -38,12 +42,13 @@ function App() {
           </PublicRoute>
         }
       >
+        {/* หน้า Public */}
         <Route index element={<Home />} />
         <Route path="products" element={<Products />} />
         <Route path="products/:id" element={<ProductDetail />} />
         <Route path="promotions" element={<UserPromotions />} />
 
-        {/* 🛒 เพิ่มหน้า "ตะกร้าสินค้า" */}
+        {/* 🛒 หน้าตะกร้า */}
         <Route path="cart" element={<Cart />} />
         <Route
           path="/checkout/detail"
@@ -54,7 +59,7 @@ function App() {
           }
         />
 
-        {/* 🧍 ส่วนโปรไฟล์ผู้ใช้ */}
+        {/* 🧍‍♂️ โปรไฟล์ผู้ใช้ */}
         <Route
           path="/profile"
           element={
@@ -95,7 +100,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-         <Route
+        <Route
           path="/profile/wishlist"
           element={
             <ProtectedRoute>
@@ -103,8 +108,17 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        {/* 🎟️ ✅ เพิ่ม Route คูปองของฉัน */}
+        <Route
+          path="/profile/mycoupons"
+          element={
+            <ProtectedRoute>
+              <MyCoupons />
+            </ProtectedRoute>
+          }
+        />
       </Route>
-          
 
       {/* 🔐 Authentication */}
       <Route
@@ -124,7 +138,7 @@ function App() {
         }
       />
 
-      {/* 👑 ส่วน Admin */}
+      {/* 👑 Admin Section */}
       <Route
         path="/admin"
         element={

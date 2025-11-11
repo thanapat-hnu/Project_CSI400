@@ -349,3 +349,198 @@
     position: static;
   }
 }
+
+/* 📦 Address List */
+.addressList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.addressCard {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.addressCard:hover {
+  border-color: #2563eb;
+}
+
+.addressSelected {
+  border: 2px solid #2563eb;
+  background: #eff6ff;
+}
+
+.addressLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1;
+}
+
+.addrLabel {
+  background: #e0f2fe;
+  color: #0369a1;
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.addrText {
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.addressRight {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.addrPhone {
+  color: #111827;
+  font-weight: 500;
+  min-width: 100px;
+  text-align: right;
+}
+
+.addrActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.editIcon,
+.deleteIcon {
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.2s;
+}
+
+.editIcon:hover {
+  color: #2563eb;
+}
+
+.deleteIcon:hover {
+  color: #dc2626;
+}
+
+.couponBox {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.couponBox input {
+  flex: 1;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.couponBox button {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.couponBox button:hover {
+  background: #1e40af;
+}
+
+.myCouponBtn {
+  background: #0077ff;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-top: 10px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.myCouponBtn:hover {
+  background: #005fd6;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  width: 400px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.couponList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.couponCard {
+  background: #f4f6ff;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.couponCard:hover {
+  background: #e4eaff;
+}
+
+.closeBtn {
+  margin-top: 10px;
+  background: #ff4757;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
