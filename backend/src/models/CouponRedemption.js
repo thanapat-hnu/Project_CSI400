@@ -12,9 +12,18 @@ const CouponRedemption = sequelize.define(
     user_id: { type: DataTypes.BIGINT, allowNull: true },
     order_id: { type: DataTypes.BIGINT, allowNull: true },
 
-    is_saved: { type: DataTypes.BOOLEAN, defaultValue: false }, // true = เก็บไว้, false = ใช้แล้ว
+    // 🟢 สถานะการเก็บ/ใช้คูปอง
+    is_saved: { type: DataTypes.BOOLEAN, defaultValue: false },
+
+    // 📅 วันที่เก็บคูปอง
     saved_at: { type: DataTypes.DATE, allowNull: true },
-    redeemed_at: { type: DataTypes.DATE, allowNull: true },
+
+    // 📅 วันที่ใช้คูปอง (ใน DB คือ redeemed_at)
+    used_at: { 
+      type: DataTypes.DATE,
+      allowNull: true,
+      field: "redeemed_at"  // ✅ map ให้ Sequelize ใช้ชื่อ used_at แต่ DB เป็น redeemed_at
+    },
   },
   {
     tableName: "coupon_redemptions",
@@ -22,7 +31,7 @@ const CouponRedemption = sequelize.define(
   }
 );
 
-// ─────────────── Associations ───────────────
+/* ─────────────── Associations ─────────────── */
 
 // Coupon ↔ CouponRedemption (1:N)
 Coupon.hasMany(CouponRedemption, { foreignKey: "coupon_id", as: "redemptions" });

@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../config/db.js"; // ✅ ใช้ Sequelize instance เดียวกับระบบหลัก
-import Order from "./Order.js"; // ✅ เชื่อมกับตาราง orders
+import sequelize from "../config/db.js";
+import Order from "./Order.js";
 
 const Payment = sequelize.define(
   "Payment",
@@ -18,6 +18,12 @@ const Payment = sequelize.define(
       type: DataTypes.DECIMAL(12, 2),
       allowNull: false,
     },
+    // 🆕 เพิ่มช่องทางการชำระเงิน
+    method: {
+      type: DataTypes.STRING(50),
+      allowNull: true,
+      comment: "ช่องทางการชำระเงิน เช่น พร้อมเพย์ / โอนผ่านบัญชี / ทรูวอลเล็ต",
+    },
     status: {
       type: DataTypes.ENUM("pending", "success", "failed"),
       defaultValue: "pending",
@@ -33,10 +39,8 @@ const Payment = sequelize.define(
   }
 );
 
-// ✅ สร้างความสัมพันธ์กับ orders
-Payment.belongsTo(Order, {
-  foreignKey: "order_id",
-  as: "order",
-});
+// ✅ ความสัมพันธ์กับ Order
+Payment.belongsTo(Order, { foreignKey: "order_id", as: "order" });
+Order.hasMany(Payment, { foreignKey: "order_id", as: "payments" });
 
 export default Payment;

@@ -183,3 +183,27 @@ export const removeCartItem = async (req, res) => {
         return res.status(500).json({ message: "เกิดข้อผิดพลาดในระบบ" })
     }
 }
+
+export const clearCart = async (req, res) => {
+  try {
+    const userId = req.user.user_id;
+
+    const [cart] = await pool.query(
+      `SELECT id FROM carts WHERE user_id = ? LIMIT 1`,
+      [userId]
+    );
+
+    if (cart.length === 0) {
+      return res.status(404).json({ message: "ไม่พบตะกร้าของคุณ" });
+    }
+
+    const cartId = cart[0].id;
+
+    await pool.query(`DELETE FROM cart_items WHERE cart_id = ?`, [cartId]);
+
+    return res.status(200).json({ message: "ล้างตะกร้าเรียบร้อยแล้ว" });
+  } catch (err) {
+    console.error("❌ clearCart Error:", err);
+    res.status(500).json({ message: "ไม่สามารถล้างตะกร้าได้" });
+  }
+};

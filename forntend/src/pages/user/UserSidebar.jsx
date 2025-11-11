@@ -7,6 +7,7 @@ import {
   FaMapMarkerAlt,
   FaFileInvoice,
   FaCreditCard,
+  FaGift, // ✅ เพิ่มไอคอนสำหรับคูปอง
 } from "react-icons/fa";
 
 const UserSidebar = () => {
@@ -50,6 +51,19 @@ const UserSidebar = () => {
           >
             <FaUser className={styles.icon} />
             ข้อมูลส่วนตัว
+          </NavLink>
+        </li>
+
+        {/* ✅ เมนูใหม่ “คูปองของฉัน” */}
+        <li>
+          <NavLink
+            to="/profile/mycoupons"
+            className={({ isActive }) =>
+              `${styles.link} ${isActive ? styles.active : ""}`
+            }
+          >
+            <FaGift className={styles.icon} />
+            คูปองของฉัน
           </NavLink>
         </li>
 

@@ -1,28 +1,21 @@
 import express from "express";
 import {
-  getAllCoupons,
-  getCouponById,
   applyCoupon,
+  redeemCoupon,
   saveCoupon,
-  getSavedCoupons
+  getSavedCoupons,
+  getPublicCoupons,
+  getUsedCoupons,
 } from "../../controllers/coupon.Controller.js";
 import { authJWT } from "../../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
-/* ──────────────── USER ──────────────── */
-
-// ✅ ดึงคูปองที่เปิดใช้งานอยู่ทั้งหมด
-router.get("/", authJWT, getAllCoupons);
-
-// ✅ ดึงรายละเอียดคูปองเฉพาะตัว
-router.get("/:id", authJWT, getCouponById);
-
-// ✅ ใช้งานคูปอง (apply)
+router.get("/public", getPublicCoupons);
 router.post("/apply", authJWT, applyCoupon);
-
+router.post("/redeem", authJWT, redeemCoupon); // 🆕 ใช้จริงหลังจ่ายเงิน
 router.post("/save", authJWT, saveCoupon);
 router.get("/saved", authJWT, getSavedCoupons);
-
+router.get("/used", authJWT, getUsedCoupons);
 
 export default router;
