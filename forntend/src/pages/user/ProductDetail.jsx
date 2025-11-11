@@ -103,13 +103,13 @@ const ProductDetail = () => {
 
   // ✅ ฟังก์ชันเพิ่มสินค้าในตะกร้า
   const handleAddToCart = () => {
+    if (!user) return navigate("/login");
 
-    if (!user) {
-      return navigate("/login")
-    }
+    // จำกัด quantity ก่อนเพิ่ม
+    const finalQuantity = Math.min(5, Math.max(1, quantity));
 
-    addToCart(product, quantity);
-    alert(`เพิ่ม "${product.name}" จำนวน ${quantity} ชิ้นลงตะกร้าแล้ว!`);
+    addToCart(product, finalQuantity);
+    alert(`เพิ่ม "${product.name}" จำนวน ${finalQuantity} ชิ้นลงตะกร้าแล้ว!`);
   };
 
   return (
@@ -172,14 +172,14 @@ const ProductDetail = () => {
           {/* 🔢 จำนวนสินค้า */}
           <div className={styles.quantityBox}>
             <button
-              onClick={() => setQuantity(Math.max(1, quantity - 1))}
+              onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
               className={styles.qtyBtn}
             >
               -
             </button>
             <span className={styles.qtyNumber}>{quantity}</span>
             <button
-              onClick={() => setQuantity(quantity + 1)}
+              onClick={() => setQuantity((prev) => Math.min(5, prev + 1))}
               className={styles.qtyBtn}
             >
               +
@@ -194,10 +194,10 @@ const ProductDetail = () => {
             <button
               className={styles.buyBtn}
               onClick={() => {
-                if (!user) {
-                  return navigate("/login");
-                }
-                addToCart(product, quantity);
+                if (!user) return navigate("/login");
+
+                const finalQuantity = Math.min(5, Math.max(1, quantity));
+                addToCart(product, finalQuantity);
                 navigate("/checkout/detail");
               }}
             >
