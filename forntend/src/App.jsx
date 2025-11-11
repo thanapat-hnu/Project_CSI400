@@ -49,7 +49,10 @@ function App() {
         <Route path="promotions" element={<UserPromotions />} />
 
         {/* 🛒 หน้าตะกร้า */}
-        <Route path="cart" element={<Cart />} />
+        <Route path="cart" element={
+          <ProtectedRoute>
+            <Cart />
+          </ProtectedRoute>} />
         <Route
           path="/checkout/detail"
           element={
