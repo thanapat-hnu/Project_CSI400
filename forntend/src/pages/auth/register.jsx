@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../apis/axios";
+import styles from "./Register.module.css"; // ✅ เพิ่ม CSS module
 
 export const Register = () => {
   const navigate = useNavigate();
@@ -15,7 +16,6 @@ export const Register = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormData({
       ...formData,
       [name]: value,
@@ -60,9 +60,7 @@ export const Register = () => {
         phone,
       });
 
-      console.log("ผลลัพธ์จาก server:", res.data);
       alert(res.data.message);
-
       navigate("/login");
     } catch (err) {
       console.error(err.response?.data || err.message);
@@ -71,86 +69,86 @@ export const Register = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>สมัครสมาชิก</h2>
+    <div className={styles.pageContainer}>
+      <div className={styles.registerBox}>
+        <h2 className={styles.title}>สมัครสมาชิก</h2>
 
-      <div>
-        <label>อีเมล :</label>
-        <input
-          placeholder="example@hotmail.com"
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <label>อีเมล</label>
+          <input
+            type="email"
+            name="email"
+            placeholder="example@hotmail.com"
+            value={formData.email}
+            onChange={handleChange}
+          />
+
+          <label>รหัสผ่าน</label>
+          <input
+            type="password"
+            name="password"
+            placeholder="******"
+            value={formData.password}
+            onChange={handleChange}
+          />
+
+          <label>ยืนยันรหัสผ่าน</label>
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="******"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+          />
+
+          <label>ชื่อจริง</label>
+          <input
+            type="text"
+            name="firstname"
+            placeholder="ชื่อจริง"
+            value={formData.firstname}
+            onChange={handleChange}
+          />
+
+          <label>นามสกุล</label>
+          <input
+            type="text"
+            name="lastname"
+            placeholder="นามสกุล"
+            value={formData.lastname}
+            onChange={handleChange}
+          />
+
+          <label>เบอร์โทรศัพท์</label>
+          <input
+            type="tel"
+            name="phone"
+            placeholder="0123456789"
+            value={formData.phone}
+            onChange={handleChange}
+            maxLength={10}
+          />
+
+          <button type="submit" className={styles.submitBtn}>
+            สมัครสมาชิก
+          </button>
+
+          <button
+            type="button"
+            className={styles.backBtn}
+            onClick={() => navigate("/")}
+          >
+            กลับหน้าหลัก
+          </button>
+
+          <p className={styles.footerText}>
+            มีบัญชีอยู่แล้ว?{" "}
+            <span onClick={() => navigate("/login")} className={styles.link}>
+              เข้าสู่ระบบ
+            </span>
+          </p>
+        </form>
       </div>
-
-      <div>
-        <label>รหัสผ่าน :</label>
-        <input
-          placeholder="******"
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      <div>
-        <label>ยืนยันรหัสผ่าน :</label>
-        <input
-          placeholder="******"
-          type="password"
-          name="confirmPassword"
-          value={formData.confirmPassword}
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      <div>
-        <label>ชื่อจริง :</label>
-        <input
-          placeholder="ชื่อจริง"
-          type="text"
-          name="firstname"
-          value={formData.firstname}
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      <div>
-        <label>นามสกุล :</label>
-        <input
-          placeholder="นามสกุล"
-          type="text"
-          name="lastname"
-          value={formData.lastname}
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      <div>
-        <label>เบอร์ :</label>
-        <input
-          placeholder="0123456789"
-          type="tel"
-          name="phone"
-          value={formData.phone}
-          onChange={handleChange}
-          maxLength={10}
-          required
-        />
-      </div>
-
-      <button type="submit">สมัครสมาชิก</button>
-      <button type="button" onClick={() => navigate("/")}>
-        กลับไปหน้าหลัก
-      </button>
-    </form>
+    </div>
   );
 };
