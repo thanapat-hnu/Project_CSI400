@@ -3,8 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import api from "../../apis/axios";
 import UserSidebar from "./UserSidebar";
 import styles from "./UserPage.module.css";
-
-// ... import เหมือนเดิม
+import Swal from "sweetalert2"; // ✅ เพิ่ม SweetAlert2
 
 export const EditAddress = () => {
   const { id } = useParams();
@@ -34,10 +33,20 @@ export const EditAddress = () => {
           });
         } else {
           setErrorMsg("ไม่พบที่อยู่");
+          Swal.fire({
+            icon: "error",
+            title: "ไม่พบข้อมูล!",
+            text: "ไม่พบที่อยู่ที่คุณต้องการแก้ไข",
+          });
         }
       } catch (err) {
         console.error(err);
         setErrorMsg("เกิดข้อผิดพลาดในการดึงข้อมูล");
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: "ไม่สามารถโหลดข้อมูลที่อยู่ได้",
+        });
       } finally {
         setLoading(false);
       }
@@ -70,12 +79,20 @@ export const EditAddress = () => {
 
     // ✅ ตรวจสอบก่อน submit
     if (formData.phone.length !== 10) {
-      setErrorMsg("กรุณากรอกเบอร์โทร 10 ตัวเลข");
-      return;
+      return Swal.fire({
+        icon: "warning",
+        title: "เบอร์โทรไม่ถูกต้อง!",
+        text: "กรุณากรอกเบอร์โทรศัพท์ให้ครบ 10 หลัก",
+        confirmButtonColor: "#f59e0b",
+      });
     }
     if (formData.postalCode.length !== 5) {
-      setErrorMsg("กรุณากรอกรหัสไปรษณีย์ 5 ตัวเลข");
-      return;
+      return Swal.fire({
+        icon: "warning",
+        title: "รหัสไปรษณีย์ไม่ถูกต้อง!",
+        text: "กรุณากรอกรหัสไปรษณีย์ให้ครบ 5 หลัก",
+        confirmButtonColor: "#f59e0b",
+      });
     }
 
     try {
@@ -88,11 +105,25 @@ export const EditAddress = () => {
       };
 
       const res = await api.put(`/protech/address/${id}`, payload);
-      alert(res.data.message || "✅ แก้ไขที่อยู่สำเร็จ");
+
+      await Swal.fire({
+        icon: "success",
+        title: "แก้ไขที่อยู่สำเร็จ!",
+        text: res.data.message || "อัปเดตข้อมูลเรียบร้อยแล้ว",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
       navigate("/profile/address");
     } catch (err) {
       console.error(err);
       setErrorMsg(err.response?.data?.message || "❌ แก้ไขไม่สำเร็จ");
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: err.response?.data?.message || "ไม่สามารถบันทึกการแก้ไขได้",
+        confirmButtonColor: "#d33",
+      });
     }
   };
 

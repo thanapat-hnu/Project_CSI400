@@ -2,8 +2,9 @@ import { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "../../apis/axios";
 import styles from "./ProductDetail.module.css";
-import { CartContext } from "../../context/CartContext"; // 🧩 เพิ่มสำหรับตะกร้า
-import { useAuth } from "../../context/AuthContext"; // สมมติว่ามี context
+import { CartContext } from "../../context/CartContext";
+import { useAuth } from "../../context/AuthContext";
+import Swal from "sweetalert2"; // ✅ เพิ่ม SweetAlert2
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -11,14 +12,10 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [isWishlisted, setIsWishlisted] = useState(false); // ✅ สถานะหัวใจ
+  const [isWishlisted, setIsWishlisted] = useState(false);
   const { user } = useAuth();
+  const { addToCart } = useContext(CartContext);
 
-
-  // 🧭 โหลดข้อมูลสินค้า + ตรวจสถานะหัวใจ
-  const { addToCart } = useContext(CartContext); // ✅ ดึงฟังก์ชันเพิ่มสินค้าในตะกร้า
-
-  // 🧭 โหลดข้อมูลสินค้า
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -30,7 +27,6 @@ const ProductDetail = () => {
             : "https://dummyimage.com/400x300/e5e7eb/9ca3af.png&text=No+Image"
         );
 
-        // ✅ ตรวจว่าสินค้านี้อยู่ใน Wishlist แล้วหรือไม่
         const token = localStorage.getItem("token");
         if (token) {
           const wishlistRes = await axios.get("/protech/wishlist", {
@@ -53,7 +49,12 @@ const ProductDetail = () => {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        alert("กรุณาเข้าสู่ระบบก่อนเพิ่มในรายการที่อยากได้ ❤️");
+        Swal.fire({
+          icon: "warning",
+          title: "กรุณาเข้าสู่ระบบก่อน",
+          text: "เพื่อเพิ่มสินค้าในรายการที่อยากได้ ❤️",
+          confirmButtonColor: "#ef4444",
+        });
         return;
       }
 
@@ -62,6 +63,12 @@ const ProductDetail = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         setIsWishlisted(false);
+        Swal.fire({
+          icon: "info",
+          title: "ลบออกจาก Wishlist แล้ว",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       } else {
         await axios.post(
           "/protech/wishlist",
@@ -69,15 +76,25 @@ const ProductDetail = () => {
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setIsWishlisted(true);
+        Swal.fire({
+          icon: "success",
+          title: "เพิ่มใน Wishlist สำเร็จ ❤️",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }
     } catch (err) {
       console.error("❌ wishlist error:", err);
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "ไม่สามารถอัปเดต Wishlist ได้",
+      });
     }
   };
 
   if (!product) return <div className={styles.loading}>กำลังโหลด...</div>;
 
-  // ✅ รวม description และ specs
   let combinedData = {};
   try {
     const descData =
@@ -99,17 +116,28 @@ const ProductDetail = () => {
     if (specsData && typeof specsData === "object") {
       combinedData = { ...combinedData, ...specsData };
     }
-  } catch (e) { }
+  } catch (e) {}
 
-  // ✅ ฟังก์ชันเพิ่มสินค้าในตะกร้า
+  // ✅ เพิ่ม SweetAlert2 ตอนเพิ่มสินค้าลงตะกร้า
   const handleAddToCart = () => {
-
     if (!user) {
-      return navigate("/login")
+      Swal.fire({
+        icon: "warning",
+        title: "กรุณาเข้าสู่ระบบก่อน",
+        text: "เพื่อเพิ่มสินค้าลงในตะกร้า 🛒",
+        confirmButtonColor: "#ef4444",
+      }).then(() => navigate("/login"));
+      return;
     }
 
     addToCart(product, quantity);
-    alert(`เพิ่ม "${product.name}" จำนวน ${quantity} ชิ้นลงตะกร้าแล้ว!`);
+    Swal.fire({
+      icon: "success",
+      title: "เพิ่มสินค้าลงตะกร้าแล้ว!",
+      text: `"${product.name}" จำนวน ${quantity} ชิ้น`,
+      showConfirmButton: false,
+      timer: 1600,
+    });
   };
 
   return (
@@ -119,7 +147,6 @@ const ProductDetail = () => {
       </button>
 
       <div className={styles.detailBox}>
-        {/* 📸 รูปสินค้า */}
         <div className={styles.imageSection}>
           <img
             src={selectedImage}
@@ -132,10 +159,11 @@ const ProductDetail = () => {
                 key={i}
                 src={`http://localhost:3000${img.url}`}
                 alt={`thumb-${i}`}
-                className={`${styles.thumbnail} ${selectedImage === `http://localhost:3000${img.url}`
-                  ? styles.activeThumb
-                  : ""
-                  }`}
+                className={`${styles.thumbnail} ${
+                  selectedImage === `http://localhost:3000${img.url}`
+                    ? styles.activeThumb
+                    : ""
+                }`}
                 onClick={() =>
                   setSelectedImage(`http://localhost:3000${img.url}`)
                 }
@@ -144,14 +172,12 @@ const ProductDetail = () => {
           </div>
         </div>
 
-        {/* 💬 ข้อมูลสินค้า */}
         <div className={styles.infoSection}>
           <h2 className={styles.name}>{product.name}</h2>
           <p className={styles.category}>
             หมวดหมู่: {product.category?.name || "ไม่ระบุ"}
           </p>
 
-          {/* ✅ ราคา + ปุ่มหัวใจ */}
           <div className={styles.priceRow}>
             <p className={styles.price}>
               ฿
@@ -160,16 +186,15 @@ const ProductDetail = () => {
               })}
             </p>
             <button
-              className={`${styles.heartBtn} ${isWishlisted ? styles.activeHeart : ""
-                }`}
+              className={`${styles.heartBtn} ${
+                isWishlisted ? styles.activeHeart : ""
+              }`}
               onClick={handleToggleWishlist}
             >
               {isWishlisted ? "❤️" : "🤍"}
             </button>
           </div>
 
-
-          {/* 🔢 จำนวนสินค้า */}
           <div className={styles.quantityBox}>
             <button
               onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -186,14 +211,20 @@ const ProductDetail = () => {
             </button>
           </div>
 
-          {/* 🛒 ปุ่มตะกร้า */}
           <div className={styles.buttonRow}>
             <button className={styles.addBtn} onClick={handleAddToCart}>
               🛒 เพิ่มในตะกร้า
             </button>
             <button
               className={styles.buyBtn}
-              onClick={() => alert("🛍️ ระบบซื้อสินค้ากำลังพัฒนา")}
+              onClick={() =>
+                Swal.fire({
+                  icon: "info",
+                  title: "อยู่ระหว่างพัฒนา 🛍️",
+                  text: "ระบบซื้อสินค้ากำลังพัฒนาอยู่",
+                  confirmButtonColor: "#3b82f6",
+                })
+              }
             >
               🛍️ ซื้อเลย
             </button>
@@ -201,7 +232,6 @@ const ProductDetail = () => {
         </div>
       </div>
 
-      {/* 📋 รายละเอียดสินค้า */}
       <div className={styles.specSection}>
         <h3 className={styles.specTitle}>รายละเอียดสินค้า</h3>
 
