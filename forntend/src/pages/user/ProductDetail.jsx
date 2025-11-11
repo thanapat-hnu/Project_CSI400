@@ -193,7 +193,13 @@ const ProductDetail = () => {
             </button>
             <button
               className={styles.buyBtn}
-              onClick={() => alert("🛍️ ระบบซื้อสินค้ากำลังพัฒนา")}
+              onClick={() => {
+                if (!user) {
+                  return navigate("/login");
+                }
+                addToCart(product, quantity);
+                navigate("/checkout/detail");
+              }}
             >
               🛍️ ซื้อเลย
             </button>
