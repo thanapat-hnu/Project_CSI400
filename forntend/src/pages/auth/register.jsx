@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../apis/axios";
-import styles from "./Register.module.css"; // ✅ เพิ่ม CSS module
+import styles from "./Register.module.css";
+import Swal from "sweetalert2"; // ✅ เพิ่ม SweetAlert2
 
 export const Register = () => {
   const navigate = useNavigate();
@@ -28,27 +29,40 @@ export const Register = () => {
     const { email, password, confirmPassword, firstname, lastname, phone } =
       formData;
 
-    if (
-      !email ||
-      !password ||
-      !confirmPassword ||
-      !firstname ||
-      !lastname ||
-      !phone
-    ) {
-      return alert("กรุณากรอกข้อมูลทุกช่อง!");
+    // 🔹 ตรวจสอบข้อมูลก่อนส่ง
+    if (!email || !password || !confirmPassword || !firstname || !lastname || !phone) {
+      return Swal.fire({
+        icon: "warning",
+        title: "กรุณากรอกข้อมูลให้ครบ!",
+        text: "ทุกช่องต้องถูกกรอกก่อนดำเนินการต่อ",
+        confirmButtonColor: "#f59e0b",
+      });
     }
 
     if (password !== confirmPassword) {
-      return alert("รหัสผ่านไม่ตรงกัน!");
+      return Swal.fire({
+        icon: "error",
+        title: "รหัสผ่านไม่ตรงกัน!",
+        confirmButtonColor: "#d33",
+      });
     }
 
     if (password.length < 6) {
-      return alert("รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร");
+      return Swal.fire({
+        icon: "warning",
+        title: "รหัสผ่านสั้นเกินไป!",
+        text: "รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร",
+        confirmButtonColor: "#f59e0b",
+      });
     }
 
     if (phone.length !== 10) {
-      return alert("กรุณากรอกเบอร์โทร 10 หลัก");
+      return Swal.fire({
+        icon: "warning",
+        title: "เบอร์โทรไม่ถูกต้อง!",
+        text: "กรุณากรอกเบอร์โทรศัพท์ 10 หลัก",
+        confirmButtonColor: "#f59e0b",
+      });
     }
 
     try {
@@ -60,11 +74,23 @@ export const Register = () => {
         phone,
       });
 
-      alert(res.data.message);
+      await Swal.fire({
+        icon: "success",
+        title: "สมัครสมาชิกสำเร็จ!",
+        text: res.data.message || "สามารถเข้าสู่ระบบได้เลย",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
       navigate("/login");
     } catch (err) {
       console.error(err.response?.data || err.message);
-      alert(err.response?.data?.message || "เกิดข้อผิดพลาด");
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: err.response?.data?.message || "ไม่สามารถสมัครสมาชิกได้",
+        confirmButtonColor: "#d33",
+      });
     }
   };
 

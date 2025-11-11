@@ -2,7 +2,8 @@ import { useState } from "react";
 import api from "../../apis/axios";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import styles from "./Login.module.css"; // ใช้ไฟล์ CSS เดิมได้
+import styles from "./Login.module.css";
+import Swal from "sweetalert2"; // ✅ เพิ่ม SweetAlert2
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -23,6 +24,15 @@ const Login = () => {
       if (user) localStorage.setItem("user", JSON.stringify(user));
       login(token);
 
+      // ✅ แสดง popup เข้าสู่ระบบสำเร็จ
+      await Swal.fire({
+        icon: "success",
+        title: "เข้าสู่ระบบสำเร็จ!",
+        showConfirmButton: false,
+        timer: 1300,
+      });
+
+      // ✅ ตรวจสิทธิ์ role แล้วค่อย navigate
       const payload = JSON.parse(atob(token.split(".")[1]));
       if (payload.roles === "admin") {
         navigate("/admin/dashboard");
@@ -30,7 +40,16 @@ const Login = () => {
         navigate("/");
       }
     } catch (err) {
+      console.error("❌ Login error:", err);
       setError(err.response?.data?.message || "เข้าสู่ระบบไม่สำเร็จ");
+
+      // ❌ popup แจ้งข้อผิดพลาด
+      Swal.fire({
+        icon: "error",
+        title: "เข้าสู่ระบบไม่สำเร็จ",
+        text: err.response?.data?.message || "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
+        confirmButtonColor: "#d33",
+      });
     }
   };
 
@@ -60,8 +79,6 @@ const Login = () => {
           <button type="submit" className={styles.loginBtn}>
             เข้าสู่ระบบ
           </button>
-
-         
 
           <p className={styles.footerText}>
             ยังไม่มีบัญชี?{" "}

@@ -4,6 +4,7 @@ import api from "../../apis/axios";
 import UserSidebar from "./UserSidebar";
 import styles from "./UserPage.module.css";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import Swal from "sweetalert2"; // ✅ เพิ่ม SweetAlert2
 
 export const AddressCreate = () => {
   const navigate = useNavigate();
@@ -32,24 +33,46 @@ export const AddressCreate = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ✅ ตรวจสอบความยาวก่อนส่ง
+    // ✅ ตรวจสอบความถูกต้อง
     if (formData.phone.length !== 10) {
-      setErrorMsg("กรุณากรอกเบอร์โทร 10 ตัวเลข");
-      return;
+      return Swal.fire({
+        icon: "warning",
+        title: "เบอร์โทรไม่ถูกต้อง!",
+        text: "กรุณากรอกเบอร์โทรศัพท์ให้ครบ 10 หลัก",
+        confirmButtonColor: "#f59e0b",
+      });
     }
 
     if (formData.postalCode.length !== 5) {
-      setErrorMsg("กรุณากรอกรหัสไปรษณีย์ 5 ตัวเลข");
-      return;
+      return Swal.fire({
+        icon: "warning",
+        title: "รหัสไปรษณีย์ไม่ถูกต้อง!",
+        text: "กรุณากรอกรหัสไปรษณีย์ให้ครบ 5 หลัก",
+        confirmButtonColor: "#f59e0b",
+      });
     }
 
     try {
       await api.post("/protech/address", formData);
-      alert("เพิ่มที่อยู่สำเร็จ");
+
+      await Swal.fire({
+        icon: "success",
+        title: "เพิ่มที่อยู่สำเร็จ!",
+        text: "ข้อมูลของคุณถูกบันทึกเรียบร้อยแล้ว",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
       navigate("/profile/address");
     } catch (err) {
       console.error(err);
       setErrorMsg("เกิดข้อผิดพลาดในการเพิ่มที่อยู่");
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "ไม่สามารถเพิ่มที่อยู่ได้ โปรดลองอีกครั้ง",
+        confirmButtonColor: "#d33",
+      });
     }
   };
 
@@ -116,7 +139,7 @@ export const AddressCreate = () => {
                   value={formData.postalCode}
                   onChange={handleChange}
                   required
-                  maxLength={5} // ✅ จำกัด 5 ตัว
+                  maxLength={5}
                 />
               </div>
 
@@ -128,7 +151,7 @@ export const AddressCreate = () => {
                   value={formData.phone}
                   onChange={handleChange}
                   required
-                  maxLength={10} // ✅ จำกัด 10 ตัว
+                  maxLength={10}
                 />
               </div>
             </div>

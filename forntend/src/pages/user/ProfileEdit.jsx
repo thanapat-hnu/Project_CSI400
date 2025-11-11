@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import api from "../../apis/axios";
 import UserSidebar from "./UserSidebar";
 import styles from "./UserPage.module.css";
-import { FaUserEdit } from "react-icons/fa"; // ✅ ไอคอนหัวข้อ
+import { FaUserEdit } from "react-icons/fa";
+import Swal from "sweetalert2"; // ✅ เพิ่ม SweetAlert2
 
 export const ProfileEdit = () => {
   const navigate = useNavigate();
@@ -33,6 +34,11 @@ export const ProfileEdit = () => {
         setOriginalData(user);
       } catch (err) {
         console.error("เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้:", err);
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: "ไม่สามารถโหลดข้อมูลผู้ใช้ได้",
+        });
       }
     };
     fetchUserData();
@@ -52,7 +58,12 @@ export const ProfileEdit = () => {
       formData.lastname === originalData.lastname &&
       formData.phone === originalData.phone
     ) {
-      setErrorMsg("คุณไม่ได้แก้ไขข้อมูลใด ๆ");
+      Swal.fire({
+        icon: "info",
+        title: "ไม่มีการเปลี่ยนแปลง",
+        text: "คุณยังไม่ได้แก้ไขข้อมูลใด ๆ",
+        confirmButtonColor: "#3b82f6",
+      });
       return;
     }
 
@@ -64,13 +75,27 @@ export const ProfileEdit = () => {
       });
 
       if (res.data.message === "อัปเดตข้อมูลสำเร็จ") {
-        alert("✅ อัปเดตข้อมูลสำเร็จ!");
+        await Swal.fire({
+          icon: "success",
+          title: "อัปเดตข้อมูลสำเร็จ!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         navigate("/profile");
       } else {
-        setErrorMsg(res.data.message || "เกิดข้อผิดพลาดในการอัปเดตข้อมูล");
+        Swal.fire({
+          icon: "error",
+          title: "ไม่สามารถอัปเดตข้อมูลได้",
+          text: res.data.message || "เกิดข้อผิดพลาดในการอัปเดตข้อมูล",
+        });
       }
     } catch (err) {
-      setErrorMsg("ไม่สามารถอัปเดตข้อมูลได้");
+      console.error("ไม่สามารถอัปเดตข้อมูลได้:", err);
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "ไม่สามารถอัปเดตข้อมูลได้ กรุณาลองใหม่อีกครั้ง",
+      });
     }
   };
 

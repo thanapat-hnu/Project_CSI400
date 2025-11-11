@@ -4,6 +4,7 @@ import api from "../../apis/axios";
 import UserSidebar from "./UserSidebar";
 import styles from "./UserPage.module.css";
 import { FaHeart, FaTrashAlt, FaEye } from "react-icons/fa";
+import Swal from "sweetalert2"; 
 
 export const Wishlist = () => {
   const [wishlist, setWishlist] = useState([]);
@@ -31,14 +32,38 @@ export const Wishlist = () => {
 
   // 🗑️ ฟังก์ชันลบสินค้าออกจาก Wishlist
   const handleRemove = async (product_id) => {
-    if (!window.confirm("คุณต้องการลบสินค้านี้ออกจากรายการที่ถูกใจหรือไม่?")) return;
+    const result = await Swal.fire({
+      title: "ยืนยันการลบ?",
+      text: "คุณต้องการลบสินค้านี้ออกจากรายการที่ถูกใจหรือไม่?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "ลบออก",
+      cancelButtonText: "ยกเลิก",
+    });
+
+    if (!result.isConfirmed) return;
 
     try {
       await api.delete(`/protech/wishlist/${product_id}`);
-      setWishlist((prev) => prev.filter((item) => item.product?.id !== product_id));
+      setWishlist((prev) =>
+        prev.filter((item) => item.product?.id !== product_id)
+      );
+
+      Swal.fire({
+        icon: "success",
+        title: "ลบออกเรียบร้อยแล้ว!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } catch (err) {
       console.error("❌ ลบ wishlist ล้มเหลว:", err);
-      alert("ไม่สามารถลบสินค้าได้");
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด",
+        text: "ไม่สามารถลบสินค้าได้",
+      });
     }
   };
 
@@ -73,11 +98,13 @@ export const Wishlist = () => {
                   : `http://localhost:3000${product.images[0].url}`
                 : "https://dummyimage.com/300x300/e5e7eb/9ca3af.png&text=No+Image";
 
-              // ✅ แปลงราคาเป็น number ก่อน format
               const priceNumber = Number(product?.price) || 0;
 
               return (
-                <div key={product?.id || item.id} className={styles.favoriteCard}>
+                <div
+                  key={product?.id || item.id}
+                  className={styles.favoriteCard}
+                >
                   <img
                     src={imageUrl}
                     alt={product?.name || "สินค้า"}
@@ -118,4 +145,3 @@ export const Wishlist = () => {
     </div>
   );
 };
-    
