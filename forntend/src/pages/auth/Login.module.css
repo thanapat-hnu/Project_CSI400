@@ -1,0 +1,136 @@
+/* 🔳 ครอบทั้งหน้า */
+.pageContainer {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f8f8f8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 0;
+}
+
+/* 🔲 กล่อง Login */
+.loginBox {
+  width: 420px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+/* หัวข้อ */
+.title {
+  text-align: center;
+  font-size: 1.7rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #222;
+}
+
+/* ฟอร์ม */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ช่องกรอกข้อมูล */
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease;
+}
+.input:focus {
+  outline: none;
+  border-color: #e60023;
+}
+
+/* ปุ่มเข้าสู่ระบบ */
+.loginBtn {
+  background-color: #e60023;
+  color: white;
+  border: none;
+  width: 100%;
+  padding: 10px 0;
+  border-radius: 6px;
+  font-size: 1rem;
+  margin-top: 12px;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+.loginBtn:hover {
+  background-color: #b7001b;
+}
+
+/* ข้อความแบ่งส่วน */
+.orText {
+  text-align: center;
+  color: #555;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* ปุ่มโซเชียล */
+.socialBtn {
+  width: 100%;
+  padding: 10px 0;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+  margin-top: 8px;
+  transition: 0.25s;
+}
+
+/* Facebook */
+.fbBtn {
+  background-color: #1877f2;
+  color: #fff;
+}
+.fbBtn:hover {
+  background-color: #145ecc;
+}
+
+/* Google */
+.googleBtn {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+.googleBtn:hover {
+  background-color: #f3f3f3;
+}
+.googleIcon {
+  width: 20px;
+  height: 20px;
+}
+
+/* ข้อความท้าย */
+.footerText {
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: 16px;
+  color: #555;
+}
+.link {
+  color: #e60023;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.link:hover {
+  text-decoration: underline;
+}
+
+/* Error */
+.error {
+  color: red;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
