@@ -165,8 +165,8 @@ const ProductDetail = () => {
                 src={`http://localhost:3000${img.url}`}
                 alt={`thumb-${i}`}
                 className={`${styles.thumbnail} ${selectedImage === `http://localhost:3000${img.url}`
-                    ? styles.activeThumb
-                    : ""
+                  ? styles.activeThumb
+                  : ""
                   }`}
                 onClick={() =>
                   setSelectedImage(`http://localhost:3000${img.url}`)
@@ -220,24 +220,29 @@ const ProductDetail = () => {
             </button>
             <button
               className={styles.buyBtn}
-<<<<<<< HEAD
               onClick={() => {
-                if (!user) return navigate("/login");
+                if (!user) {
+                  Swal.fire({
+                    icon: "warning",
+                    title: "กรุณาเข้าสู่ระบบก่อน",
+                    text: "เพื่อซื้อสินค้าหรือเพิ่มสินค้าลงตะกร้า 🛒",
+                    confirmButtonColor: "#ef4444",
+                  }).then(() => navigate("/login"));
+                  return;
+                }
 
+                // ✅ จำกัด quantity
                 const finalQuantity = Math.min(5, Math.max(1, quantity));
                 addToCart(product, finalQuantity);
-                navigate("/checkout/detail");
-              }}
-=======
-              onClick={() =>
+
                 Swal.fire({
-                  icon: "info",
-                  title: "อยู่ระหว่างพัฒนา 🛍️",
-                  text: "ระบบซื้อสินค้ากำลังพัฒนาอยู่",
-                  confirmButtonColor: "#3b82f6",
-                })
-              }
->>>>>>> origin/moss
+                  icon: "success",
+                  title: "เพิ่มสินค้าลงตะกร้าเรียบร้อย!",
+                  text: `"${product.name}" จำนวน ${finalQuantity} ชิ้น`,
+                  showConfirmButton: false,
+                  timer: 1600,
+                }).then(() => navigate("/checkout/detail"));
+              }}
             >
               🛍️ ซื้อเลย
             </button>
