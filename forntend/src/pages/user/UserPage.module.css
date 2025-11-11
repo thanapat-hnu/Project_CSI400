@@ -466,6 +466,9 @@
   font-size: 1.1rem;
   cursor: pointer;
   transition: all 0.25s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .editBtn:hover {
@@ -505,7 +508,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 890px;
   margin-bottom: 25px;
 }
 
