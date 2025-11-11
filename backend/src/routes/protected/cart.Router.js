@@ -1,13 +1,20 @@
-import express from 'express'
+import express from "express";
+import { authJWT } from "../../middlewares/auth.middleware.js";
+import {
+  getMyCart,
+  addToCart,
+  updateCartItem,
+  removeCartItem,
+  clearCart, 
+} from "../../controllers/cart.Controller.js";
 
-import { addToCart, updateCartItem, getMyCart, removeCartItem } from '../../controllers/cart.controller.js'
+const router = express.Router();
 
-const router = express.Router()
+// ✅ เส้นทางทั้งหมดของ cart
+router.get("/", authJWT, getMyCart);
+router.post("/", authJWT, addToCart);
+router.put("/", authJWT, updateCartItem);
+router.delete("/:product_id", authJWT, removeCartItem);
+router.delete("/", authJWT, clearCart); 
 
-router.get('/', getMyCart)
-router.post('/', addToCart)
-router.put('/', updateCartItem)
-router.delete('/:product_id', removeCartItem)
-
-
-export default router
+export default router;

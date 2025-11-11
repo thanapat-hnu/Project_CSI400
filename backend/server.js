@@ -30,6 +30,7 @@ const port = process.env.PORT || 3000;
     console.log("✅ Connected to MySQL database");
 
     await sequelize.sync({ alter: false });
+    // await sequelize.sync({ alter: true }); // ✅ อนุญาตให้ Sequelize ปรับโครงสร้างตาราง
 
     app.listen(port, () => {
       console.log(`🚀 Server running on http://localhost:${port}`);

@@ -12,7 +12,10 @@ export const MyProfile = () => {
     lastname: "",
     phone: "",
   });
+  const [coupons, setCoupons] = useState([]); // ✅ เพิ่ม state คูปอง
+  const [loadingCoupons, setLoadingCoupons] = useState(true);
 
+  // ✅ โหลดข้อมูลผู้ใช้
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -29,6 +32,24 @@ export const MyProfile = () => {
       }
     };
     fetchUserData();
+  }, []);
+
+  // ✅ โหลดคูปองที่เก็บไว้
+  useEffect(() => {
+    const fetchCoupons = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await api.get("/private/coupon/saved", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setCoupons(res.data.coupons || []);
+      } catch (err) {
+        console.error("❌ โหลดคูปองล้มเหลว:", err);
+      } finally {
+        setLoadingCoupons(false);
+      }
+    };
+    fetchCoupons();
   }, []);
 
   return (
@@ -86,7 +107,20 @@ export const MyProfile = () => {
             </tbody>
           </table>
         </div>
+
+        
       </div>
+
+      <button
+        className={styles.logoutBtn}
+        onClick={() => {
+          localStorage.removeItem("token");
+          alert("ออกจากระบบเรียบร้อย ✅");
+          navigate("/login");
+        }}
+      >
+        ออกจากระบบ
+      </button>
     </div>
   );
 };

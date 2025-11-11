@@ -1,10 +1,11 @@
 import Order from "../models/Order.js";
 import OrderItem from "../models/OrderItem.js";
 import Product from "../models/Product.js";
+import Payment from "../models/Payment.js"; // ✅ เพิ่มเข้ามา
 import { sendAutoNotification } from "./notification.Controller.js";
 
 /* ──────────────── GET ──────────────── */
-// ดึงคำสั่งซื้อทั้งหมด (พร้อมชื่อสินค้า)
+// ดึงคำสั่งซื้อทั้งหมด (พร้อมชื่อสินค้า + การชำระเงิน)
 export const getAllOrders = async (_req, res) => {
   try {
     const orders = await Order.findAll({
@@ -20,6 +21,11 @@ export const getAllOrders = async (_req, res) => {
             },
           ],
         },
+        {
+          model: Payment, // ✅ include การชำระเงิน
+          as: "payments",
+          attributes: ["id", "amount", "status", "paid_at"],
+        },
       ],
       order: [["id", "DESC"]],
     });
@@ -30,7 +36,7 @@ export const getAllOrders = async (_req, res) => {
   }
 };
 
-// ดึงคำสั่งซื้อรายตัว (พร้อมชื่อสินค้า)
+// ดึงคำสั่งซื้อรายตัว (พร้อมชื่อสินค้า + การชำระเงิน)
 export const getOrderById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -46,6 +52,11 @@ export const getOrderById = async (req, res) => {
               attributes: ["id", "name", "price"],
             },
           ],
+        },
+        {
+          model: Payment,
+          as: "payments",
+          attributes: ["id", "amount", "status", "paid_at"],
         },
       ],
     });
@@ -97,8 +108,7 @@ export const createOrder = async (req, res) => {
 
     await t.commit();
 
-
-    // ✅ ดึงข้อมูลพร้อม items + product กลับมาแสดง
+    // ✅ ดึงข้อมูลพร้อม items + product + payments
     const newOrder = await Order.findByPk(order.id, {
       include: [
         {
@@ -111,6 +121,11 @@ export const createOrder = async (req, res) => {
               attributes: ["id", "name", "price"],
             },
           ],
+        },
+        {
+          model: Payment,
+          as: "payments",
+          attributes: ["id", "amount", "status", "paid_at"],
         },
       ],
     });
@@ -154,6 +169,11 @@ export const updateOrderStatus = async (req, res) => {
             },
           ],
         },
+        {
+          model: Payment,
+          as: "payments",
+          attributes: ["id", "amount", "status", "paid_at"],
+        },
       ],
     });
 
@@ -168,7 +188,6 @@ export const updateOrderStatus = async (req, res) => {
 };
 
 /* ──────────────── DELETE ──────────────── */
-// ✅ ลบคำสั่งซื้อ (และ item จะถูกลบตามเพราะ onDelete: CASCADE)
 export const deleteOrder = async (req, res) => {
   try {
     const { id } = req.params;
@@ -184,7 +203,7 @@ export const deleteOrder = async (req, res) => {
 // ✅ ดึงคำสั่งซื้อของผู้ใช้แต่ละคน (ใช้กับฝั่ง User)
 export const getOrdersByUser = async (req, res) => {
   try {
-    const { user_id } = req.params; // ดึง user_id จาก URL เช่น /orders/user/:user_id
+    const { user_id } = req.params;
 
     const orders = await Order.findAll({
       where: { user_id },
@@ -199,6 +218,11 @@ export const getOrdersByUser = async (req, res) => {
               attributes: ["id", "name", "price"],
             },
           ],
+        },
+        {
+          model: Payment,
+          as: "payments",
+          attributes: ["id", "amount", "status", "paid_at"],
         },
       ],
       order: [["id", "DESC"]],
