@@ -2,6 +2,7 @@ import { useState } from "react";
 import { createPayment } from "../apis/paymentAPI";
 import api from "../apis/axios";
 import styles from "./CheckoutPayment.module.css";
+import Swal from "sweetalert2";
 
 const CheckoutPayment = ({ order }) => {
   const [method, setMethod] = useState("");
@@ -9,18 +10,20 @@ const CheckoutPayment = ({ order }) => {
 
   const handlePayment = async () => {
     if (!method) {
-      alert("❗ กรุณาเลือกช่องทางชำระเงิน");
-      return;
+      return Swal.fire({
+        icon: "warning",
+        title: "❗ กรุณาเลือกช่องทางชำระเงิน",
+      });
     }
 
     try {
       setLoading(true);
 
-      // ✅ ขั้นตอนที่ 1: ชำระเงิน (บันทึกลงตาราง payments)
+      // ✅ ขั้นตอนที่ 1: ชำระเงิน
       const paymentData = {
         order_id: order.id,
         amount: order.total_amount,
-        method, // ช่องทางการชำระเงิน
+        method,
         status: "success",
       };
 
@@ -31,14 +34,10 @@ const CheckoutPayment = ({ order }) => {
       await api.put(
         `/protech/order/${order.id}`,
         { status: "paid" },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
 
-      // ✅ ขั้นตอนที่ 3: ล้างตะกร้าหลังจ่ายเสร็จ
+      // ✅ ขั้นตอนที่ 3: ล้างตะกร้า
       try {
         await api.delete("/protech/cart", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -49,10 +48,17 @@ const CheckoutPayment = ({ order }) => {
       }
 
       // ✅ ขั้นตอนที่ 4: แจ้งผู้ใช้
-      alert("✅ ชำระเงินและอัปเดตคำสั่งซื้อเรียบร้อยแล้ว!");
+      await Swal.fire({
+        icon: "success",
+        title: "✅ ชำระเงินและอัปเดตคำสั่งซื้อเรียบร้อยแล้ว!",
+      });
     } catch (err) {
       console.error("❌ Payment error:", err);
-      alert("❌ การชำระเงินล้มเหลว กรุณาลองอีกครั้ง");
+      Swal.fire({
+        icon: "error",
+        title: "❌ การชำระเงินล้มเหลว",
+        text: "กรุณาลองอีกครั้ง",
+      });
     } finally {
       setLoading(false);
     }

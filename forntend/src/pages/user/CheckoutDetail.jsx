@@ -6,6 +6,7 @@ import api from "../../apis/axios";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { applyCoupon, redeemCoupon } from "../../apis/couponAPI";
 import { createPayment } from "../../apis/paymentAPI";
+import Swal from "sweetalert2";
 
 const CheckoutDetail = () => {
   const navigate = useNavigate();
@@ -105,8 +106,18 @@ const CheckoutDetail = () => {
     const user_id = u.data.userId;
 
     const selectedAddress = addresses.find((a) => a.id === selectedAddressId);
-    if (!selectedAddress) return alert("❗ กรุณาเลือกที่อยู่จัดส่ง");
-    if (!paymentMethod) return alert("❗ กรุณาเลือกช่องทางชำระเงิน");
+    if (!selectedAddress) {
+      return Swal.fire({
+        icon: "warning",
+        title: "❗ กรุณาเลือกที่อยู่จัดส่ง",
+      });
+    }
+    if (!paymentMethod) {
+      return Swal.fire({
+        icon: "warning",
+        title: "❗ กรุณาเลือกช่องทางชำระเงิน",
+      });
+    }
 
     try {
       // 🟢 Step 1: สร้างคำสั่งซื้อ
@@ -156,26 +167,53 @@ const CheckoutDetail = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      alert("✅ สั่งซื้อและชำระเงินเรียบร้อยแล้ว!");
+      Swal.fire({
+        icon: "success",
+        title: "✅ สั่งซื้อและชำระเงินเรียบร้อยแล้ว!",
+      }).then(() => {
+        navigate("/user/orders");
+        window.location.reload();
+      });
       navigate("/user/orders");
       window.location.reload();
     } catch (err) {
       console.error("❌ Checkout Error:", err);
-      alert(err.response?.data?.message || "เกิดข้อผิดพลาดในการชำระเงิน");
+      Swal.fire({
+        icon: "error",
+        title: "❌ เกิดข้อผิดพลาด",
+        text: err.response?.data?.message || "เกิดข้อผิดพลาดในการชำระเงิน",
+      });
     }
   };
 
 
   /* ──────────────── ลบที่อยู่ ──────────────── */
   const handleDelete = async (id) => {
-    if (!window.confirm("คุณต้องการลบที่อยู่นี้หรือไม่?")) return;
+    const result = await Swal.fire({
+      title: "คุณต้องการลบที่อยู่นี้หรือไม่?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "ใช่",
+      cancelButtonText: "ยกเลิก",
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
       await api.delete(`/protech/address/${id}`);
       setAddresses(addresses.filter((addr) => addr.id !== id));
       if (selectedAddressId === id) setSelectedAddressId(null);
+
+      Swal.fire({
+        icon: "success",
+        title: "✅ ลบที่อยู่เรียบร้อยแล้ว",
+      });
     } catch (err) {
       console.error("ลบที่อยู่ล้มเหลว:", err);
-      alert("❌ ไม่สามารถลบที่อยู่ได้");
+      Swal.fire({
+        icon: "error",
+        title: "❌ ไม่สามารถลบที่อยู่ได้",
+      });
     }
   };
 

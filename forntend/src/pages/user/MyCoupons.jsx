@@ -3,6 +3,7 @@ import api from "../../apis/axios";
 import UserSidebar from "./UserSidebar";
 import styles from "./UserPage.module.css";
 import { discardCoupon } from "../../apis/couponAPI";
+import Swal from "sweetalert2";
 
 const MyCoupons = () => {
   const [tab, setTab] = useState("saved"); // ✅ "saved" หรือ "used"
@@ -33,16 +34,38 @@ const MyCoupons = () => {
   }, [tab]);
 
   // ✅ ฟังก์ชันลบทิ้งคูปองหมดอายุ
-const handleDiscard = async (couponId) => {
-  if (!window.confirm("คุณต้องการทิ้งคูปองนี้หรือไม่?")) return;
-  try {
-    await discardCoupon(couponId);
-    alert("🗑️ ลบคูปองหมดอายุเรียบร้อยแล้ว");
-    setCoupons(coupons.filter((c) => c.id !== couponId));
-  } catch (err) {
-    alert(err.response?.data?.message || "❌ ไม่สามารถลบคูปองได้");
-  }
-};
+  const handleDiscard = async (couponId) => {
+    // ✅ แสดง popup ยืนยันก่อนลบ
+    const result = await Swal.fire({
+      title: "คุณต้องการทิ้งคูปองนี้หรือไม่?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "ใช่",
+      cancelButtonText: "ยกเลิก",
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      await discardCoupon(couponId);
+      // ✅ แสดง popup success
+      await Swal.fire({
+        icon: "success",
+        title: "🗑️ ลบคูปองหมดอายุเรียบร้อยแล้ว",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      // ✅ อัปเดต state
+      setCoupons(coupons.filter((c) => c.id !== couponId));
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "❌ ไม่สามารถลบคูปองได้",
+        text: err.response?.data?.message || "",
+      });
+    }
+  };
 
   // ✅ ฟังก์ชันตรวจสอบคูปองหมดอายุ
   const isExpired = (coupon) => {
@@ -60,17 +83,15 @@ const handleDiscard = async (couponId) => {
         {/* 🔘 แท็บ */}
         <div className={styles.tabContainer}>
           <button
-            className={`${styles.tabBtn} ${
-              tab === "saved" ? styles.activeTab : ""
-            }`}
+            className={`${styles.tabBtn} ${tab === "saved" ? styles.activeTab : ""
+              }`}
             onClick={() => setTab("saved")}
           >
             คูปองที่เก็บไว้
           </button>
           <button
-            className={`${styles.tabBtn} ${
-              tab === "used" ? styles.activeTab : ""
-            }`}
+            className={`${styles.tabBtn} ${tab === "used" ? styles.activeTab : ""
+              }`}
             onClick={() => setTab("used")}
           >
             คูปองที่ใช้แล้ว
@@ -90,9 +111,8 @@ const handleDiscard = async (couponId) => {
             {coupons.map((coupon) => (
               <div
                 key={coupon.id}
-                className={`${styles.couponCard} ${
-                  tab === "used" ? styles.usedCoupon : ""
-                }`}
+                className={`${styles.couponCard} ${tab === "used" ? styles.usedCoupon : ""
+                  }`}
               >
                 <h3>{coupon.code}</h3>
                 <p>

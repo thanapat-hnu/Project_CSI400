@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getPublicPromotions } from "../../apis/promotionAPI";
 import { getPublicCoupons, saveUserCoupon } from "../../apis/couponAPI";
 import styles from "./HomePromotions.module.css";
+import Swal from "sweetalert2";
 
 function HomePromotions() {
   const [promotions, setPromotions] = useState([]);
@@ -41,9 +42,18 @@ function HomePromotions() {
   const handleSaveCoupon = async (couponId) => {
     try {
       await saveUserCoupon(couponId);
-      alert("🎟️ เก็บคูปองเรียบร้อยแล้ว!");
+      Swal.fire({
+        icon: "success",
+        title: "🎟️ เก็บคูปองเรียบร้อยแล้ว!",
+        showConfirmButton: false,
+        timer: 1500, // ปิดอัตโนมัติ 1.5 วินาที
+      });
     } catch (err) {
-      alert(err.response?.data?.message || "เกิดข้อผิดพลาดในการเก็บคูปอง");
+      Swal.fire({
+        icon: "error",
+        title: "❌ เก็บคูปองไม่สำเร็จ",
+        text: err.response?.data?.message || "เกิดข้อผิดพลาดในการเก็บคูปอง",
+      });
     }
   };
 
