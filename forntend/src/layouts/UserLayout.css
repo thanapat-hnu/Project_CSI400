@@ -118,10 +118,42 @@
 }
 
 .menu a:hover {
-  color: #2563eb;
+  color: #ee0c0c;
 }
 
 .cart-link {
   display: flex;
   align-items: center;
+}
+/* 🔥 ลิงก์ทั่วไป */
+.nav-link {
+  text-decoration: none;
+  color: #374151;
+  transition: color 0.25s ease, border-bottom 0.25s ease;
+  padding-bottom: 3px;
+  font-weight: 500;
+}
+
+/* Hover สีแดง */
+.nav-link:hover {
+  color: #DC2626;
+}
+
+/* ✅ เมื่อ active (หน้าอยู่ตรงนั้น) */
+.nav-link.active {
+  color: #DC2626;
+  font-weight: 600;
+  border-bottom: 2px solid #DC2626;
+}
+
+/* 🛒 ปรับระยะตะกร้า */
+.cart-link {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.cart-count {
+  font-weight: 600;
+  color: #DC2626;
 }

@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./UserPage.module.css";
 import UserSidebar from "./UserSidebar";
 import { FaBox, FaTruck, FaCheckCircle, FaClock } from "react-icons/fa";
 
 export const MyOrders = () => {
+    const navigate = useNavigate();
   // mock data — ตัวอย่างคำสั่งซื้อ
   const [orders] = useState([
     {
@@ -88,7 +90,10 @@ export const MyOrders = () => {
                 {/* ส่วนล่าง */}
                 <div className={styles.orderFooter}>
                   <p>รวมทั้งหมด: {order.total.toLocaleString()} ฿</p>
-                  <button className={styles.trackBtn}>
+                  <button
+                    className={styles.detailBtn}
+                    onClick={() => navigate(`/profile/invoice/${order.id}`)}
+                  >
                     ดูรายละเอียดใบเสร็จ
                   </button>
                 </div>

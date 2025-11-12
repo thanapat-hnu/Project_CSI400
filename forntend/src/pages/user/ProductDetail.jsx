@@ -78,7 +78,7 @@ const ProductDetail = () => {
         setIsWishlisted(true);
         Swal.fire({
           icon: "success",
-          title: "เพิ่มใน Wishlist สำเร็จ ❤️",
+          title: "เพิ่มใน สินค้าที่ถูกใจ สำเร็จ ❤️",
           showConfirmButton: false,
           timer: 1500,
         });
