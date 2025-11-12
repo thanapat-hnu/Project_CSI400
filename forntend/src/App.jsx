@@ -22,7 +22,8 @@ import ProductDetail from "./pages/user/ProductDetail";
 import { Wishlist } from "./pages/user/Wishlist";
 import Cart from "./pages/user/Cart";
 import CheckoutDetail from "./pages/user/CheckoutDetail";
-import { ContactUs } from "./pages/user/ContectUs"
+import { ContactUs } from "./pages/user/ContectUs";
+import { MyOrders } from "./pages/user/MyOrders";
 
 // 🆕 เพิ่มหน้าโปรโมชั่น
 import AdminPromotions from "./pages/admin/Promotions";
@@ -50,10 +51,14 @@ function App() {
         <Route path="promotions" element={<UserPromotions />} />
 
         {/* 🛒 หน้าตะกร้า */}
-        <Route path="cart" element={
-          <ProtectedRoute>
-            <Cart />
-          </ProtectedRoute>} />
+        <Route
+          path="cart"
+          element={
+            <ProtectedRoute>
+              <Cart />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/checkout/detail"
           element={
@@ -148,9 +153,16 @@ function App() {
           }
         />
 
+        {/* 🧾 คำสั่งซื้อของฉัน */}
+        <Route
+          path="/user/orders"
+          element={
+            <ProtectedRoute>
+              <MyOrders />
+            </ProtectedRoute>
+          }
+        />
       </Route>
-
-
 
       {/* 👑 Admin Section */}
       <Route

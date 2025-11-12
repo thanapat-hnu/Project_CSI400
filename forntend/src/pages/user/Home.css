@@ -8,9 +8,9 @@
   overflow-x: hidden;
 }
 
-/* 🟦 Hero Section */
+/* 🔴 Hero Section */
 .hero-section {
-  background: linear-gradient(to right, #2563eb, #4f46e5);
+  background: linear-gradient(to right, #dc2626, #b91c1c);
   color: white;
   text-align: center;
   padding: 5rem 2rem;
@@ -30,7 +30,7 @@
 
 .hero-btn {
   background: white;
-  color: #2563eb;
+  color: #dc2626;
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
   font-weight: 600;
@@ -40,7 +40,7 @@
 }
 
 .hero-btn:hover {
-  background: #e5e7eb;
+  background: #f3f4f6;
 }
 
 /* 🧩 Main Content (Symmetric Layout) */
@@ -90,14 +90,14 @@
 }
 
 .category-item:hover {
-  background: #eef2ff;
-  color: #2563eb;
+  background: #fee2e2;
+  color: #dc2626;
   transform: translateY(-3px);
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.15);
 }
 
 .category-icon {
-  color: #2563eb;
+  color: #dc2626;
 }
 
 /* 🔹 สินค้ายอดนิยม */
@@ -119,7 +119,7 @@
 
 .view-all {
   text-decoration: none;
-  color: #2563eb;
+  color: #dc2626;
   font-weight: 500;
 }
 
@@ -140,12 +140,12 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  height: 400px; 
+  height: 400px;
   box-sizing: border-box;
 }
 
 .product-card:hover {
-  background: #eef2ff;
+  background: #fee2e2;
   transform: translateY(-3px);
 }
 
@@ -162,7 +162,7 @@
   font-weight: 600;
   color: #1f2937;
   font-size: 0.9rem;
-  min-height: 42px; 
+  min-height: 42px;
   margin-bottom: 0.25rem;
   line-height: 1.3;
   overflow: hidden;
@@ -171,13 +171,12 @@
   -webkit-box-orient: vertical;
 }
 
-
 .product-spec {
   font-size: 0.8rem;
   color: #6b7280;
   line-height: 1.4;
-  min-height: 48px; 
-  margin-bottom: auto; 
+  min-height: 48px;
+  margin-bottom: auto;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -187,13 +186,13 @@
 .product-price {
   font-size: 1rem;
   font-weight: 700;
-  color: #2563eb;
-  margin-top: auto; 
+  color: #dc2626;
+  margin-top: auto;
   padding-top: 10px;
 }
 
 .add-cart-btn {
-  background: #2563eb;
+  background: #dc2626;
   color: white;
   padding: 0.5rem;
   border-radius: 0.5rem;
@@ -204,8 +203,9 @@
 }
 
 .add-cart-btn:hover {
-  background: #1d4ed8;
+  background: #b91c1c;
 }
+
 /* ⚙️ Footer */
 .footer {
   background: #111827;
@@ -221,17 +221,6 @@
   margin-top: 0.5rem;
 }
 
-/* 📱 Responsive */
-@media (max-width: 1024px) {
-  .main-content {
-    flex-direction: column;
-    align-items: center;
-  }
-  .category-section,
-  .product-section {
-    width: 90%;
-  }
-}
 /* 💻 Notebook Section */
 .notebook-card {
   position: relative;
@@ -251,19 +240,6 @@
   border-radius: 6px;
 }
 
-.product-spec {
-  font-size: 0.8rem;
-  color: #6b7280;
-  line-height: 1.4;
-  margin-bottom: 0.5rem;
-  min-height: 50px; /* ✅ ให้พื้นที่พอสำหรับรายละเอียด 2-3 บรรทัด */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-}
-
-
 .product-oldprice {
   text-decoration: line-through;
   color: #9ca3af;
@@ -278,6 +254,7 @@
   border-radius: 8px;
   margin-bottom: 0.75rem;
 }
+
 .monitor-card {
   background: #fff;
   border: 1px solid #e5e7eb;
@@ -286,7 +263,7 @@
 }
 
 .monitor-card:hover {
-  background: #eef2ff;
+  background: #fee2e2;
   transform: translateY(-3px);
 }
 
@@ -296,6 +273,7 @@
   border-radius: 8px;
   margin-bottom: 0.75rem;
 }
+
 /* ทำให้ keyboard / mouse ใช้ style เดียวกับ product-card มาตรฐาน */
 .keyboard-card,
 .mouse-card {
@@ -307,7 +285,7 @@
 
 .keyboard-card:hover,
 .mouse-card:hover {
-  background: #f9fafb;
+  background: #fee2e2;
   transform: translateY(-3px);
 }
 
@@ -317,4 +295,17 @@
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 0.75rem;
+}
+
+/* 📱 Responsive */
+@media (max-width: 1024px) {
+  .main-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .category-section,
+  .product-section {
+    width: 90%;
+  }
 }
