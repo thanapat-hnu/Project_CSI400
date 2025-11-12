@@ -9,61 +9,252 @@ import {
   deleteProductVariant,
   addProductImage,
   deleteProductImage,
+  getAllProducts,
+  getProductById,
+  searchProducts,
 } from "../../controllers/product.Controller.js";
-
-import Product from "../../models/Product.js";
-import Category from "../../models/Category.js";
-import ProductVariant from "../../models/ProductVariant.js";
-import ProductImage from "../../models/ProductImage.js";
 
 const router = express.Router();
 
-/* ──────────────── ตั้งค่า Multer สำหรับอัปโหลดรูป ──────────────── */
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/products/"); // 📁 เก็บในโฟลเดอร์นี้
-  },
-  filename: (req, file, cb) => {
-    const uniqueName = Date.now() + "-" + file.originalname;
-    cb(null, uniqueName);
-  },
-});
+/**
+ * @swagger
+ * tags:
+ *   name: Product
+ *   description: API สำหรับจัดการสินค้า (ผู้จัดทำ: นายคฑาวุธ เมืองพรหม)
+ */
 
+/* ──────────────── Multer Upload ──────────────── */
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "uploads/products/"),
+  filename: (req, file, cb) => cb(null, Date.now() + "-" + file.originalname),
+});
 const upload = multer({ storage });
 
-/* ──────────────── Product ──────────────── */
+/**
+ * @swagger
+ * /api/private/product:
+ *   get:
+ *     summary: ดึงสินค้าทั้งหมด
+ *     tags: [Product]
+ *     responses:
+ *       200:
+ *         description: ดึงสินค้าสำเร็จ
+ */
+router.get("/", getAllProducts);
+
+/**
+ * @swagger
+ * /api/private/product/search:
+ *   get:
+ *     summary: ค้นหาสินค้า
+ *     tags: [Product]
+ *     parameters:
+ *       - name: q
+ *         in: query
+ *         description: คำค้นหา
+ *         required: false
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: ผลการค้นหา
+ */
+router.get("/search", searchProducts);
+
+/**
+ * @swagger
+ * /api/private/product/{id}:
+ *   get:
+ *     summary: ดึงสินค้าตาม ID
+ *     tags: [Product]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: ID ของสินค้า
+ *     responses:
+ *       200:
+ *         description: ดึงสินค้าเรียบร้อย
+ */
+router.get("/:id", getProductById);
+
+/**
+ * @swagger
+ * /api/private/product:
+ *   post:
+ *     summary: เพิ่มสินค้าใหม่
+ *     tags: [Product]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               price:
+ *                 type: number
+ *               stock:
+ *                 type: number
+ *               category_id:
+ *                 type: integer
+ *               image:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       201:
+ *         description: เพิ่มสินค้าสำเร็จ
+ */
 router.post("/", upload.single("image"), createProduct);
 
+/**
+ * @swagger
+ * /api/private/product/{id}:
+ *   put:
+ *     summary: อัปเดตสินค้า
+ *     tags: [Product]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: อัปเดตสินค้าเรียบร้อย
+ */
 router.put("/:id", updateProduct);
+
+/**
+ * @swagger
+ * /api/private/product/{id}:
+ *   delete:
+ *     summary: ลบสินค้า
+ *     tags: [Product]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: ลบสินค้าเรียบร้อย
+ */
 router.delete("/:id", deleteProduct);
 
-/* ──────────────── Variant ──────────────── */
+/**
+ * @swagger
+ * /api/private/product/{id}/variants:
+ *   post:
+ *     summary: เพิ่ม Variant ของสินค้า
+ *     tags: [Product]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               sku:
+ *                 type: string
+ *               price:
+ *                 type: number
+ *               stock:
+ *                 type: number
+ *     responses:
+ *       201:
+ *         description: เพิ่ม Variant สำเร็จ
+ */
 router.post("/:id/variants", addProductVariant);
+
+/**
+ * @swagger
+ * /api/private/product/variants/{variantId}:
+ *   put:
+ *     summary: อัปเดต Variant
+ *     tags: [Product]
+ *     parameters:
+ *       - name: variantId
+ *         in: path
+ *         required: true
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: อัปเดต Variant สำเร็จ
+ */
 router.put("/variants/:variantId", updateProductVariant);
+
+/**
+ * @swagger
+ * /api/private/product/variants/{variantId}:
+ *   delete:
+ *     summary: ลบ Variant
+ *     tags: [Product]
+ *     parameters:
+ *       - name: variantId
+ *         in: path
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: ลบ Variant สำเร็จ
+ */
 router.delete("/variants/:variantId", deleteProductVariant);
 
-/* ──────────────── Image ──────────────── */
-// ✅ ใช้ upload.single('image') เพื่ออัปโหลดไฟล์จริง
+/**
+ * @swagger
+ * /api/private/product/{id}/images:
+ *   post:
+ *     summary: เพิ่มรูปภาพสินค้า
+ *     tags: [Product]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               image:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       201:
+ *         description: เพิ่มรูปภาพสำเร็จ
+ */
 router.post("/:id/images", upload.single("image"), addProductImage);
+
+/**
+ * @swagger
+ * /api/private/product/images/{imageId}:
+ *   delete:
+ *     summary: ลบรูปภาพสินค้า
+ *     tags: [Product]
+ *     parameters:
+ *       - name: imageId
+ *         in: path
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: ลบรูปภาพสำเร็จ
+ */
 router.delete("/images/:imageId", deleteProductImage);
-
-/* ──────────────── Get Products ──────────────── */
-router.get("/", async (req, res) => {
-  try {
-    const products = await Product.findAll({
-      include: [
-        { model: Category, as: "category", attributes: ["id", "name"] },
-        { model: ProductVariant, as: "variants" },
-        { model: ProductImage, as: "images" },
-      ],
-      order: [["id", "ASC"]],
-    });
-
-    res.json(products);
-  } catch (err) {
-    console.error("❌ Error fetching products:", err);
-    res.status(500).json({ message: "เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า" });
-  }
-});
 
 export default router;
