@@ -19,6 +19,7 @@ export const getOrCreateCart = async (userId) => {
 export const getMyCart = async (req, res) => {
   try {
     const userId = req.user.user_id;
+    console.log(userId)
     const cart = await getOrCreateCart(userId);
 
     const [items] = await pool.query(
@@ -47,6 +48,7 @@ export const getMyCart = async (req, res) => {
     const total = items.reduce((sum, i) => sum + Number(i.total), 0);
 
     return res.status(200).json({
+      userId,
       cart_id: cart.id,
       items,
       total,

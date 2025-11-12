@@ -48,6 +48,7 @@ const CheckoutDetail = () => {
 
   /* ──────────────── โหลดที่อยู่ ──────────────── */
   useEffect(() => {
+
     const fetchAddress = async () => {
       try {
         const res = await api.get("/protech/address");
@@ -99,7 +100,9 @@ const CheckoutDetail = () => {
   /* ──────────────── ยืนยันคำสั่งซื้อ ──────────────── */
   const handleConfirm = async () => {
     const token = localStorage.getItem("token");
-    const user_id = localStorage.getItem("user_id");
+
+    const u = await api.get("/protech/cart")
+    const user_id = u.data.userId;
 
     const selectedAddress = addresses.find((a) => a.id === selectedAddressId);
     if (!selectedAddress) return alert("❗ กรุณาเลือกที่อยู่จัดส่ง");
@@ -137,7 +140,7 @@ const CheckoutDetail = () => {
       }
 
       // 🟢 Step 4: ล้างตะกร้า
-      await api.delete("/protech/cart", {
+      await api.delete("/protech/cart/clear", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
