@@ -20,7 +20,7 @@ const router = express.Router();
  * @swagger
  * tags:
  *   name: Product
- *   description: API สำหรับจัดการสินค้า (ผู้จัดทำ: นายคฑาวุธ เมืองพรหม)
+ *   description: "API สำหรับจัดการสินค้า (ผู้จัดทำ: นายคฑาวุธ เมืองพรหม)"
  */
 
 /* ──────────────── Multer Upload ──────────────── */
