@@ -7,6 +7,7 @@ import publicApi from "./src/routes/public/public.Router.js";
 import protechApi from "./src/routes/protected/protected.Router.js";
 import privateApi from "./src/routes/private/private.Router.js";
 import { logger } from "./src/middlewares/logger.middleware.js";
+import { swaggerDocs } from "./src/swagger.js";
 
 dotenv.config();
 const app = express();
@@ -21,6 +22,8 @@ app.use("/uploads", express.static("uploads"));
 app.use("/api/public", publicApi);
 app.use("/api/protech", protechApi);
 app.use("/api/private", privateApi);
+
+swaggerDocs(app, 3000);
 
 const port = process.env.PORT || 3000;
 
