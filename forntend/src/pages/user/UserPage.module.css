@@ -1381,7 +1381,7 @@
   font-weight: 500;
 }
 
-.detailBtn {
+.trackBtn {
   background-color: #DC2626;
   color: white;
   border: none;
@@ -1391,6 +1391,6 @@
   transition: background-color 0.2s;
 }
 
-.detailBtn:hover {
-  background-color: #004e17;
+.trackBtn:hover {
+  background-color: #883f3f;
 }

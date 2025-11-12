@@ -1,6 +1,5 @@
 .container {
   background: #f8f9fa;
-  min-height: 100vh;
   display: flex;
   justify-content: center;
   padding: 40px;
@@ -15,6 +14,7 @@
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
   font-family: "Prompt", sans-serif;
   color: #333;
+  margin-left: 60px;
 }
 
 .header {
@@ -114,12 +114,6 @@
   font-size: 1.1rem;
 }
 
-.thankyou {
-  text-align: center;
-  margin-top: 25px;
-  font-weight: 500;
-}
-
 .backBtn {
   background: #6c757d;
   color: white;
@@ -133,20 +127,56 @@
   background: #495057;
 }
 
-/* ✅ ปรับให้สวยเวลาพิมพ์ */
+/* ✅ ข้อความขอบคุณ (ปกติบนจอ) */
+.thankyou {
+  text-align: center;
+  margin-top: 25px;
+  font-weight: 500;
+}
+
+/* ✅ ปรับสำหรับโหมดพิมพ์ */
 @media print {
+  /* ซ่อนทุกอย่างนอกจากบิล */
+  body * {
+    visibility: hidden;
+  }
+
+  /* แสดงเฉพาะบิล */
+  .invoice,
+  .invoice * {
+    visibility: visible;
+  }
+
+  /* ปรับบิลให้อยู่ตรงกลางหน้า */
+  .invoice {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    padding: 20px;
+    box-shadow: none;
+    border: none;
+  }
+
+  /* ซ่อนปุ่มต่าง ๆ ตอนพิมพ์ */
   .printBtn,
   .backBtn,
   .sidebar {
     display: none !important;
   }
+
+  /* พื้นหลังขาว */
   body {
-    background: white;
+    background: white !important;
   }
-  .invoice {
-    box-shadow: none;
-    border: none;
-    width: 100%;
-    padding: 20px;
+
+  /* ข้อความขอบคุณให้อยู่ล่างสุดของหน้ากระดาษ */
+  .thankyou {
+    position: fixed;
+    bottom: 1.5cm;
+    left: 0;
+    right: 0;
+    text-align: center;
   }
 }
