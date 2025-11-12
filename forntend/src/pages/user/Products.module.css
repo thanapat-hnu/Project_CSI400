@@ -86,7 +86,7 @@
 }
 
 .price {
-  color: #1d4ed8;
+  color: #dc2626; /* 🔴 สีแดงหลัก */
   font-weight: 700;
   margin-top: auto; /* ✅ ดันลงล่าง */
   font-size: 1rem;
@@ -112,16 +112,17 @@
 }
 
 .categoryBtn:hover {
-  background-color: #2563eb;
+  background-color: #dc2626; /* 🔴 hover สีแดงสด */
   color: white;
-  border-color: #2563eb;
+  border-color: #dc2626;
 }
 
 .active {
-  background-color: #2563eb;
+  background-color: #b91c1c; /* 🔴 active สีแดงเข้ม */
   color: white;
-  border-color: #2563eb;
+  border-color: #b91c1c;
 }
+
 .desc {
   font-size: 0.8rem;
   color: #4b5563;
@@ -133,4 +134,3 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
 }
-

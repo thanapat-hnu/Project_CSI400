@@ -1304,3 +1304,93 @@
 .logoutBtn:hover {
   background-color: #b91c1c; /* สีแดงเข้มเมื่อ hover */
 }
+
+
+
+
+/* ===========================
+   🟦 MyOrders Section
+=========================== */
+.orderList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.orderCard {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1.2rem 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.orderHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px dashed #d1d5db;
+  padding-bottom: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.orderStatus {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.statusIconPending {
+  color: #f59e0b;
+}
+
+.statusIconShipped {
+  color: #3b82f6;
+}
+
+.statusIconDelivered {
+  color: #10b981;
+}
+
+.statusIconCompleted {
+  color: #22c55e;
+}
+
+.orderItems {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-left: 1rem;
+}
+
+.itemRow {
+  display: flex;
+  justify-content: space-between;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+.orderFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px dashed #d1d5db;
+  margin-top: 1rem;
+  padding-top: 0.5rem;
+  font-weight: 500;
+}
+
+.trackBtn {
+  background-color: #DC2626;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.trackBtn:hover {
+  background-color: #004e17;
+}
