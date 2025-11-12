@@ -3,35 +3,39 @@ import { Routes, Route } from "react-router-dom";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
 import ProtectedRoute from "./routes/ProtectedRoute"; // ✅ ใช้สำหรับ User
+
 import AdminLayout from "./layouts/AdminLayout";
 import UserLayout from "./layouts/UserLayout";
 
-// 🧩 Pages
+// 🧩 Pages (User)
 import Home from "./pages/user/Home";
 import Products from "./pages/user/Products";
-import Login from "./pages/auth/Login";
-import { Register } from "./pages/auth/register";
+import ProductDetail from "./pages/user/ProductDetail";
+import Cart from "./pages/user/Cart";
+import CheckoutDetail from "./pages/user/CheckoutDetail";
+import { Wishlist } from "./pages/user/Wishlist";
 import { MyProfile } from "./pages/user/MyProfile";
 import { ProfileEdit } from "./pages/user/ProfileEdit";
 import { Address } from "./pages/user/Address";
 import { AddressCreate } from "./pages/user/AddressCreate";
 import { EditAddress } from "./pages/user/EditAddress";
-import Dashboard from "./pages/admin/Dashboard";
-import AdminProducts from "./pages/admin/Products";
-import ProductDetail from "./pages/user/ProductDetail";
-import { Wishlist } from "./pages/user/Wishlist";
-import Cart from "./pages/user/Cart";
-import CheckoutDetail from "./pages/user/CheckoutDetail";
-import { ContactUs } from "./pages/user/ContectUs";
 import { MyOrders } from "./pages/user/MyOrders";
-import ReceiptInvoice from "./pages/user/ReceiptInvoice";
+// import ReceiptInvoice from "./pages/user/ReceiptInvoice";
+import OrderDetail from "./pages/user/OrderDetail"; // ✅ เพิ่มหน้าใบเสร็จ
+import { ContactUs } from "./pages/user/ContectUs";
 
-// 🆕 เพิ่มหน้าโปรโมชั่น
-import AdminPromotions from "./pages/admin/Promotions";
+// 🧾 คูปอง + โปรโมชั่น
+import MyCoupons from "./pages/user/MyCoupons";
 import UserPromotions from "./pages/user/HomePromotions";
 
-// 🆕 ✅ เพิ่มหน้า “คูปองของฉัน”
-import MyCoupons from "./pages/user/MyCoupons";
+// 🔐 Auth
+import Login from "./pages/auth/Login";
+import { Register } from "./pages/auth/register";
+
+// 👑 Admin
+import Dashboard from "./pages/admin/Dashboard";
+import AdminProducts from "./pages/admin/Products";
+import AdminPromotions from "./pages/admin/Promotions";
 
 function App() {
   return (
@@ -45,13 +49,37 @@ function App() {
           </PublicRoute>
         }
       >
-        {/* หน้า Public */}
+        {/* 🏠 หน้า Public */}
         <Route index element={<Home />} />
         <Route path="products" element={<Products />} />
         <Route path="products/:id" element={<ProductDetail />} />
         <Route path="promotions" element={<UserPromotions />} />
+        <Route
+          path="contact"
+          element={
+            <PublicRoute>
+              <ContactUs />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="login"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="register"
+          element={
+            <PublicRoute>
+              <Register />
+            </PublicRoute>
+          }
+        />
 
-        {/* 🛒 หน้าตะกร้า */}
+        {/* 🛒 หน้าตะกร้า / เช็คเอาท์ */}
         <Route
           path="/cart"
           element={
@@ -61,7 +89,7 @@ function App() {
           }
         />
         <Route
-          path="/checkout/detail"
+          path="checkout/detail"
           element={
             <ProtectedRoute>
               <CheckoutDetail />
@@ -71,7 +99,7 @@ function App() {
 
         {/* 🧍‍♂️ โปรไฟล์ผู้ใช้ */}
         <Route
-          path="/profile"
+          path="profile"
           element={
             <ProtectedRoute>
               <MyProfile />
@@ -79,7 +107,7 @@ function App() {
           }
         />
         <Route
-          path="/profile/edit"
+          path="profile/edit"
           element={
             <ProtectedRoute>
               <ProfileEdit />
@@ -87,7 +115,7 @@ function App() {
           }
         />
         <Route
-          path="/profile/address"
+          path="profile/address"
           element={
             <ProtectedRoute>
               <Address />
@@ -95,7 +123,7 @@ function App() {
           }
         />
         <Route
-          path="/profile/address/create"
+          path="profile/address/create"
           element={
             <ProtectedRoute>
               <AddressCreate />
@@ -103,7 +131,7 @@ function App() {
           }
         />
         <Route
-          path="/profile/address/edit/:id"
+          path="profile/address/edit/:id"
           element={
             <ProtectedRoute>
               <EditAddress />
@@ -111,7 +139,7 @@ function App() {
           }
         />
         <Route
-          path="/profile/wishlist"
+          path="profile/wishlist"
           element={
             <ProtectedRoute>
               <Wishlist />
@@ -121,7 +149,7 @@ function App() {
 
         {/* 🎟️ ✅ คูปองของฉัน */}
         <Route
-          path="/profile/mycoupons"
+          path="profile/mycoupons"
           element={
             <ProtectedRoute>
               <MyCoupons />
@@ -129,35 +157,9 @@ function App() {
           }
         />
 
-        {/* 🔐 Authentication */}
+        {/* 🧾 ✅ คำสั่งซื้อของฉัน */}
         <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <Login />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <PublicRoute>
-              <Register />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/contact"
-          element={
-            <PublicRoute>
-              <ContactUs />
-            </PublicRoute>
-          }
-        />
-
-        {/* 🧾 คำสั่งซื้อของฉัน */}
-        <Route
-          path="/user/orders"
+          path="user/orders"
           element={
             <ProtectedRoute>
               <MyOrders />
@@ -165,12 +167,12 @@ function App() {
           }
         />
 
-        {/* 🧾 ✅ ใบเสร็จ / ใบกำกับภาษี */}
+        {/* 🧾 ✅ รายละเอียดใบเสร็จคำสั่งซื้อ */}
         <Route
-          path="/profile/invoice/:orderId"
+          path="profile/order/:id"
           element={
             <ProtectedRoute>
-              <ReceiptInvoice />
+              <OrderDetail />
             </ProtectedRoute>
           }
         />

@@ -7,7 +7,7 @@ import { FaBox, FaTruck, FaCheckCircle, FaClock } from "react-icons/fa";
 import api from "../../apis/axios";
 
 export const MyOrders = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -78,6 +78,12 @@ export const MyOrders = () => {
     fetchOrders();
   }, []);
 
+  // ✅ ฟังก์ชันเปลี่ยนหน้าไปยังใบเสร็จ
+  const handleViewReceipt = (order) => {
+    navigate(`/profile/order/${order.id}`, { state: { order } });
+  };
+
+
   return (
     <div className={styles.container}>
       <UserSidebar />
@@ -115,19 +121,21 @@ export const MyOrders = () => {
 
                 <div className={styles.orderFooter}>
                   <p>รวมทั้งหมด: {order.total.toLocaleString()} ฿</p>
+
+                  {/* ✅ ปุ่มไปหน้า OrderDetail */}
                   <button
-                    className={styles.detailBtn}
-                    onClick={() => navigate(`/profile/invoice/${order.id}`)}
+                    className={styles.trackBtn}
+                    onClick={() => handleViewReceipt(order)} // ✅ ส่ง order ทั้งก้อน
                   >
                     ดูรายละเอียดใบเสร็จ
                   </button>
                 </div>
-              </div>
+              </div >
             ))}
-          </div>
+          </div >
         )}
-      </div>
-    </div>
+      </div >
+    </div >
   );
 };
 
