@@ -24,6 +24,7 @@ import Cart from "./pages/user/Cart";
 import CheckoutDetail from "./pages/user/CheckoutDetail";
 import { ContactUs } from "./pages/user/ContectUs";
 import { MyOrders } from "./pages/user/MyOrders";
+import ReceiptInvoice from "./pages/user/ReceiptInvoice";
 
 // 🆕 เพิ่มหน้าโปรโมชั่น
 import AdminPromotions from "./pages/admin/Promotions";
@@ -52,7 +53,7 @@ function App() {
 
         {/* 🛒 หน้าตะกร้า */}
         <Route
-          path="cart"
+          path="/cart"
           element={
             <ProtectedRoute>
               <Cart />
@@ -118,7 +119,7 @@ function App() {
           }
         />
 
-        {/* 🎟️ ✅ เพิ่ม Route คูปองของฉัน */}
+        {/* 🎟️ ✅ คูปองของฉัน */}
         <Route
           path="/profile/mycoupons"
           element={
@@ -127,6 +128,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         {/* 🔐 Authentication */}
         <Route
           path="/login"
@@ -159,6 +161,16 @@ function App() {
           element={
             <ProtectedRoute>
               <MyOrders />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* 🧾 ✅ ใบเสร็จ / ใบกำกับภาษี */}
+        <Route
+          path="/profile/invoice/:orderId"
+          element={
+            <ProtectedRoute>
+              <ReceiptInvoice />
             </ProtectedRoute>
           }
         />

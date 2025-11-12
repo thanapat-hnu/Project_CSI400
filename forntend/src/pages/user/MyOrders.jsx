@@ -1,3 +1,5 @@
+
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import styles from "./UserPage.module.css";
 import UserSidebar from "./UserSidebar";
@@ -5,6 +7,7 @@ import { FaBox, FaTruck, FaCheckCircle, FaClock } from "react-icons/fa";
 import api from "../../apis/axios";
 
 export const MyOrders = () => {
+    const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -112,7 +115,12 @@ export const MyOrders = () => {
 
                 <div className={styles.orderFooter}>
                   <p>รวมทั้งหมด: {order.total.toLocaleString()} ฿</p>
-                  <button className={styles.trackBtn}>ดูรายละเอียดใบเสร็จ</button>
+                  <button
+                    className={styles.detailBtn}
+                    onClick={() => navigate(`/profile/invoice/${order.id}`)}
+                  >
+                    ดูรายละเอียดใบเสร็จ
+                  </button>
                 </div>
               </div>
             ))}

@@ -1,9 +1,9 @@
-import { Outlet, Link, useNavigate } from "react-router-dom";
+import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { ShoppingCart, Search } from "lucide-react";
 import { useState, useContext } from "react";
 import axios from "../apis/axios";
 import { useAuth } from "../context/AuthContext";
-import { CartContext } from "../context/CartContext"; // ✅ เพิ่มสำหรับตะกร้า
+import { CartContext } from "../context/CartContext";
 import "./UserLayout.css";
 
 const UserLayout = () => {
@@ -11,7 +11,7 @@ const UserLayout = () => {
   const [results, setResults] = useState([]);
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { cart } = useContext(CartContext); // ✅ ดึงตะกร้ามาจาก context
+  const { cart } = useContext(CartContext);
 
   const handleSearch = async (e) => {
     const value = e.target.value;
@@ -35,9 +35,9 @@ const UserLayout = () => {
       {/* 🧭 Navbar */}
       <nav className="navbar">
         <div className="navbar-container">
-          <Link to="/" className="logo">
+          <NavLink to="/" className="logo">
             Logo
-          </Link>
+          </NavLink>
 
           {/* 🔍 Search bar */}
           <div className="search-bar">
@@ -49,7 +49,6 @@ const UserLayout = () => {
             />
             <Search className="search-icon" size={20} />
 
-            {/* ✅ แสดงผลลัพธ์การค้นหา */}
             {results.length > 0 && (
               <div className="search-results">
                 {results.map((item) => (
@@ -80,25 +79,37 @@ const UserLayout = () => {
 
           {/* 🔗 Menu */}
           <div className="menu">
-            <Link to="/">หน้าแรก</Link>
-            <Link to="/products">สินค้า</Link>
-            <Link to="/promotions">โปรโมชั่น</Link>
-            <Link to="/contact">ติดต่อเรา</Link>
+            <NavLink to="/" end className="nav-link">
+              หน้าแรก
+            </NavLink>
+            <NavLink to="/products" className="nav-link">
+              สินค้า
+            </NavLink>
+            <NavLink to="/promotions" className="nav-link">
+              โปรโมชั่น
+            </NavLink>
+            <NavLink to="/contact" className="nav-link">
+              ติดต่อเรา
+            </NavLink>
 
             {/* 🛒 ตะกร้า */}
-            <Link to="/cart" className="cart-link">
+            <NavLink to="/cart" className="nav-link cart-link">
               <ShoppingCart className="mr-1" />
               ตะกร้า
               {cart.length > 0 && (
                 <span className="cart-count">({cart.length})</span>
               )}
-            </Link>
+            </NavLink>
 
             {/* 👤 โปรไฟล์ / เข้าสู่ระบบ */}
             {user ? (
-              <Link to="/profile">โปรไฟล์</Link>
+              <NavLink to="/profile" className="nav-link">
+                โปรไฟล์
+              </NavLink>
             ) : (
-              <Link to="/login">เข้าสู่ระบบ</Link>
+              <NavLink to="/login" className="nav-link">
+                เข้าสู่ระบบ
+              </NavLink>
             )}
           </div>
         </div>
