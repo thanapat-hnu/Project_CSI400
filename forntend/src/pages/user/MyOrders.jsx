@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // ✅ เพิ่มบรรทัดนี้
 import styles from "./UserPage.module.css";
 import UserSidebar from "./UserSidebar";
 import { FaBox, FaTruck, FaCheckCircle, FaClock } from "react-icons/fa";
@@ -7,6 +8,7 @@ import api from "../../apis/axios";
 export const MyOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate(); // ✅ เพิ่ม Hook สำหรับเปลี่ยนหน้า
 
   // แปลสถานะเป็นข้อความไทย
   const statusText = {
@@ -75,6 +77,12 @@ export const MyOrders = () => {
     fetchOrders();
   }, []);
 
+  // ✅ ฟังก์ชันเปลี่ยนหน้าไปยังใบเสร็จ
+  const handleViewReceipt = (order) => {
+    navigate(`/profile/order/${order.id}`, { state: { order } });
+  };
+
+  
   return (
     <div className={styles.container}>
       <UserSidebar />
@@ -112,8 +120,15 @@ export const MyOrders = () => {
 
                 <div className={styles.orderFooter}>
                   <p>รวมทั้งหมด: {order.total.toLocaleString()} ฿</p>
-                  <button className={styles.trackBtn}>ดูรายละเอียดใบเสร็จ</button>
-                </div>
+
+                  {/* ✅ ปุ่มไปหน้า OrderDetail */}
+                  <button
+                    className={styles.trackBtn}
+                    onClick={() => handleViewReceipt(order)} // ✅ ส่ง order ทั้งก้อน
+                  >
+                    ดูรายละเอียดใบเสร็จ
+                  </button>                
+                  </div>
               </div>
             ))}
           </div>
