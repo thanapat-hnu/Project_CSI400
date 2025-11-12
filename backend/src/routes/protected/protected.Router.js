@@ -12,6 +12,7 @@ import userRouter from "./user.Router.js";
 import cartRouter from "./cart.Router.js"; // ✅ ใช้ชื่อนี้ให้ตรงกับชื่อไฟล์จริง
 import orderRoutes from "./orderRoutes.js";
 import couponRoutes from "./couponRoutes.js";
+import newApi from "./newApi.Router.js"
 
 const router = express.Router();
 
@@ -28,5 +29,6 @@ router.use("/user", userRouter);
 router.use("/cart", cartRouter); // ✅ ต้องมีบรรทัดนี้
 router.use("/order", orderRoutes);
 router.use("/coupon", couponRoutes);
+router.use("/newapi", newApi);
 
 export default router;

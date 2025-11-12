@@ -101,7 +101,7 @@ const CheckoutDetail = () => {
   const handleConfirm = async () => {
     const token = localStorage.getItem("token");
 
-    const u = await api.get("/protech/cart")
+    const u = await api.get("/protech/cart");
     const user_id = u.data.userId;
 
     const selectedAddress = addresses.find((a) => a.id === selectedAddressId);
@@ -139,7 +139,19 @@ const CheckoutDetail = () => {
         await redeemCoupon(localStorage.getItem("appliedCouponId"), order.id);
       }
 
-      // 🟢 Step 4: ล้างตะกร้า
+      // 🟢 Step 4: อัปเดต stock ของสินค้าตามคำสั่งซื้อล่าสุด
+      try {
+        const stockRes = await api.post(
+          "/protech/newapi",
+          {},
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        console.log("✅ อัปเดต stock:", stockRes.data);
+      } catch (stockErr) {
+        console.error("⚠️ Update stock error:", stockErr.response?.data || stockErr);
+      }
+
+      // 🟢 Step 5: ล้างตะกร้า
       await api.delete("/protech/cart/clear", {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -152,6 +164,7 @@ const CheckoutDetail = () => {
       alert(err.response?.data?.message || "เกิดข้อผิดพลาดในการชำระเงิน");
     }
   };
+
 
   /* ──────────────── ลบที่อยู่ ──────────────── */
   const handleDelete = async (id) => {
