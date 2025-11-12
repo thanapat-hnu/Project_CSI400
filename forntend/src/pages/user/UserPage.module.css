@@ -1365,10 +1365,21 @@
 }
 
 .itemRow {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 80px 100px; /* 👈 fix 3 คอลัมน์: ชื่อ, จำนวน, ราคา */
+  align-items: center;
   color: #374151;
   font-size: 0.95rem;
+  padding: 4px 0;
+}
+
+.itemRow span:nth-child(1) {
+  text-align: left;
+}
+
+.itemRow span:nth-child(2),
+.itemRow span:nth-child(3) {
+  text-align: right;
 }
 
 .orderFooter {
@@ -1381,7 +1392,7 @@
   font-weight: 500;
 }
 
-.detailBtn {
+.trackBtn {
   background-color: #DC2626;
   color: white;
   border: none;
@@ -1391,6 +1402,6 @@
   transition: background-color 0.2s;
 }
 
-.detailBtn:hover {
-  background-color: #004e17;
+.trackBtn:hover {
+  background-color: #883f3f;
 }
