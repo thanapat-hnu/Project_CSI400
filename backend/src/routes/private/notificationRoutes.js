@@ -13,7 +13,7 @@ const router = express.Router();
 /**
  * @swagger
  * tags:
- *   name: Notification
+ *   name: แจ้งเตือน
  *   description: "API สำหรับการแจ้งเตือน (ผู้จัดทำ: นายภูวนาท ศรุตติ์ตานนทร์)"
  */
 
@@ -22,7 +22,7 @@ const router = express.Router();
  * /api/private/notification:
  *   get:
  *     summary: ดึงแจ้งเตือนทั้งหมด (Admin)
- *     tags: [Notification]
+ *     tags: [แจ้งเตือน]
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -36,7 +36,7 @@ router.get("/", authJWT, authRole("admin"), getAllNotifications);
  * /api/private/notification/{id}:
  *   get:
  *     summary: ดึงแจ้งเตือนรายตัว (Admin)
- *     tags: [Notification]
+ *     tags: [แจ้งเตือน]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -57,7 +57,7 @@ router.get("/:id", authJWT, authRole("admin"), getNotificationById);
  * /api/private/notification:
  *   post:
  *     summary: สร้างแจ้งเตือนใหม่ (Admin หรือระบบ)
- *     tags: [Notification]
+ *     tags: [แจ้งเตือน]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -90,7 +90,7 @@ router.post("/", authJWT, authRole("admin"), createNotification);
  * /api/private/notification/{id}:
  *   delete:
  *     summary: ลบแจ้งเตือนเดี่ยว (Admin)
- *     tags: [Notification]
+ *     tags: [แจ้งเตือน]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -111,7 +111,7 @@ router.delete("/:id", authJWT, authRole("admin"), deleteNotification);
  * /api/private/notification/user/{user_id}:
  *   delete:
  *     summary: ลบแจ้งเตือนทั้งหมดของผู้ใช้ (Admin)
- *     tags: [Notification]
+ *     tags: [แจ้งเตือน]
  *     security:
  *       - bearerAuth: []
  *     parameters:

@@ -12,7 +12,7 @@ const router = express.Router();
 /**
  * @swagger
  * tags:
- *   name: Shipment
+ *   name: การจัดส่ง
  *   description: "API สำหรับจัดการข้อมูลการจัดส่ง (ผู้จัดทำ: นายภูวนาท ศรุตติ์ตานนทร์)"
  */
 
@@ -21,7 +21,7 @@ const router = express.Router();
  * /api/private/shipping:
  *   get:
  *     summary: ดึงรายการจัดส่งทั้งหมด (Admin)
- *     tags: [Shipment]
+ *     tags: [การจัดส่ง]
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -37,7 +37,7 @@ router.get("/", authJWT, authRole("admin"), getAllShipments);
  * /api/private/shipping/{id}:
  *   get:
  *     summary: ดึงข้อมูลการจัดส่งรายตัว (Admin)
- *     tags: [Shipment]
+ *     tags: [การจัดส่ง]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -62,7 +62,7 @@ router.get("/:id", authJWT, authRole("admin"), getShipmentById);
  * /api/private/shipping/{id}:
  *   put:
  *     summary: อัปเดตสถานะการจัดส่ง (Admin)
- *     tags: [Shipment]
+ *     tags: [การจัดส่ง]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -103,7 +103,7 @@ router.put("/:id", authJWT, authRole("admin"), updateShipmentStatus);
  * /api/private/shipping/{id}:
  *   delete:
  *     summary: ลบข้อมูลการจัดส่ง (Admin)
- *     tags: [Shipment]
+ *     tags: [การจัดส่ง]
  *     security:
  *       - bearerAuth: []
  *     parameters:

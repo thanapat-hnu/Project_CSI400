@@ -12,7 +12,7 @@ const router = express.Router();
 /**
  * @swagger
  * tags:
- *   name: Order
+ *   name: คำสั่งซื้อ
  *   description: "API สำหรับการจัดการคำสั่งซื้อ (ผู้จัดทำ: นายภูวนาท ศรุตติ์ตานนทร์)"
  */
 
@@ -21,7 +21,7 @@ const router = express.Router();
  * /api/private/order:
  *   get:
  *     summary: ดึงคำสั่งซื้อทั้งหมด (Admin)
- *     tags: [Order]
+ *     tags: [คำสั่งซื้อ]
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -35,7 +35,7 @@ router.get("/", authJWT, authRole("admin"), getAllOrders);
  * /api/private/order/{id}:
  *   get:
  *     summary: ดึงคำสั่งซื้อรายตัว (Admin)
- *     tags: [Order]
+ *     tags: [คำสั่งซื้อ]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -56,7 +56,7 @@ router.get("/:id", authJWT, authRole("admin"), getOrderById);
  * /api/private/order/{id}:
  *   put:
  *     summary: อัปเดตสถานะคำสั่งซื้อ (Admin)
- *     tags: [Order]
+ *     tags: [คำสั่งซื้อ]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -89,7 +89,7 @@ router.put("/:id", authJWT, authRole("admin"), updateOrderStatus);
  * /api/private/order/{id}:
  *   delete:
  *     summary: ลบคำสั่งซื้อ (Admin)
- *     tags: [Order]
+ *     tags: [คำสั่งซื้อ]
  *     security:
  *       - bearerAuth: []
  *     parameters:

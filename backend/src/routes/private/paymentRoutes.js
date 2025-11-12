@@ -13,7 +13,7 @@ const router = express.Router();
 /**
  * @swagger
  * tags:
- *   name: Payment
+ *   name: การชำระเงิน
  *   description: "API สำหรับการจัดการการชำระเงิน (ผู้จัดทำ: นายภูวนาท ศรุตติ์ตานนทร์)"
  */
 
@@ -22,7 +22,7 @@ const router = express.Router();
  * /api/private/payment:
  *   get:
  *     summary: ดึงข้อมูลการชำระเงินทั้งหมด (Admin)
- *     tags: [Payment]
+ *     tags: [การชำระเงิน]
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -36,7 +36,7 @@ router.get("/", authJWT, authRole("admin"), getPayments);
  * /api/private/payment/{id}:
  *   get:
  *     summary: ดึงข้อมูลการชำระเงินรายตัว (Admin)
- *     tags: [Payment]
+ *     tags: [การชำระเงิน]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -57,7 +57,7 @@ router.get("/:id", authJWT, authRole("admin"), getPaymentById);
  * /api/private/payment:
  *   post:
  *     summary: เพิ่มข้อมูลการชำระเงิน (Admin)
- *     tags: [Payment]
+ *     tags: [การชำระเงิน]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -89,7 +89,7 @@ router.post("/", authJWT, authRole("admin"), createPayment);
  * /api/private/payment/{id}:
  *   put:
  *     summary: อัปเดตข้อมูลการชำระเงิน (Admin)
- *     tags: [Payment]
+ *     tags: [การชำระเงิน]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -122,7 +122,7 @@ router.put("/:id", authJWT, authRole("admin"), updatePayment);
  * /api/private/payment/{id}:
  *   delete:
  *     summary: ลบข้อมูลการชำระเงิน (Admin)
- *     tags: [Payment]
+ *     tags: [การชำระเงิน]
  *     security:
  *       - bearerAuth: []
  *     parameters:

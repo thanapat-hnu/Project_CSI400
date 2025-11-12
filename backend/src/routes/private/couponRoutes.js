@@ -14,7 +14,7 @@ const router = express.Router();
 /**
  * @swagger
  * tags:
- *   name: Coupon
+ *   name: คูปอง
  *   description: "API สำหรับคูปอง (ผู้จัดทำ: นายคฑาวุธ เมืองพรหม)"
  */
 
@@ -23,7 +23,7 @@ const router = express.Router();
  * /api/private/coupon:
  *   get:
  *     summary: ดึงคูปองทั้งหมด (Admin)
- *     tags: [Coupon]
+ *     tags: [คูปอง]
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -37,7 +37,7 @@ router.get("/", authJWT, authRole("admin"), getAllCoupons);
  * /api/private/coupon/{id}:
  *   get:
  *     summary: ดึงคูปองรายตัว (Admin)
- *     tags: [Coupon]
+ *     tags: [คูปอง]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -58,7 +58,7 @@ router.get("/:id", authJWT, authRole("admin"), getCouponById);
  * /api/private/coupon:
  *   post:
  *     summary: สร้างคูปองใหม่ (Admin)
- *     tags: [Coupon]
+ *     tags: [คูปอง]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -95,7 +95,7 @@ router.post("/", authJWT, authRole("admin"), createCoupon);
  * /api/private/coupon/{id}:
  *   put:
  *     summary: อัปเดตสถานะคูปอง (Admin)
- *     tags: [Coupon]
+ *     tags: [คูปอง]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -125,7 +125,7 @@ router.put("/:id", authJWT, authRole("admin"), updateCouponStatus);
  * /api/private/coupon/{id}:
  *   delete:
  *     summary: ลบคูปอง (Admin)
- *     tags: [Coupon]
+ *     tags: [คูปอง]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -146,7 +146,7 @@ router.delete("/:id", authJWT, authRole("admin"), deleteCoupon);
  * /api/private/coupon/discard/{coupon_id}:
  *   delete:
  *     summary: ลบคูปองหมดอายุออกจากบัญชีผู้ใช้
- *     tags: [Coupon]
+ *     tags: [คูปอง]
  *     security:
  *       - bearerAuth: []
  *     parameters:

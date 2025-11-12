@@ -18,7 +18,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/protech/shipment/{id}:
+ * /api/protech/shipping/{id}:
  *   get:
  *     summary: ดูสถานะการจัดส่งของตนเอง
  *     tags: [การจัดส่ง]
@@ -56,7 +56,7 @@ router.get("/:id", authJWT, getShipmentById);
 
 /**
  * @swagger
- * /api/protech/shipment:
+ * /api/protech/shipping:
  *   post:
  *     summary: สร้างคำสั่งจัดส่งใหม่
  *     tags: [การจัดส่ง]

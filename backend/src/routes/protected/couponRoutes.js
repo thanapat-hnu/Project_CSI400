@@ -18,27 +18,7 @@ const router = express.Router();
  *   description: "API สำหรับจัดการคูปอง (ผู้จัดทำ: นายภูวนาท ศรุตติ์ตานนทร์)"
  */
 
-/**
- * @swagger
- * /api/protech/coupon/public:
- *   get:
- *     summary: ดึงคูปองสาธารณะ (ไม่ต้องล็อกอิน)
- *     tags: [คูปอง]
- *     responses:
- *       200:
- *         description: ดึงคูปองสาธารณะสำเร็จ
- *         content:
- *           application/json:
- *             example:
- *               coupons:
- *                 - id: 1
- *                   code: "DISCOUNT10"
- *                   discount: 10
- *                   active: true
- *       500:
- *         description: เกิดข้อผิดพลาดในระบบ
- */
-router.get("/public", getPublicCoupons);
+router.get("/public", getPublicCoupons); //มี ปัญหาแต่ใช้งานจริงได้
 
 /**
  * @swagger

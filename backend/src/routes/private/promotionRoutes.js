@@ -13,7 +13,7 @@ const router = express.Router();
 /**
  * @swagger
  * tags:
- *   name: Promotion
+ *   name: โปรโมชั่น
  *   description: "API สำหรับจัดการโปรโมชั่น (ผู้จัดทำ: นายภูวนาท ศรุตติ์ตานนทร์)"
  */
 
@@ -29,7 +29,7 @@ const upload = multer({ storage });
  * /api/private/promotion:
  *   get:
  *     summary: ดึงโปรโมชั่นทั้งหมด (Admin)
- *     tags: [Promotion]
+ *     tags: [โปรโมชั่น]
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -43,7 +43,7 @@ router.get("/", authJWT, authRole("admin"), getAllPromotions);
  * /api/private/promotion:
  *   post:
  *     summary: สร้างโปรโมชั่นใหม่ (Admin)
- *     tags: [Promotion]
+ *     tags: [โปรโมชั่น]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -77,7 +77,7 @@ router.post("/", authJWT, authRole("admin"), upload.single("image"), createPromo
  * /api/private/promotion/{id}:
  *   put:
  *     summary: เปิด/ปิดโปรโมชั่น (Admin)
- *     tags: [Promotion]
+ *     tags: [โปรโมชั่น]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -96,7 +96,7 @@ router.put("/:id", authJWT, authRole("admin"), updatePromotionStatus);
  * /api/private/promotion/{id}:
  *   delete:
  *     summary: ลบโปรโมชั่น (Admin)
- *     tags: [Promotion]
+ *     tags: [โปรโมชั่น]
  *     security:
  *       - bearerAuth: []
  *     parameters:
