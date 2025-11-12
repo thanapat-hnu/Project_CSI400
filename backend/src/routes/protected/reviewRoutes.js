@@ -12,7 +12,7 @@ const router = express.Router()
 
 /**
  * @swagger
- * /api/protech/review:
+ * /api/protech/reviews:
  *   post:
  *     summary: เพิ่มรีวิวสินค้า
  *     tags: [รีวิว]
@@ -61,10 +61,13 @@ router.post('/', createReview);
 
 /**
  * @swagger
- * /api/protech/review/{productId}:
+ * /api/protech/reviews/{productId}:
  *   get:
  *     summary: ดูรีวิวของสินค้า
  *     tags: [รีวิว]
+ *     security:
+ *       - bearerAuth: []  
+ * 
  *     parameters:
  *       - in: path
  *         name: productId

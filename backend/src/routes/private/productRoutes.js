@@ -19,7 +19,7 @@ const router = express.Router();
 /**
  * @swagger
  * tags:
- *   name: Product
+ *   name: สินค้า
  *   description: "API สำหรับจัดการสินค้า (ผู้จัดทำ: นายคฑาวุธ เมืองพรหม)"
  */
 
@@ -35,7 +35,9 @@ const upload = multer({ storage });
  * /api/private/product:
  *   get:
  *     summary: ดึงสินค้าทั้งหมด
- *     tags: [Product]
+ *     tags: [สินค้า]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: ดึงสินค้าสำเร็จ
@@ -47,7 +49,9 @@ router.get("/", getAllProducts);
  * /api/private/product/search:
  *   get:
  *     summary: ค้นหาสินค้า
- *     tags: [Product]
+ *     tags: [สินค้า]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - name: q
  *         in: query
@@ -66,12 +70,16 @@ router.get("/search", searchProducts);
  * /api/private/product/{id}:
  *   get:
  *     summary: ดึงสินค้าตาม ID
- *     tags: [Product]
+ *     tags: [สินค้า]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
  *         description: ID ของสินค้า
+ *         schema:
+ *           type: integer
  *     responses:
  *       200:
  *         description: ดึงสินค้าเรียบร้อย
@@ -83,7 +91,9 @@ router.get("/:id", getProductById);
  * /api/private/product:
  *   post:
  *     summary: เพิ่มสินค้าใหม่
- *     tags: [Product]
+ *     tags: [สินค้า]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -115,11 +125,15 @@ router.post("/", upload.single("image"), createProduct);
  * /api/private/product/{id}:
  *   put:
  *     summary: อัปเดตสินค้า
- *     tags: [Product]
+ *     tags: [สินค้า]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
+ *         schema:
+ *           type: integer
  *     requestBody:
  *       required: true
  *       content:
@@ -137,11 +151,15 @@ router.put("/:id", updateProduct);
  * /api/private/product/{id}:
  *   delete:
  *     summary: ลบสินค้า
- *     tags: [Product]
+ *     tags: [สินค้า]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
+ *         schema:
+ *           type: integer
  *     responses:
  *       200:
  *         description: ลบสินค้าเรียบร้อย
@@ -153,11 +171,15 @@ router.delete("/:id", deleteProduct);
  * /api/private/product/{id}/variants:
  *   post:
  *     summary: เพิ่ม Variant ของสินค้า
- *     tags: [Product]
+ *     tags: [สินค้า]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
+ *         schema:
+ *           type: integer
  *     requestBody:
  *       required: true
  *       content:
@@ -182,11 +204,15 @@ router.post("/:id/variants", addProductVariant);
  * /api/private/product/variants/{variantId}:
  *   put:
  *     summary: อัปเดต Variant
- *     tags: [Product]
+ *     tags: [สินค้า]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - name: variantId
  *         in: path
  *         required: true
+ *         schema:
+ *           type: integer
  *     requestBody:
  *       required: true
  *       content:
@@ -204,11 +230,15 @@ router.put("/variants/:variantId", updateProductVariant);
  * /api/private/product/variants/{variantId}:
  *   delete:
  *     summary: ลบ Variant
- *     tags: [Product]
+ *     tags: [สินค้า]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - name: variantId
  *         in: path
  *         required: true
+ *         schema:
+ *           type: integer
  *     responses:
  *       200:
  *         description: ลบ Variant สำเร็จ
@@ -220,11 +250,15 @@ router.delete("/variants/:variantId", deleteProductVariant);
  * /api/private/product/{id}/images:
  *   post:
  *     summary: เพิ่มรูปภาพสินค้า
- *     tags: [Product]
+ *     tags: [สินค้า]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
+ *         schema:
+ *           type: integer
  *     requestBody:
  *       required: true
  *       content:
@@ -246,11 +280,15 @@ router.post("/:id/images", upload.single("image"), addProductImage);
  * /api/private/product/images/{imageId}:
  *   delete:
  *     summary: ลบรูปภาพสินค้า
- *     tags: [Product]
+ *     tags: [สินค้า]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - name: imageId
  *         in: path
  *         required: true
+ *         schema:
+ *           type: integer
  *     responses:
  *       200:
  *         description: ลบรูปภาพสำเร็จ

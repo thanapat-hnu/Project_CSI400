@@ -18,6 +18,30 @@ const router = express.Router();
 
 /**
  * @swagger
+ * /api/public/product/search:
+ *   get:
+ *     summary: ค้นหาสินค้าด้วยคำค้น
+ *     description: ค้นหาจากชื่อหรือคำอธิบายสินค้า เช่น `?q=เสื้อ`
+ *     tags: [สินค้า]
+ *     parameters:
+ *       - in: query
+ *         name: q
+ *         schema:
+ *           type: string
+ *         description: คำค้นหา
+ *     responses:
+ *       200:
+ *         description: ผลลัพธ์การค้นหา
+ *       500:
+ *         description: เกิดข้อผิดพลาดระหว่างค้นหา
+ */
+router.get('/search', searchProducts);
+
+
+
+
+/**
+ * @swagger
  * /api/public/product:
  *   get:
  *     summary: ดึงสินค้าทั้งหมด
@@ -59,25 +83,6 @@ router.get('/', getAllProducts);
  */
 router.get('/:id', getProductById);
 
-/**
- * @swagger
- * /api/public/product/search:
- *   get:
- *     summary: ค้นหาสินค้าด้วยคำค้น
- *     description: ค้นหาจากชื่อหรือคำอธิบายสินค้า เช่น `?q=เสื้อ`
- *     tags: [สินค้า]
- *     parameters:
- *       - in: query
- *         name: q
- *         schema:
- *           type: string
- *         description: คำค้นหา
- *     responses:
- *       200:
- *         description: ผลลัพธ์การค้นหา
- *       500:
- *         description: เกิดข้อผิดพลาดระหว่างค้นหา
- */
-router.get('/search', searchProducts);
+
 
 export default router;

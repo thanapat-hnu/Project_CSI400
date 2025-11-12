@@ -1,7 +1,6 @@
 import express from 'express';
 import {
   getAllCategories,
-  getCategoryById,
   createCategory,
   updateCategory,
   deleteCategory,
@@ -47,29 +46,8 @@ router.get('/', getAllCategories);
  */
 router.get("/sub", getSubCategories);
 
-/**
- * @swagger
- * /api/public/category/{id}:
- *   get:
- *     summary: "ดึงข้อมูลหมวดหมู่ตาม ID"
- *     description: "ดูรายละเอียดหมวดหมู่ รวมถึงหมวดย่อยและสินค้าที่อยู่ภายใน"
- *     tags: [หมวดหมู่สินค้า]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *         description: "ID ของหมวดหมู่"
- *     responses:
- *       200:
- *         description: "ดึงข้อมูลหมวดหมู่สำเร็จ"
- *       404:
- *         description: "ไม่พบหมวดหมู่"
- *       500:
- *         description: "เกิดข้อผิดพลาดในระบบ"
- */
-router.get('/:id', getCategoryById);
+
+// router.get('/:id', getCategoryById);
 
 /**
  * @swagger
