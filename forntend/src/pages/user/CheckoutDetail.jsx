@@ -115,7 +115,7 @@ const CheckoutDetail = () => {
         {
           user_id,
           items: cart.map((i) => ({
-            product_id: i.id,
+            product_id: i.product_id,
             quantity: i.quantity,
             price: i.price,
           })),
@@ -145,7 +145,8 @@ const CheckoutDetail = () => {
       });
 
       alert("✅ สั่งซื้อและชำระเงินเรียบร้อยแล้ว!");
-      navigate("/profile/orders");
+      navigate("/user/orders");
+      window.location.reload();
     } catch (err) {
       console.error("❌ Checkout Error:", err);
       alert(err.response?.data?.message || "เกิดข้อผิดพลาดในการชำระเงิน");

@@ -58,7 +58,8 @@ export const MyProfile = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        navigate("/login");
+        navigate("/");
+        window.location.reload();
       }
     });
   };

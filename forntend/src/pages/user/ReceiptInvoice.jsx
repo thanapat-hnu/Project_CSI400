@@ -13,7 +13,7 @@ const ReceiptInvoice = () => {
   // Mock order
   const mockOrders = [
     {
-      id: "ORD-2025-001",
+      id: "59",
       date: "2025-11-10",
       buyer: {
         name: "นายกรนพ ศรีสวัสดิ์",

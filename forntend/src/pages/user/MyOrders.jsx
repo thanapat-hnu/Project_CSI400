@@ -1,35 +1,20 @@
-import { useState } from "react";
+
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import styles from "./UserPage.module.css";
 import UserSidebar from "./UserSidebar";
 import { FaBox, FaTruck, FaCheckCircle, FaClock } from "react-icons/fa";
+import api from "../../apis/axios";
 
 export const MyOrders = () => {
     const navigate = useNavigate();
-  // mock data — ตัวอย่างคำสั่งซื้อ
-  const [orders] = useState([
-    {
-      id: "ORD-2025-001",
-      date: "2025-11-10",
-      total: 35900,
-      status: "shipped", // pending, shipped, delivered, completed
-      items: [
-        { name: "ASUS TUF Gaming F15", qty: 1, price: 29900 },
-        { name: "Logitech G Pro Mouse", qty: 1, price: 6000 },
-      ],
-    },
-    {
-      id: "ORD-2025-002",
-      date: "2025-11-09",
-      total: 15900,
-      status: "completed",
-      items: [{ name: "Dell Monitor 27”", qty: 1, price: 15900 }],
-    },
-  ]);
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // แปลสถานะเป็นข้อความไทย
   const statusText = {
     pending: "รอการชำระเงิน",
+    paid: "ชำระเงินแล้ว",
     shipped: "กำลังจัดส่ง",
     delivered: "จัดส่งสำเร็จ",
     completed: "เสร็จสมบูรณ์",
@@ -40,6 +25,8 @@ export const MyOrders = () => {
     switch (status) {
       case "pending":
         return <FaClock className={styles.statusIconPending} />;
+      case "paid":
+        return <FaCheckCircle className={styles.statusIconCompleted} />;
       case "shipped":
         return <FaTruck className={styles.statusIconShipped} />;
       case "delivered":
@@ -51,20 +38,60 @@ export const MyOrders = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchOrders = async () => {
+      setLoading(true);
+      try {
+        const token = localStorage.getItem("token");
+        const u = await api.get("/protech/cart");
+        const user_id = u.data.userId;
+
+        const res = await api.get(`/protech/order/user/${user_id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const ordersData = res.data || [];
+
+        const fetchedOrders = ordersData.map((order) => ({
+          id: order.id,
+          date: order.created_at
+            ? new Date(order.created_at).toLocaleDateString("th-TH")
+            : "-",
+          total: Number(order.total_amount || 0),
+          status: order.status || "pending",
+          items: (order.items || []).map((i) => ({
+            name: i.product?.name || "สินค้าไม่มีชื่อ",
+            qty: i.quantity || 0,
+            price: Number(i.price || 0),
+          })),
+        }));
+
+        setOrders(fetchedOrders);
+      } catch (err) {
+        console.error("❌ โหลดคำสั่งซื้อของฉันล้มเหลว:", err);
+        setOrders([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
   return (
     <div className={styles.container}>
       <UserSidebar />
-
       <div className={styles.content}>
         <h1 className={styles.pageTitle}>📦 คำสั่งซื้อของฉัน</h1>
 
-        {orders.length === 0 ? (
+        {loading ? (
+          <p className={styles.emptyText}>⏳ กำลังโหลดคำสั่งซื้อ...</p>
+        ) : orders.length === 0 ? (
           <p className={styles.emptyText}>ยังไม่มีคำสั่งซื้อในตอนนี้</p>
         ) : (
           <div className={styles.orderList}>
             {orders.map((order) => (
               <div key={order.id} className={styles.orderCard}>
-                {/* หัวคำสั่งซื้อ */}
                 <div className={styles.orderHeader}>
                   <div>
                     <h3>หมายเลขคำสั่งซื้อ: {order.id}</h3>
@@ -76,7 +103,6 @@ export const MyOrders = () => {
                   </div>
                 </div>
 
-                {/* รายการสินค้า */}
                 <div className={styles.orderItems}>
                   {order.items.map((item, i) => (
                     <div key={i} className={styles.itemRow}>
@@ -87,7 +113,6 @@ export const MyOrders = () => {
                   ))}
                 </div>
 
-                {/* ส่วนล่าง */}
                 <div className={styles.orderFooter}>
                   <p>รวมทั้งหมด: {order.total.toLocaleString()} ฿</p>
                   <button

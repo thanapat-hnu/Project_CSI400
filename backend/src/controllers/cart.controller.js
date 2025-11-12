@@ -19,7 +19,6 @@ export const getOrCreateCart = async (userId) => {
 export const getMyCart = async (req, res) => {
   try {
     const userId = req.user.user_id;
-    console.log(userId)
     const cart = await getOrCreateCart(userId);
 
     const [items] = await pool.query(
